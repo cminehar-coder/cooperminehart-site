@@ -1,0 +1,84 @@
+---
+// CAISO hourly battery averages (MW),April 28 2026, representative CA duck-curve day
+// positive = discharging to grid, negative = charging from grid
+const CAISO_HOURLY = [
+   1145,   608,   621,   570,  1982,  3506,  4168,  -914,
+  -2940, -4161, -5918, -7320, -7965, -7281, -5837, -3928,
+  -1855,  -676,  1659,  7337,  8491,  6953,  4699,  2619,
+];
+---
+
+<pre
+  id="battery-display"
+  class="font-mono leading-relaxed select-none text-[#52B788]"
+  aria-label="ASCII lithium-ion battery animation"
+></pre>
+
+<style>
+  .li-ion { color: #52B788; font-weight: 600; }
+</style>
+
+<script define:vars={{ CAISO_HOURLY }}>
+  const SLOTS = 12;
+  const IONS  = 3;
+
+  function getGridMW() {
+    return CAISO_HOURLY[new Date().getHours()];
+  }
+
+  function ionRow(tick, dir, rowOffset) {
+    const grid    = Array(SLOTS).fill(false);
+    const spacing = Math.floor(SLOTS / IONS);
+    for (let i = 0; i < IONS; i++) {
+      const base = i * spacing + rowOffset;
+      const pos  = ((base + tick * dir) % SLOTS + SLOTS) % SLOTS;
+      grid[pos]  = true;
+    }
+    return grid.map(ion => ion ? '<span class="li-ion">⊕</span>' : '·').join(' ');
+  }
+
+  function buildFrame(tick, mw) {
+    const isCharging = mw < 0;
+    const dir        = isCharging ? 1 : -1;
+    const r0 = ionRow(tick, dir, 0);
+    const r1 = ionRow(tick, dir, 2);
+    const r2 = ionRow(tick, dir, 1);
+    const CAT   = '  ══════  ';
+    const AN    = '  ┊┊┊┊┊┊  ';
+    const BLANK = '                           ';
+    const e     = (r) => `  ${r}  `;
+    return [
+      `┌──────────┐  ┌───────────────────────────┐  ┌──────────┐`,
+      `│          │  │                           │  │          │`,
+      `│${CAT}│  │${e(r0)}│  │${AN}│`,
+      `│          │  │${BLANK}│  │          │`,
+      `│${CAT}│  │${e(r1)}│  │${AN}│`,
+      `│          │  │${BLANK}│  │          │`,
+      `│${CAT}│  │${e(r2)}│  │${AN}│`,
+      `│          │  │                           │  │          │`,
+      `└──────────┘  └───────────────────────────┘  └──────────┘`,
+    ].join('\n');
+  }
+
+  function buildCaption(mw) {
+    const isCharging = mw < 0;
+    const gw = (Math.abs(mw) / 1000).toFixed(1);
+    return isCharging
+      ? `CAISO: charging batteries at ${gw} GW`
+      : `CAISO: discharging batteries at ${gw} GW`;
+  }
+
+  const SPEED = 0.6;
+
+  function tick() {
+    const mw      = getGridMW();
+    const step    = Math.floor(Date.now() / 1000 * SPEED);
+    const display = document.getElementById('battery-display');
+    const caption = document.getElementById('battery-caption');
+    if (display) display.innerHTML = buildFrame(step, mw);
+    if (caption) caption.textContent = buildCaption(mw);
+  }
+
+  tick();
+  setInterval(tick, 250);
+</script>

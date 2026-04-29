@@ -1,0 +1,194 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BatteryHero from '../components/BatteryHero.astro';
+---
+
+<Layout title="Cooper Minehart">
+
+  <!-- ── Dark hero with battery animation as background ── -->
+  <section class="relative bg-[#0b1a12] overflow-hidden">
+    <!-- Battery art: scaled up, very low opacity, purely decorative -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+         style="opacity: 0.28; transform: scale(2.2); transform-origin: center;">
+      <BatteryHero />
+    </div>
+
+    <!-- Hero content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 py-24">
+      <div class="grid md:grid-cols-[1fr_auto] gap-12 items-center">
+        <div>
+          <p class="text-xs font-semibold tracking-widest uppercase text-forest-300 mb-4">
+            PhD · Engineering &amp; Public Policy · Carnegie Mellon
+          </p>
+          <h1 class="font-serif text-5xl sm:text-6xl font-bold text-white leading-tight mb-5">
+            Cooper<br />Minehart
+          </h1>
+          <p class="text-lg text-stone-100 leading-relaxed mb-8 max-w-lg">
+            I build models that tell us what batteries will cost, and
+            why that matters for the energy transition.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/research" class="btn-primary-light">View Research</a>
+            <a href="/cv" class="btn-outline-light">Download CV</a>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+          <img
+            src="/photos/headshot.jpeg"
+            alt="Cooper Minehart"
+            class="w-52 h-52 rounded-full object-cover object-top ring-2 ring-forest-400/30"
+          />
+        </div>
+      </div>
+
+      <!-- CAISO caption -->
+      <a id="battery-caption" href="https://www.caiso.com/todays-outlook" target="_blank" rel="noopener" class="mt-10 font-mono text-xs text-forest-400/80 text-center hover:text-forest-300 transition-colors block"></a>
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <p class="section-label mb-4">About</p>
+    <div class="grid md:grid-cols-[2fr_1fr] gap-12 items-start">
+      <div class="space-y-5 text-[#333] leading-relaxed">
+        <p>
+          I'm a PhD student in Engineering and Public Policy at Carnegie Mellon University,
+          where I work with <strong>Prof. Kate Whitefoot</strong> (EPP &amp; Mechanical Engineering)
+          on battery production cost modeling. My work focuses on understanding where battery
+          technology is heading, looking at cell-to-pack designs, dry electrode processing,
+          LMFP cathodes, sodium-ion chemistries, and other tech with the potential to reduce costs.
+        </p>
+        <p>
+          Before CMU, I was a full-time lecturer in Mechanical Engineering at
+          <strong>Cal Poly San Luis Obispo</strong>, where I taught statics, design
+          communication, philosophy of design, and introductory ME. Prior to that I managed
+          the propulsion team at Empirical Systems Aerospace through an OEM eVTOL test
+          campaign, and spent a year at <strong>KU Leuven</strong> as a researcher in the
+          Mechatronic System Dynamics group, working on flexible multibody contact models of
+          wind-turbine gearboxes.
+        </p>
+        <p>
+          My graduate work at Michigan Tech focused on machine learning applications for
+          sensor fusion, and my thesis covered data-driven cycle-to-cycle IMEP estimation
+          for internal combustion engines. The through-line across all of it is using models
+          to understand systems that are hard to measure directly.
+        </p>
+        <p>
+          I grew up in rural Minnesota, which may explain my preference for doing things
+          from scratch. I'm currently based in Pittsburgh.
+        </p>
+      </div>
+
+      <div class="text-sm text-[#666] space-y-4">
+        <div>
+          <p class="text-xs font-mono tracking-wider uppercase text-[#aaa] mb-1">Institution</p>
+          <p>Carnegie Mellon University<br/>Pittsburgh, PA</p>
+        </div>
+        <div>
+          <p class="text-xs font-mono tracking-wider uppercase text-[#aaa] mb-1">Email</p>
+          <a href="mailto:cminehar@andrew.cmu.edu" class="text-forest-600 hover:underline">
+            cminehar@andrew.cmu.edu
+          </a>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <a href="https://scholar.google.com/citations?user=LXd0QBUAAAAJ&hl=en" target="_blank" rel="noopener" class="text-forest-600 hover:underline text-sm">Google Scholar</a>
+          <a href="https://linkedin.com/in/cooper-minehart/" target="_blank" rel="noopener" class="text-forest-600 hover:underline text-sm">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Background timeline ── -->
+  <section class="max-w-5xl mx-auto px-6 pb-20">
+    <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] mb-8">Background</h2>
+    <div class="space-y-6 border-l-2 border-stone-200 pl-6">
+      {[
+        {
+          org: 'Carnegie Mellon University',
+          role: 'PhD Student, Engineering & Public Policy',
+          dates: '2025–present',
+          detail: 'Battery production cost modeling. ARPA-E supported research on BEV energy storage costs under varying technology and policy scenarios.',
+        },
+        {
+          org: 'Cal Poly San Luis Obispo',
+          role: 'Lecturer, Mechanical Engineering',
+          dates: '2023–2025',
+          detail: 'Full-time lecturer. Taught Engineering Statics, Philosophy of Design, Engineering Design Communication, and Introduction to Mechanical Engineering.',
+        },
+        {
+          org: 'Empirical Systems Aerospace',
+          role: 'Propulsion Team Manager',
+          dates: '2022–2023',
+          detail: 'Managed propulsion team through OEM eVTOL test campaign. EV instrumentation.',
+        },
+        {
+          org: 'KU Leuven — Mechatronic System Dynamics',
+          role: 'Researcher',
+          dates: '2021–2022',
+          detail: 'Flexible multibody contact models of wind-turbine gearboxes. Dynamic simulation, contact mechanics, model order reduction.',
+        },
+        {
+          org: 'Advanced Power Systems Laboratories, Michigan Tech',
+          role: 'Researcher',
+          dates: '2019–2020',
+          detail: 'Vehicle and dynamometer instrumentation, data-physics models for engine control. Two publications.',
+        },
+        {
+          org: 'National Renewable Energy Laboratory',
+          role: 'Vehicle Data Engineer Intern',
+          dates: '2018',
+          detail: 'Data and physics models for vehicle emission estimates.',
+        },
+        {
+          org: 'Inteva Products',
+          role: 'Design Engineer Intern, Closures',
+          dates: 'Summer 2017',
+          detail: 'R&D on electric vehicle closure components. Redesigned a cinch actuator housing, built test bench for acoustic and current draw evaluation. Design advanced to production.',
+        },
+        {
+          org: 'University of Minnesota, Murphy Engine Research Lab',
+          role: 'Researcher',
+          dates: '2016–2017',
+          detail: 'Analyzed suspension data from metro buses to estimate passenger loads and per-passenger emissions. Built Raspberry Pi DAQs logging GPS, air suspension pressure, and CAN signals.',
+        },
+        {
+          org: 'Sail Away Cafe',
+          role: 'Waiter',
+          dates: '2014–2016',
+          detail: 'Afton, MN.',
+        },
+      ].map(({ org, role, dates, detail }) => (
+        <div class="relative">
+          <div class="absolute -left-[1.875rem] top-1.5 w-3 h-3 rounded-full bg-forest-400 border-2 border-[#FAFAF8]"></div>
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 mb-1">
+            <h3 class="font-medium text-[#1a1a1a]">{org}</h3>
+            <span class="text-xs text-[#888] font-mono">{dates}</span>
+          </div>
+          <p class="text-sm text-forest-600 font-medium mb-1">{role}</p>
+          <p class="text-sm text-[#666]">{detail}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Section navigation ── -->
+  <section class="border-t border-stone-200">
+    <div class="max-w-5xl mx-auto px-6 py-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        { href: '/research',     label: 'Research',      desc: 'Battery cost modeling, BEV supply chains, and techno-economic analysis of emerging chemistries.' },
+        { href: '/publications', label: 'Publications',  desc: 'Peer-reviewed work in engine sensor fusion and working papers on battery manufacturing.' },
+        { href: '/teaching',     label: 'Teaching',      desc: 'Courses at Cal Poly SLO and Hochschule München, from statics to renewable energy systems.' },
+        { href: '/cv',           label: 'CV',            desc: 'Full academic and professional background,industry, research, and teaching.' },
+        { href: '/hobbies',      label: 'Hobbies',       desc: 'Mountain biking, van builds, and making things.' },
+        { href: '/contact',      label: 'Contact',       desc: 'Research inquiries, collaboration, or just to say hello.' },
+      ].map(({ href, label, desc }) => (
+        <a href={href} class="group block p-6 border border-stone-200 rounded-lg hover:border-forest-400 hover:shadow-sm transition-all duration-200">
+          <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2 group-hover:text-forest-600">{label}</h3>
+          <p class="text-sm text-[#666] leading-relaxed">{desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+</Layout>

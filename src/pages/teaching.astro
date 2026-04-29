@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DarkHeader from '../components/DarkHeader.astro';
+
+const institutions = [
+  {
+    name: 'California Polytechnic University San Luis Obispo',
+    subtitle: 'Mechanical Engineering Department · San Luis Obispo, CA',
+    period: 'September 2023,September 2025',
+    courses: [
+      {
+        title: 'Engineering Statics',
+        description:
+          'The foundational course for mechanical engineers. Forces, moments, couples, and equilibrium conditions form the basis for virtually every structural analysis that follows. Topics include friction, centroids, and area moments of inertia.',
+      },
+      {
+        title: 'Engineering Design Communication',
+        description:
+          'Students develop fluency in hand drafting and CAD through geometric principles, industry standards, and applied practice.',
+      },
+      {
+        title: 'Philosophy of Design',
+        description:
+          'Trains students to deconstruct and clearly define problems, ensuring that their proposals address every facet of the issue. Emphasis on first-principles problem framing.',
+      },
+      {
+        title: 'Introduction to Mechanical Engineering',
+        description:
+          'First-year engineering students have a broad array of experiences and expectations. This course introduces students to the possibilities of a career in engineering.',
+      },
+    ],
+  },
+  {
+    name: 'Hochschule München (HM)',
+    subtitle: 'University of Applied Sciences · Munich, Germany',
+    period: 'Summer 2024, Summer 2025, Summer 2026 (confirmed)',
+    courses: [
+      {
+        title: 'Potential of Renewable Energy',
+        description:
+          'Climate change is an economic, engineering, social, and political problem. This course reviews each while focusing on the systems engineering challenges of a Net Zero Energy future. Taught to international students as part of the HM summer program.',
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Teaching — Cooper Minehart"
+  description="Teaching experience at Cal Poly San Luis Obispo and Hochschule München, covering mechanical engineering, statics, design, and renewable energy systems."
+>
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10">
+      <p class="section-label-light mb-3">Teaching</p>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">Courses Taught</h1>
+      <p class="text-stone-300 max-w-2xl leading-relaxed">
+        From statics to renewable energy systems, teaching is most effective when it connects
+        theory to something students can touch, test, or build.
+      </p>
+    </div>
+  </DarkHeader>
+
+  <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
+    <div class="space-y-14">
+      {institutions.map(({ name, subtitle, period, courses }) => (
+        <section>
+          <div class="mb-6 pb-4 border-b border-stone-200">
+            <h2 class="font-serif text-2xl font-semibold text-forest-700">{name}</h2>
+            <p class="text-sm text-[#666] mt-1">{subtitle}</p>
+            <p class="text-xs font-mono text-[#888] mt-1">{period}</p>
+          </div>
+          <div class="space-y-6">
+            {courses.map(({ title, description }) => (
+              <div class="pl-4 border-l-2 border-forest-200">
+                <h3 class="font-medium text-[#1a1a1a] mb-2">{title}</h3>
+                <p class="text-sm text-[#555] leading-relaxed">{description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>

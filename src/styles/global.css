@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-[#FAFAF8] text-[#1a1a1a] font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply text-sm font-medium text-[#444] hover:text-forest-600 transition-colors duration-200;
+  }
+  .section-label {
+    @apply text-xs font-semibold tracking-widest uppercase text-forest-500;
+  }
+  .section-label-light {
+    @apply text-xs font-semibold tracking-widest uppercase text-forest-400;
+  }
+  .btn-primary {
+    @apply inline-block px-5 py-2.5 bg-forest-600 text-white text-sm font-medium rounded hover:bg-forest-700 transition-colors duration-200;
+  }
+  .btn-outline {
+    @apply inline-block px-5 py-2.5 border border-forest-600 text-forest-600 text-sm font-medium rounded hover:bg-forest-50 transition-colors duration-200;
+  }
+  .btn-outline-light {
+    @apply inline-block px-5 py-2.5 border border-white/40 text-white text-sm font-medium rounded hover:bg-white/10 transition-colors duration-200;
+  }
+  .btn-primary-light {
+    @apply inline-block px-5 py-2.5 bg-forest-400 text-white text-sm font-medium rounded hover:bg-forest-300 transition-colors duration-200;
+  }
+  .badge {
+    @apply inline-block px-2.5 py-0.5 text-xs font-medium rounded-full;
+  }
+  .badge-progress {
+    @apply badge bg-amber-100 text-amber-800;
+  }
+  .badge-paper {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+  .badge-published {
+    @apply badge bg-forest-100 text-forest-700;
+  }
+}

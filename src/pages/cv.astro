@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DarkHeader from '../components/DarkHeader.astro';
+---
+
+<Layout
+  title="CV — Cooper Minehart"
+  description="Curriculum vitae for Cooper Minehart, PhD candidate in Engineering and Public Policy at Carnegie Mellon University."
+>
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="section-label-light mb-2">Curriculum Vitae</p>
+          <h1 class="font-serif text-4xl font-bold text-white">Cooper Minehart</h1>
+        </div>
+        <a
+          href="/cv_cooper_minehart.pdf"
+          download
+          class="btn-outline-light flex items-center gap-2"
+        >
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" />
+        </svg>
+        Download PDF
+        </a>
+      </div>
+    </div>
+  </DarkHeader>
+
+  <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
+    <!-- PDF embed -->
+    <div class="w-full rounded-lg overflow-hidden border border-stone-200 shadow-sm">
+      <iframe
+        src="/cv_cooper_minehart.pdf"
+        class="w-full"
+        style="height: 85vh; min-height: 600px;"
+        title="Cooper Minehart CV"
+      ></iframe>
+    </div>
+
+    <p class="mt-4 text-sm text-[#888]">
+      Can't see the PDF?
+      <a href="/cv_cooper_minehart.pdf" target="_blank" class="text-forest-600 hover:underline">
+        Open in a new tab →
+      </a>
+    </p>
+  </div>
+</Layout>

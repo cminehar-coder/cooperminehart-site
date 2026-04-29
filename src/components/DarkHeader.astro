@@ -1,0 +1,13 @@
+---
+import BatteryHero from './BatteryHero.astro';
+---
+
+<div class="relative bg-[#0b1a12] overflow-hidden">
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+       style="opacity: 0.22; transform: scale(2.2); transform-origin: center;">
+    <BatteryHero />
+  </div>
+  <div class="relative z-10">
+    <slot />
+  </div>
+</div>

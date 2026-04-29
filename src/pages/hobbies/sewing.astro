@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+---
+
+<Layout
+  title="Sewing &amp; Making — Cooper Minehart"
+  description="Sewing, serging, and hands-on making as a counterweight to research work."
+>
+  <DarkHeader>
+    <div class="max-w-3xl mx-auto px-6 pt-12 pb-10">
+      <a href="/hobbies" class="text-sm text-forest-400 hover:text-forest-300 mb-6 inline-block">← Hobbies</a>
+      <p class="section-label-light mb-3">Hobbies</p>
+      <h1 class="font-serif text-4xl font-bold text-white">Sewing &amp; Making</h1>
+    </div>
+  </DarkHeader>
+
+  <div class="max-w-3xl mx-auto px-6 pt-10 pb-24">
+    <div class="overflow-hidden rounded-lg mb-10 aspect-[16/9] bg-stone-100">
+      <img
+        src="/photos/wallet.jpeg"
+        alt="Handmade wallet"
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <div class="space-y-10 text-[#333] leading-relaxed">
+
+      <div>
+        <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] mb-4">Bike Bags from Reclaimed Material</h2>
+        <p class="mb-6">
+          Pittsburgh has a materials reuse warehouse called PGH Reuse where people drop off
+          fabric, hardware, foam, and whatever else they're not using. I've picked up zippers,
+          an old punching bag that turned into cordura-weight material, and various straps and
+          buckles. Found the leather for the wallet above too.
+        </p>
+        <video
+          src="/photos/bike-bag.mov"
+          autoplay
+          muted
+          loop
+          playsinline
+          class="w-full rounded-lg bg-stone-100"
+        ></video>
+      </div>
+
+      <div>
+        <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] mb-4">Laser-Cut Patterns</h2>
+        <p class="mb-6">
+          CMU's Tech Spark has a laser engraver I've been using to cut fabric directly. It's
+          faster and more repeatable than tracing and cutting by hand, and you can iterate on
+          a fit adjustment without redrawing the whole thing.
+        </p>
+        <video
+          src="/photos/cutting-patterns.mov"
+          autoplay
+          muted
+          loop
+          playsinline
+          class="w-full rounded-lg bg-stone-100"
+        ></video>
+      </div>
+
+    </div>
+  </div>
+</Layout>
