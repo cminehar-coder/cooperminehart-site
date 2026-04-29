@@ -25,6 +25,16 @@ const canonical = Astro.url.href;
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="/photos/headshot.jpeg" />
+
+    <!-- Twitter/X card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/photos/headshot.jpeg" />
+
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" href="/photos/headshot.jpeg" />
 
     <!-- Fonts preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
