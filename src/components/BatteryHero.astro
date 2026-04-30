@@ -6,21 +6,99 @@ const CAISO_HOURLY = [
   -2940, -4161, -5918, -7320, -7965, -7281, -5837, -3928,
   -1855,  -676,  1659,  7337,  8491,  6953,  4699,  2619,
 ];
+
+// Cathode pattern = 6 chars. Element letters tiled by mass ratio (excluding mobile ion).
+//   LFP  FePOOO: Fe=37%, P=21%, O=42% → 2+1+3 slots
+//   LMFP MnPOOO: same olivine, Mn as differentiator from Fe
+//   NMC811 NiNiOO: Ni=52%, O=35% → 4+2 slots; Mn/Co too small to show
+//   NMC111 NiMnCo: equal 1/3 each by mass → 2+2+2 slots
+//   Na-ion FeCNFe: Fe-CN-Fe bridge reads left→right (Prussian blue connectivity)
+//   NCA  NiNiAl: Ni dominant + Al stabilizer (the NCA-defining element)
+//
+// Anode pattern = 6 chars. Function encoded in structure:
+//   C─C─C─ graphite: C nodes linked by ─ bonds, Li intercalates between tight layers
+//   SiCCCC Si/C:     Si minority (2/6) in C matrix; alloying+intercalation mixed
+//   C C C  hard-C:   same C but spaces = micropores where Na+ inserts (not intercalation)
+const CHEMISTRIES = [
+  {
+    id: 'LFP',
+    cathode: 'FePOOO',
+    anode:   'C─C─C─',
+    ionSymbol: '⊕',
+    ionClass: 'li-ion',
+    cathodeLabel: 'LiFePO4',
+    ionLabel: 'Li+',
+    anodeLabel: 'Graphite',
+  },
+  {
+    id: 'LMFP',
+    cathode: 'MnPOOO',
+    anode:   'C─C─C─',
+    ionSymbol: '⊕',
+    ionClass: 'li-ion',
+    cathodeLabel: 'LiMnFePO4',
+    ionLabel: 'Li+',
+    anodeLabel: 'Graphite',
+  },
+  {
+    id: 'NMC811',
+    cathode: 'NiNiOO',
+    anode:   'SiCCCC',
+    ionSymbol: '⊕',
+    ionClass: 'li-ion',
+    cathodeLabel: 'NMC811',
+    ionLabel: 'Li+',
+    anodeLabel: 'Si/Graphite',
+  },
+  {
+    id: 'NMC111',
+    cathode: 'NiMnCo',
+    anode:   'C─C─C─',
+    ionSymbol: '⊕',
+    ionClass: 'li-ion',
+    cathodeLabel: 'NMC111',
+    ionLabel: 'Li+',
+    anodeLabel: 'Graphite',
+  },
+  {
+    id: 'Na-ion',
+    cathode: 'FeCNFe',
+    anode:   'C C C ',
+    ionSymbol: '⊗',
+    ionClass: 'na-ion',
+    cathodeLabel: 'Na-ion (PBA)',
+    ionLabel: 'Na+',
+    anodeLabel: 'Hard Carbon',
+  },
+  {
+    id: 'NCA',
+    cathode: 'NiNiAl',
+    anode:   'SiCCCC',
+    ionSymbol: '⊕',
+    ionClass: 'li-ion',
+    cathodeLabel: 'NCA',
+    ionLabel: 'Li+',
+    anodeLabel: 'Si/Graphite',
+  },
+];
 ---
 
 <pre
   id="battery-display"
   class="font-mono leading-relaxed select-none text-[#52B788]"
-  aria-label="ASCII lithium-ion battery animation"
+  aria-label="ASCII battery chemistry animation"
 ></pre>
 
 <style>
   .li-ion { color: #52B788; font-weight: 600; }
+  .na-ion { color: #F4A261; font-weight: 600; }
 </style>
 
-<script define:vars={{ CAISO_HOURLY }}>
+<script define:vars={{ CAISO_HOURLY, CHEMISTRIES }}>
   const SLOTS = 12;
   const IONS  = 3;
+
+  const chem = CHEMISTRIES[Math.floor(Math.random() * CHEMISTRIES.length)];
 
   function getGridMW() {
     return CAISO_HOURLY[new Date().getHours()];
@@ -34,7 +112,10 @@ const CAISO_HOURLY = [
       const pos  = ((base + tick * dir) % SLOTS + SLOTS) % SLOTS;
       grid[pos]  = true;
     }
-    return grid.map(ion => ion ? '<span class="li-ion">⊕</span>' : '·').join(' ');
+    return grid.map(ion => ion
+      ? `<span class="${chem.ionClass}">${chem.ionSymbol}</span>`
+      : '·'
+    ).join(' ');
   }
 
   function buildFrame(tick, mw) {
@@ -43,8 +124,8 @@ const CAISO_HOURLY = [
     const r0 = ionRow(tick, dir, 0);
     const r1 = ionRow(tick, dir, 2);
     const r2 = ionRow(tick, dir, 1);
-    const CAT   = '  ══════  ';
-    const AN    = '  ┊┊┊┊┊┊  ';
+    const CAT   = `  ${chem.cathode}  `;
+    const AN    = `  ${chem.anode}  `;
     const BLANK = '                           ';
     const e     = (r) => `  ${r}  `;
     return [
