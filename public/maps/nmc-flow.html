@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_b2a1dea25789cbc409080a1eb8216245 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-textpath@1.2.3/leaflet.textpath.min.js"></script>
+</head>
+<body>
+    
+    
+    <div style="position: fixed; top: 12px; left: 60px; z-index: 9999;
+                padding: 12px 18px; background: rgba(255,255,255,0.95);
+                border: 1px solid #ccc; border-radius: 6px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                max-width: 540px;">
+      <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">
+        Mach-E Extended Range &mdash; NMC supply chain
+      </div>
+      <div style="font-size: 11px; color: #444; line-height: 1.45;">
+        Mustang Mach-E Extended Range (NMC) battery (91 kWh).
+        Arcs are colored by material. Width scales as &radic;mass per pack.
+      </div>
+    </div>
+    
+    
+    <div style="position: fixed; bottom: 24px; left: 24px; z-index: 9999;
+                padding: 10px 14px; background: rgba(255,255,255,0.96);
+                border: 1px solid #ccc; border-radius: 6px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                font-size: 11px; line-height: 1.55; max-width: 220px;">
+      <div style="font-weight: 600; margin-bottom: 4px;">Material (arc color)</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#3B82F6;vertical-align:middle"></span> Lithium</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#10B981;vertical-align:middle"></span> Nickel</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#F59E0B;vertical-align:middle"></span> Cobalt</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#8B5CF6;vertical-align:middle"></span> Manganese</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#6B7280;vertical-align:middle"></span> Graphite anode</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#B91C1C;vertical-align:middle"></span> Cathode active material</div>
+      <div><span style="display:inline-block;width:18px;height:3px;background:#EF4444;vertical-align:middle"></span> Cells &rarr; pack</div>
+      <div style="margin-top:6px; font-weight: 600;">Confidence (opacity)</div>
+      <div>Solid 85% &mdash; confirmed disclosure</div>
+      <div>Solid 55% &mdash; industry reporting</div>
+      <div>Dashed 25% &mdash; inferred / gap</div>
+      <div style="margin-top:6px; font-weight: 600;">Width</div>
+      <div>kg/pack</div>
+    </div>
+    
+    
+            <div class="folium-map" id="map_b2a1dea25789cbc409080a1eb8216245" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_b2a1dea25789cbc409080a1eb8216245 = L.map(
+                "map_b2a1dea25789cbc409080a1eb8216245",
+                {
+                    center: [20.0, 10.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 2,
+  "zoomControl": true,
+  "preferCanvas": false,
+  "worldCopyJump": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_17e46eaec00c523cb3daa226f8767e36 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": true,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_17e46eaec00c523cb3daa226f8767e36.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_a2d94d42faf2010a436380196bd6e6ff = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_e4393be987e7ca75ca1141f8bb19c418 = L.circleMarker(
+                [-21.4, 118.8],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_25eab02ea6403569c5d723b647ba7bd0 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_0f30f19821ec522a6a83fd951f11809c = $(`<div id="html_0f30f19821ec522a6a83fd951f11809c" style="width: 100.0%; height: 100.0%;"><b>Pilgangoora (AU)</b><br>Roles: lithium_mine<br>Operator: Pilbara Minerals<br><i>Spodumene ore for POSCO-Pilbara LiOH JV at Gwangyang.</i></div>`)[0];
+                popup_25eab02ea6403569c5d723b647ba7bd0.setContent(html_0f30f19821ec522a6a83fd951f11809c);
+            
+        
+
+        circle_marker_e4393be987e7ca75ca1141f8bb19c418.bindPopup(popup_25eab02ea6403569c5d723b647ba7bd0)
+        ;
+
+        
+    
+    
+            circle_marker_e4393be987e7ca75ca1141f8bb19c418.bindTooltip(
+                `<div>
+                     Pilgangoora (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f2ec4f9a960bb70b90f092eedb0b7c65 = L.circleMarker(
+                [-33.86, 116.06],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_cb4f31782e0f9dbb42b895d240377898 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_2889faa8b9b88b96bc40df9a5dbac64a = $(`<div id="html_2889faa8b9b88b96bc40df9a5dbac64a" style="width: 100.0%; height: 100.0%;"><b>Greenbushes (AU)</b><br>Roles: lithium_mine<br>Operator: Talison Lithium (Tianqi/Albemarle JV)<br><i>Largest single Li mine globally; pooled Li supply.</i></div>`)[0];
+                popup_cb4f31782e0f9dbb42b895d240377898.setContent(html_2889faa8b9b88b96bc40df9a5dbac64a);
+            
+        
+
+        circle_marker_f2ec4f9a960bb70b90f092eedb0b7c65.bindPopup(popup_cb4f31782e0f9dbb42b895d240377898)
+        ;
+
+        
+    
+    
+            circle_marker_f2ec4f9a960bb70b90f092eedb0b7c65.bindTooltip(
+                `<div>
+                     Greenbushes (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0bf78f25b67340a9ce915179e9c2b927 = L.circleMarker(
+                [-33.35, 115.7],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_91d08b4a37e110e68c6b2683629fac8e = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_54d9bd5ec3470b391679a5ab94f54b33 = $(`<div id="html_54d9bd5ec3470b391679a5ab94f54b33" style="width: 100.0%; height: 100.0%;"><b>Kemerton (AU)</b><br>Roles: lithium_refinery<br>Operator: Albemarle Kemerton<br><i>LiOH·H2O conversion from Greenbushes spodumene.</i></div>`)[0];
+                popup_91d08b4a37e110e68c6b2683629fac8e.setContent(html_54d9bd5ec3470b391679a5ab94f54b33);
+            
+        
+
+        circle_marker_0bf78f25b67340a9ce915179e9c2b927.bindPopup(popup_91d08b4a37e110e68c6b2683629fac8e)
+        ;
+
+        
+    
+    
+            circle_marker_0bf78f25b67340a9ce915179e9c2b927.bindTooltip(
+                `<div>
+                     Kemerton (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ae9f881742a703c65b8c1816b37850f0 = L.circleMarker(
+                [-23.46, -66.86],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_581c55621739fadcc0fc4aac536c1911 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_4729532ccf6fd2e492cacd906f9db094 = $(`<div id="html_4729532ccf6fd2e492cacd906f9db094" style="width: 100.0%; height: 100.0%;"><b>Olaroz (AR)</b><br>Roles: lithium_mine_brine<br>Operator: Allkem (now Arcadium)<br><i>Brine Li2CO3; pool-allocated to Korean cathode makers.</i></div>`)[0];
+                popup_581c55621739fadcc0fc4aac536c1911.setContent(html_4729532ccf6fd2e492cacd906f9db094);
+            
+        
+
+        circle_marker_ae9f881742a703c65b8c1816b37850f0.bindPopup(popup_581c55621739fadcc0fc4aac536c1911)
+        ;
+
+        
+    
+    
+            circle_marker_ae9f881742a703c65b8c1816b37850f0.bindTooltip(
+                `<div>
+                     Olaroz (AR)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1b4c66e724bb3392484dfd401187a490 = L.circleMarker(
+                [35.28, -81.28],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_fdd62df33d53069c9b68371790b8d41b = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_f9a8bee4df029e2b5c5c7f3651e951a5 = $(`<div id="html_f9a8bee4df029e2b5c5c7f3651e951a5" style="width: 100.0%; height: 100.0%;"><b>Bessemer City (US)</b><br>Roles: lithium_refinery<br>Operator: Arcadium (Livent) / Rio Tinto post-2025-acquisition<br><i>LiOH from Hombre Muerto AR brine; Tesla offtake confirmed</i></div>`)[0];
+                popup_fdd62df33d53069c9b68371790b8d41b.setContent(html_f9a8bee4df029e2b5c5c7f3651e951a5);
+            
+        
+
+        circle_marker_1b4c66e724bb3392484dfd401187a490.bindPopup(popup_fdd62df33d53069c9b68371790b8d41b)
+        ;
+
+        
+    
+    
+            circle_marker_1b4c66e724bb3392484dfd401187a490.bindTooltip(
+                `<div>
+                     Bessemer City (US)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_36bfed7beb1c9f1f957c0fd658614c9d = L.circleMarker(
+                [-27.26, 120.55],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_56a41ad9bde9f48d74fee30375c94b51 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_341c19adf57b60e75cca194b45fd91a5 = $(`<div id="html_341c19adf57b60e75cca194b45fd91a5" style="width: 100.0%; height: 100.0%;"><b>Mt Keith (AU)</b><br>Roles: nickel_mine<br>Operator: BHP Nickel West</div>`)[0];
+                popup_56a41ad9bde9f48d74fee30375c94b51.setContent(html_341c19adf57b60e75cca194b45fd91a5);
+            
+        
+
+        circle_marker_36bfed7beb1c9f1f957c0fd658614c9d.bindPopup(popup_56a41ad9bde9f48d74fee30375c94b51)
+        ;
+
+        
+    
+    
+            circle_marker_36bfed7beb1c9f1f957c0fd658614c9d.bindTooltip(
+                `<div>
+                     Mt Keith (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9fbd7665ecf21fd7dbab3480158888c7 = L.circleMarker(
+                [-27.84, 120.72],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_121d2ef4a39152212de671bc08dc90fe = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_75af0ff6e3f4f8f5e98f3c626c657131 = $(`<div id="html_75af0ff6e3f4f8f5e98f3c626c657131" style="width: 100.0%; height: 100.0%;"><b>Leinster (AU)</b><br>Roles: nickel_mine<br>Operator: BHP Nickel West</div>`)[0];
+                popup_121d2ef4a39152212de671bc08dc90fe.setContent(html_75af0ff6e3f4f8f5e98f3c626c657131);
+            
+        
+
+        circle_marker_9fbd7665ecf21fd7dbab3480158888c7.bindPopup(popup_121d2ef4a39152212de671bc08dc90fe)
+        ;
+
+        
+    
+    
+            circle_marker_9fbd7665ecf21fd7dbab3480158888c7.bindTooltip(
+                `<div>
+                     Leinster (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_983b63a900466a620fa75919ac156f56 = L.circleMarker(
+                [-30.75, 121.46],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_67d1e7c09e121bf701ebc1eab95702e3 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_823fa7ac93299b06e27a18e1e3a6b7a8 = $(`<div id="html_823fa7ac93299b06e27a18e1e3a6b7a8" style="width: 100.0%; height: 100.0%;"><b>Kalgoorlie (AU)</b><br>Roles: nickel_smelter<br>Operator: BHP Kalgoorlie Smelter</div>`)[0];
+                popup_67d1e7c09e121bf701ebc1eab95702e3.setContent(html_823fa7ac93299b06e27a18e1e3a6b7a8);
+            
+        
+
+        circle_marker_983b63a900466a620fa75919ac156f56.bindPopup(popup_67d1e7c09e121bf701ebc1eab95702e3)
+        ;
+
+        
+    
+    
+            circle_marker_983b63a900466a620fa75919ac156f56.bindTooltip(
+                `<div>
+                     Kalgoorlie (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6136e122eb82d081c5f1eb0349a67911 = L.circleMarker(
+                [-32.24, 115.78],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_62f1f83fadb5579c0e47749376bb5ac0 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_fd0d64004a1a43b918b00d989e1a62a7 = $(`<div id="html_fd0d64004a1a43b918b00d989e1a62a7" style="width: 100.0%; height: 100.0%;"><b>Kwinana (AU)</b><br>Roles: nickel_refinery<br>Operator: BHP Nickel West Kwinana NiSO4</div>`)[0];
+                popup_62f1f83fadb5579c0e47749376bb5ac0.setContent(html_fd0d64004a1a43b918b00d989e1a62a7);
+            
+        
+
+        circle_marker_6136e122eb82d081c5f1eb0349a67911.bindPopup(popup_62f1f83fadb5579c0e47749376bb5ac0)
+        ;
+
+        
+    
+    
+            circle_marker_6136e122eb82d081c5f1eb0349a67911.bindTooltip(
+                `<div>
+                     Kwinana (AU)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1f375dc66bf5d4351114257f1933b4bb = L.circleMarker(
+                [56.3, -61.85],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_b4457e089345b55da905951867eae876 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_86ed8f8c9c32c61e9efab532e7ab8501 = $(`<div id="html_86ed8f8c9c32c61e9efab532e7ab8501" style="width: 100.0%; height: 100.0%;"><b>Voisey's Bay (CA)</b><br>Roles: nickel_cobalt_mine<br>Operator: Vale Canada<br><i>Sulfide deposit; Ni-Co concentrate fed to Long Harbour.</i></div>`)[0];
+                popup_b4457e089345b55da905951867eae876.setContent(html_86ed8f8c9c32c61e9efab532e7ab8501);
+            
+        
+
+        circle_marker_1f375dc66bf5d4351114257f1933b4bb.bindPopup(popup_b4457e089345b55da905951867eae876)
+        ;
+
+        
+    
+    
+            circle_marker_1f375dc66bf5d4351114257f1933b4bb.bindTooltip(
+                `<div>
+                     Voisey's Bay (CA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_50dd3389e1c6f88c55588f5352a42481 = L.circleMarker(
+                [47.48, -53.67],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_4e7f74eefd620c1cdf00436f0426359a = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_c023f824f3cec33c3eb77d4048996600 = $(`<div id="html_c023f824f3cec33c3eb77d4048996600" style="width: 100.0%; height: 100.0%;"><b>Long Harbour (CA)</b><br>Roles: nickel_refinery_hydromet<br>Operator: Vale Canada</div>`)[0];
+                popup_4e7f74eefd620c1cdf00436f0426359a.setContent(html_c023f824f3cec33c3eb77d4048996600);
+            
+        
+
+        circle_marker_50dd3389e1c6f88c55588f5352a42481.bindPopup(popup_4e7f74eefd620c1cdf00436f0426359a)
+        ;
+
+        
+    
+    
+            circle_marker_50dd3389e1c6f88c55588f5352a42481.bindTooltip(
+                `<div>
+                     Long Harbour (CA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a020de2badc2aca966de997070cc9a44 = L.circleMarker(
+                [46.49, -80.99],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.2, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_5ad28e18509ad847c01be8180d22e2d8 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_434c4832575464c83fe22b2ca5d33da6 = $(`<div id="html_434c4832575464c83fe22b2ca5d33da6" style="width: 100.0%; height: 100.0%;"><b>Sudbury (CA)</b><br>Roles: nickel_smelter, nickel_refinery<br>Operator: Vale Canada Sudbury operations</div>`)[0];
+                popup_5ad28e18509ad847c01be8180d22e2d8.setContent(html_434c4832575464c83fe22b2ca5d33da6);
+            
+        
+
+        circle_marker_a020de2badc2aca966de997070cc9a44.bindPopup(popup_5ad28e18509ad847c01be8180d22e2d8)
+        ;
+
+        
+    
+    
+            circle_marker_a020de2badc2aca966de997070cc9a44.bindTooltip(
+                `<div>
+                     Sudbury (CA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a0d0a0d2cf1bf576a4c1a07b66939b10 = L.circleMarker(
+                [46.43, -72.44],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_dfe16c1a34bbe373e92193501ac0d520 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_c0b5c6a093b4c54a8d855736bebef9c2 = $(`<div id="html_c0b5c6a093b4c54a8d855736bebef9c2" style="width: 100.0%; height: 100.0%;"><b>Bécancour (CA)</b><br>Roles: nickel_sulfate_plant<br>Operator: Vale-GM-LGES JV<br><i>Battery-grade NiSO4 ramp 2025-2026; multi-OEM offtake.</i></div>`)[0];
+                popup_dfe16c1a34bbe373e92193501ac0d520.setContent(html_c0b5c6a093b4c54a8d855736bebef9c2);
+            
+        
+
+        circle_marker_a0d0a0d2cf1bf576a4c1a07b66939b10.bindPopup(popup_dfe16c1a34bbe373e92193501ac0d520)
+        ;
+
+        
+    
+    
+            circle_marker_a0d0a0d2cf1bf576a4c1a07b66939b10.bindTooltip(
+                `<div>
+                     Bécancour (CA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4caeb43fb8c01ad35a993188f4e9f5ce = L.circleMarker(
+                [0.65, 128.0],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.2, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_ea5aed13480e5c965758a1c3ac8cc4d1 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_f579df6648d67ea8cb8af92521d9c15e = $(`<div id="html_f579df6648d67ea8cb8af92521d9c15e" style="width: 100.0%; height: 100.0%;"><b>Weda Bay (Halmahera) (ID)</b><br>Roles: nickel_mine_laterite, nickel_mhp_refinery<br>Operator: POSCO-Huayou JV (Halmahera Persada Lygend)<br><i>HPAL nickel for POSCO Future M PCAM. Country-level disclosure only.</i></div>`)[0];
+                popup_ea5aed13480e5c965758a1c3ac8cc4d1.setContent(html_f579df6648d67ea8cb8af92521d9c15e);
+            
+        
+
+        circle_marker_4caeb43fb8c01ad35a993188f4e9f5ce.bindPopup(popup_ea5aed13480e5c965758a1c3ac8cc4d1)
+        ;
+
+        
+    
+    
+            circle_marker_4caeb43fb8c01ad35a993188f4e9f5ce.bindTooltip(
+                `<div>
+                     Weda Bay (Halmahera) (ID)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dcbfd3f5b55393aade7f7e4801b68f30 = L.circleMarker(
+                [-10.72, 25.47],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_14a40d357e906318a70ad36332f009ad = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_97168be909deb8503a8d626c5c2332d4 = $(`<div id="html_97168be909deb8503a8d626c5c2332d4" style="width: 100.0%; height: 100.0%;"><b>Kolwezi (CD)</b><br>Roles: cobalt_mine<br>Operator: Glencore KCC + Mutanda<br><i>Cu-Co byproduct mining; ~70% of global Co supply.</i></div>`)[0];
+                popup_14a40d357e906318a70ad36332f009ad.setContent(html_97168be909deb8503a8d626c5c2332d4);
+            
+        
+
+        circle_marker_dcbfd3f5b55393aade7f7e4801b68f30.bindPopup(popup_14a40d357e906318a70ad36332f009ad)
+        ;
+
+        
+    
+    
+            circle_marker_dcbfd3f5b55393aade7f7e4801b68f30.bindTooltip(
+                `<div>
+                     Kolwezi (CD)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ec5b46beafc24b5eef4ad9a1f1628b9a = L.circleMarker(
+                [63.84, 23.13],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_62b9b8b5ec34aa0a9f92c456b8e0653f = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_6329b3ee4aecf7e5eb98f9517e56b822 = $(`<div id="html_6329b3ee4aecf7e5eb98f9517e56b822" style="width: 100.0%; height: 100.0%;"><b>Kokkola (FI)</b><br>Roles: cobalt_refinery<br>Operator: Glencore Kokkola CoSO4<br><i>Largest battery-grade Co refinery outside China.</i></div>`)[0];
+                popup_62b9b8b5ec34aa0a9f92c456b8e0653f.setContent(html_6329b3ee4aecf7e5eb98f9517e56b822);
+            
+        
+
+        circle_marker_ec5b46beafc24b5eef4ad9a1f1628b9a.bindPopup(popup_62b9b8b5ec34aa0a9f92c456b8e0653f)
+        ;
+
+        
+    
+    
+            circle_marker_ec5b46beafc24b5eef4ad9a1f1628b9a.bindTooltip(
+                `<div>
+                     Kokkola (FI)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3ddf386da9650feaae98de727da68c48 = L.circleMarker(
+                [-27.23, 22.95],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_ed3074ba3bdb4b533a2671466e2c35f5 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_74f4cf7a0b3f4359e29f9c3bbc866139 = $(`<div id="html_74f4cf7a0b3f4359e29f9c3bbc866139" style="width: 100.0%; height: 100.0%;"><b>Hotazel (ZA)</b><br>Roles: manganese_mine<br>Operator: Assmang / South32<br><i>Largest Mn ore producer globally.</i></div>`)[0];
+                popup_ed3074ba3bdb4b533a2671466e2c35f5.setContent(html_74f4cf7a0b3f4359e29f9c3bbc866139);
+            
+        
+
+        circle_marker_3ddf386da9650feaae98de727da68c48.bindPopup(popup_ed3074ba3bdb4b533a2671466e2c35f5)
+        ;
+
+        
+    
+    
+            circle_marker_3ddf386da9650feaae98de727da68c48.bindTooltip(
+                `<div>
+                     Hotazel (ZA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_24eb47b58906f6c28723739e315e6644 = L.circleMarker(
+                [-1.57, 13.19],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_8c6b4fdf6f885ad05831f05e5ad96f96 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_859fe6783904dc6f957932b4b33260c3 = $(`<div id="html_859fe6783904dc6f957932b4b33260c3" style="width: 100.0%; height: 100.0%;"><b>Moanda (GA)</b><br>Roles: manganese_mine<br>Operator: Eramet COMILOG</div>`)[0];
+                popup_8c6b4fdf6f885ad05831f05e5ad96f96.setContent(html_859fe6783904dc6f957932b4b33260c3);
+            
+        
+
+        circle_marker_24eb47b58906f6c28723739e315e6644.bindPopup(popup_8c6b4fdf6f885ad05831f05e5ad96f96)
+        ;
+
+        
+    
+    
+            circle_marker_24eb47b58906f6c28723739e315e6644.bindTooltip(
+                `<div>
+                     Moanda (GA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_86c065f6cae26c2055ab5b59818601ea = L.circleMarker(
+                [27.0, 112.0],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8.8, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_79dfea5c252c77e8e2193f9e33bb1fb9 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_2d7ec80ce4cc6ba858ad72802fc04b1d = $(`<div id="html_2d7ec80ce4cc6ba858ad72802fc04b1d" style="width: 100.0%; height: 100.0%;"><b>Hunan / Guangdong region (CN)</b><br>Roles: mn_refinery, ni_refinery_estimated, co_refinery_estimated<br>Operator: Huayou Cobalt / GEM / Hanrui (representative)<br><i>Representative aggregate Chinese precursor refining hub. Region-level proxy.</i></div>`)[0];
+                popup_79dfea5c252c77e8e2193f9e33bb1fb9.setContent(html_2d7ec80ce4cc6ba858ad72802fc04b1d);
+            
+        
+
+        circle_marker_86c065f6cae26c2055ab5b59818601ea.bindPopup(popup_79dfea5c252c77e8e2193f9e33bb1fb9)
+        ;
+
+        
+    
+    
+            circle_marker_86c065f6cae26c2055ab5b59818601ea.bindTooltip(
+                `<div>
+                     Hunan / Guangdong region (CN)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_816f1b3d74c7c67f3df9452a7ec855e2 = L.circleMarker(
+                [47.34, 131.02],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_699699f1450194139d93585a86cf009f = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_b28ca09538936c2a2001679f4bdc7a65 = $(`<div id="html_b28ca09538936c2a2001679f4bdc7a65" style="width: 100.0%; height: 100.0%;"><b>Jixi / Hegang (CN)</b><br>Roles: graphite_mine<br>Operator: BTR (province-level aggregator)<br><i>BTR mine attribution is province-level only (FORD_GAP_002).</i></div>`)[0];
+                popup_699699f1450194139d93585a86cf009f.setContent(html_b28ca09538936c2a2001679f4bdc7a65);
+            
+        
+
+        circle_marker_816f1b3d74c7c67f3df9452a7ec855e2.bindPopup(popup_699699f1450194139d93585a86cf009f)
+        ;
+
+        
+    
+    
+            circle_marker_816f1b3d74c7c67f3df9452a7ec855e2.bindTooltip(
+                `<div>
+                     Jixi / Hegang (CN)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bcdde2a4b22d2f39886cb711a087053b = L.circleMarker(
+                [22.54, 114.06],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_c1770352009a11fc17e9960ed4a594fe = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_5bc44654430d201cc7d509dfed1423e7 = $(`<div id="html_5bc44654430d201cc7d509dfed1423e7" style="width: 100.0%; height: 100.0%;"><b>Shenzhen (CN)</b><br>Roles: graphite_anode_mfg<br>Operator: BTR New Material Group (HQ; multi-site mfg)</div>`)[0];
+                popup_c1770352009a11fc17e9960ed4a594fe.setContent(html_5bc44654430d201cc7d509dfed1423e7);
+            
+        
+
+        circle_marker_bcdde2a4b22d2f39886cb711a087053b.bindPopup(popup_c1770352009a11fc17e9960ed4a594fe)
+        ;
+
+        
+    
+    
+            circle_marker_bcdde2a4b22d2f39886cb711a087053b.bindTooltip(
+                `<div>
+                     Shenzhen (CN)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d85919287cc16c0bede5842045bc0408 = L.circleMarker(
+                [34.91, 127.7],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8.8, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_93a8ccc2931c976405f12440abeee5c4 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_eb785549250a60df2e3315e990048b9e = $(`<div id="html_eb785549250a60df2e3315e990048b9e" style="width: 100.0%; height: 100.0%;"><b>Gwangyang (KR)</b><br>Roles: lithium_refinery, pcam_plant, cam_plant<br>Operator: POSCO-Pilbara JV (LiOH); POSCO Future M (PCAM<br><i>Three sequential processes co-located. Primary CAM source for LGES NMC.</i></div>`)[0];
+                popup_93a8ccc2931c976405f12440abeee5c4.setContent(html_eb785549250a60df2e3315e990048b9e);
+            
+        
+
+        circle_marker_d85919287cc16c0bede5842045bc0408.bindPopup(popup_93a8ccc2931c976405f12440abeee5c4)
+        ;
+
+        
+    
+    
+            circle_marker_d85919287cc16c0bede5842045bc0408.bindTooltip(
+                `<div>
+                     Gwangyang (KR)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5f84ec8b0d0d6a268c5f1cbb8d21a7bb = L.circleMarker(
+                [36.02, 129.34],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.2, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_516c10e43c55aafde33fb3f7bd70d2ad = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_3e02cc77f62c7882a1b6aecabf2ecced = $(`<div id="html_3e02cc77f62c7882a1b6aecabf2ecced" style="width: 100.0%; height: 100.0%;"><b>Pohang (KR)</b><br>Roles: pcam_plant, cam_plant<br>Operator: EcoPro BM / EcoPro Materials<br><i>Secondary CAM for LGES; Samsung SDI primary customer.</i></div>`)[0];
+                popup_516c10e43c55aafde33fb3f7bd70d2ad.setContent(html_3e02cc77f62c7882a1b6aecabf2ecced);
+            
+        
+
+        circle_marker_5f84ec8b0d0d6a268c5f1cbb8d21a7bb.bindPopup(popup_516c10e43c55aafde33fb3f7bd70d2ad)
+        ;
+
+        
+    
+    
+            circle_marker_5f84ec8b0d0d6a268c5f1cbb8d21a7bb.bindTooltip(
+                `<div>
+                     Pohang (KR)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0343fa169b31073441c4c9a01b29697f = L.circleMarker(
+                [35.87, 128.6],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_2d8aca02e8213857e2a29fb5dc407d63 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_466e53371caac84371ed0c3030937c47 = $(`<div id="html_466e53371caac84371ed0c3030937c47" style="width: 100.0%; height: 100.0%;"><b>Daegu (KR)</b><br>Roles: cam_plant<br>Operator: L&F<br><i>Secondary CAM supplier to LGES.</i></div>`)[0];
+                popup_2d8aca02e8213857e2a29fb5dc407d63.setContent(html_466e53371caac84371ed0c3030937c47);
+            
+        
+
+        circle_marker_0343fa169b31073441c4c9a01b29697f.bindPopup(popup_2d8aca02e8213857e2a29fb5dc407d63)
+        ;
+
+        
+    
+    
+            circle_marker_0343fa169b31073441c4c9a01b29697f.bindTooltip(
+                `<div>
+                     Daegu (KR)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ca3c57d0b318479bda7d1a09752b7d43 = L.circleMarker(
+                [42.79, -86.1],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_949e27af8b31a7c32fa9bf85d7050b9e = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_bb93f969e1b5e24ccf21f6e30e375aeb = $(`<div id="html_bb93f969e1b5e24ccf21f6e30e375aeb" style="width: 100.0%; height: 100.0%;"><b>Holland (US)</b><br>Roles: cell_plant<br>Operator: LG Energy Solution Holland<br><i>Primary Mach-E ER cell plant (75% share per ford.yaml).</i></div>`)[0];
+                popup_949e27af8b31a7c32fa9bf85d7050b9e.setContent(html_bb93f969e1b5e24ccf21f6e30e375aeb);
+            
+        
+
+        circle_marker_ca3c57d0b318479bda7d1a09752b7d43.bindPopup(popup_949e27af8b31a7c32fa9bf85d7050b9e)
+        ;
+
+        
+    
+    
+            circle_marker_ca3c57d0b318479bda7d1a09752b7d43.bindTooltip(
+                `<div>
+                     Holland (US)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a08d8ed6a59841b873de1b1f7cd77397 = L.circleMarker(
+                [51.11, 17.03],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5.6, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_05bc2111114b937a65d4bb60b40bbdc2 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_66f60668412f01f9de9da9731b7d1299 = $(`<div id="html_66f60668412f01f9de9da9731b7d1299" style="width: 100.0%; height: 100.0%;"><b>Wrocław (PL)</b><br>Roles: cell_plant<br>Operator: LG Energy Solution Wrocław<br><i>Secondary Mach-E ER cell plant (25% backstop; estimated_per_facts).</i></div>`)[0];
+                popup_05bc2111114b937a65d4bb60b40bbdc2.setContent(html_66f60668412f01f9de9da9731b7d1299);
+            
+        
+
+        circle_marker_a08d8ed6a59841b873de1b1f7cd77397.bindPopup(popup_05bc2111114b937a65d4bb60b40bbdc2)
+        ;
+
+        
+    
+    
+            circle_marker_a08d8ed6a59841b873de1b1f7cd77397.bindTooltip(
+                `<div>
+                     Wrocław (PL)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_eddc0500159bc6aa5af7bee46309eb3f = L.circleMarker(
+                [19.66, -99.22],
+                {"bubblingMouseEvents": true, "color": "#222", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fafafa", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7.2, "stroke": true, "weight": 1.0}
+            ).addTo(feature_group_a2d94d42faf2010a436380196bd6e6ff);
+        
+    
+        var popup_4a7e624df6cbd69bca4b7c1bb468ecd5 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_bc8f4ad1fe7845facf398481d69760be = $(`<div id="html_bc8f4ad1fe7845facf398481d69760be" style="width: 100.0%; height: 100.0%;"><b>Cuautitlán Izcalli (MX)</b><br>Roles: pack_assembly, vehicle_assembly<br>Operator: Ford Motor Company<br><i>Final pack integration and Mach-E vehicle assembly.</i></div>`)[0];
+                popup_4a7e624df6cbd69bca4b7c1bb468ecd5.setContent(html_bc8f4ad1fe7845facf398481d69760be);
+            
+        
+
+        circle_marker_eddc0500159bc6aa5af7bee46309eb3f.bindPopup(popup_4a7e624df6cbd69bca4b7c1bb468ecd5)
+        ;
+
+        
+    
+    
+            circle_marker_eddc0500159bc6aa5af7bee46309eb3f.bindTooltip(
+                `<div>
+                     Cuautitlán Izcalli (MX)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_a2d94d42faf2010a436380196bd6e6ff.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_c653e198cc60e02d3c6d7eeb527af6bf = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_c56eb97ff7b9bcff04eaa89bc80c3160 = L.polyline(
+                [[-21.4, 118.8], [-20.674153125000004, 118.7722346875], [-19.948862499999997, 118.74798874999999], [-19.224128125, 118.72726218750002], [-18.499949999999995, 118.710055], [-17.776328125, 118.6963671875], [-17.0532625, 118.68619875], [-16.330753124999998, 118.6795496875], [-15.608799999999999, 118.67642000000001], [-14.887403124999999, 118.6768096875], [-14.1665625, 118.68071875], [-13.446278125000001, 118.68814718750001], [-12.726549999999998, 118.69909499999999], [-12.007378125, 118.7135621875], [-11.288762499999999, 118.73154874999999], [-10.570703125, 118.7530546875], [-9.853200000000001, 118.77808000000002], [-9.136253124999998, 118.80662468749999], [-8.419862500000002, 118.83868875000002], [-7.704028124999999, 118.87427218749998], [-6.98875, 118.913375], [-6.274028125000001, 118.9559971875], [-5.559862499999999, 119.00213875], [-4.8462531250000005, 119.0517996875], [-4.133199999999998, 119.10497999999998], [-3.4207031249999997, 119.1616796875], [-2.7087624999999997, 119.22189875000001], [-1.997378125, 119.2856371875], [-1.2865500000000027, 119.35289499999999], [-0.5762781249999991, 119.42367218749999], [0.13343749999999943, 119.49796875], [0.8425968749999981, 119.5757846875], [1.5512000000000006, 119.65712], [2.259246874999998, 119.7419746875], [2.9667375000000002, 119.83034874999998], [3.673671875, 119.9222421875], [4.38005, 120.01765500000002], [5.0858718750000005, 120.11658718749999], [5.791137499999999, 120.21903875], [6.495846875, 120.32500968749999], [7.199999999999999, 120.4345], [7.903596874999997, 120.54750968750001], [8.606637499999998, 120.66403875], [9.309121874999999, 120.78408718749999], [10.011050000000001, 120.907655], [10.712421874999999, 121.0347421875], [11.413237499999996, 121.16534874999999], [12.113496875000001, 121.29947468750001], [12.813199999999998, 121.43712], [13.512346875000002, 121.5782846875], [14.210937499999998, 121.72296875], [14.908971874999999, 121.8711721875], [15.60645, 122.022895], [16.303371874999996, 122.1781371875], [16.999737500000002, 122.33689874999999], [17.695546874999998, 122.4991796875], [18.390799999999995, 122.66498], [19.085496874999997, 122.83429968749999], [19.7796375, 123.00713875000001], [20.473221875, 123.1834971875], [21.166249999999998, 123.36337499999999], [21.858721874999997, 123.5467721875], [22.5506375, 123.73368875], [23.241996874999998, 123.9241246875], [23.9328, 124.11808000000002], [24.623046874999996, 124.3155546875], [25.312737499999997, 124.51654875], [26.001871875, 124.7210621875], [26.690449999999995, 124.92909499999999], [27.378471875, 125.14064718750001], [28.065937499999997, 125.35571875], [28.752846874999996, 125.5743096875], [29.4392, 125.79642000000001], [30.124996874999997, 126.0220496875], [30.8102375, 126.25119875], [31.494921874999996, 126.4838671875], [32.17905, 126.72005500000002], [32.862621875, 126.9597621875], [33.5456375, 127.20298875], [34.228096875, 127.4497346875], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#3B82F6", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3B82F6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5.973273809227232}
+            ).addTo(feature_group_c653e198cc60e02d3c6d7eeb527af6bf);
+        
+    
+        var popup_e3bcf3eaeaa34e8dbd0c202eec13e713 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_02c6cb638dd953a78ab6a09921a59b4f = $(`<div id="html_02c6cb638dd953a78ab6a09921a59b4f" style="width: 100.0%; height: 100.0%;"><b>spodumene concentrate (6% Li2O)</b><br>Pilgangoora (AU) &rarr; Gwangyang (KR)<br>Mass: <b>446 kg/pack</b><br>Confidence: confirmed<br>Companies: Pilbara Minerals, POSCO-Pilbara JV<br>Ford rel: FORD_REL_070</div>`)[0];
+                popup_e3bcf3eaeaa34e8dbd0c202eec13e713.setContent(html_02c6cb638dd953a78ab6a09921a59b4f);
+            
+        
+
+        poly_line_c56eb97ff7b9bcff04eaa89bc80c3160.bindPopup(popup_e3bcf3eaeaa34e8dbd0c202eec13e713)
+        ;
+
+        
+    
+    
+            poly_line_c56eb97ff7b9bcff04eaa89bc80c3160.bindTooltip(
+                `<div>
+                     Lithium: Pilgangoora → Gwangyang (446 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_c56eb97ff7b9bcff04eaa89bc80c3160.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 6.3,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#3B82F6",
+  "font-weight": "bold",
+  "font-size": "18",
+},
+}
+            );
+        
+    
+            var poly_line_6ff9e4ed3c858b3cecc6007a0c7aa8cf = L.polyline(
+                [[-33.86, 116.06], [-33.85451375, 116.05424093750001], [-33.849005, 116.04851375], [-33.84347375, 116.0428184375], [-33.83792, 116.037155], [-33.83234375, 116.0315234375], [-33.826745, 116.02592375000002], [-33.82112375, 116.02035593750001], [-33.81548, 116.01482], [-33.80981375, 116.00931593749999], [-33.804125, 116.00384375], [-33.79841375000001, 115.99840343750002], [-33.79268, 115.992995], [-33.78692375, 115.9876184375], [-33.781144999999995, 115.98227374999999], [-33.77534375, 115.9769609375], [-33.769520000000014, 115.97168000000003], [-33.76367375, 115.9664309375], [-33.757805000000005, 115.96121375000001], [-33.75191374999999, 115.95602843749998], [-33.746, 115.950875], [-33.740063750000004, 115.94575343750002], [-33.73410500000001, 115.94066375000001], [-33.72812375, 115.93560593749999], [-33.72212, 115.93057999999998], [-33.71609375, 115.92558593749999], [-33.71004500000001, 115.92062375], [-33.70397375, 115.9156934375], [-33.697880000000005, 115.910795], [-33.69176375, 115.9059284375], [-33.685625, 115.90109375], [-33.67946375000001, 115.89629093750003], [-33.67328, 115.89151999999999], [-33.66707375000001, 115.88678093749999], [-33.660844999999995, 115.88207374999999], [-33.654593750000004, 115.87739843749999], [-33.648320000000005, 115.87275500000001], [-33.64202375000001, 115.8681434375], [-33.635705, 115.86356375], [-33.62936375, 115.8590159375], [-33.623000000000005, 115.85449999999999], [-33.61661375, 115.85001593749999], [-33.61020500000001, 115.84556375], [-33.60377375, 115.8411434375], [-33.59732, 115.836755], [-33.590843750000005, 115.8323984375], [-33.584345, 115.82807375], [-33.57782375000001, 115.8237809375], [-33.57128, 115.81952], [-33.56471375, 115.81529093750001], [-33.558125000000004, 115.81109375], [-33.551513750000005, 115.8069284375], [-33.544880000000006, 115.80279499999999], [-33.53822375, 115.7986934375], [-33.531545, 115.79462375], [-33.52484375, 115.7905859375], [-33.51812, 115.78657999999999], [-33.511373750000004, 115.7826059375], [-33.504605, 115.77866375], [-33.497813750000006, 115.7747534375], [-33.491, 115.77087499999999], [-33.48416375, 115.76702843749999], [-33.477305, 115.76321375], [-33.47042375, 115.7594309375], [-33.46352, 115.75568000000001], [-33.45659375, 115.7519609375], [-33.449645000000004, 115.74827375000001], [-33.44267375, 115.7446184375], [-33.43568, 115.740995], [-33.42866375, 115.7374034375], [-33.421625000000006, 115.73384375], [-33.41456375, 115.73031593750001], [-33.40748000000001, 115.72682], [-33.40037375000001, 115.7233559375], [-33.393245, 115.71992375], [-33.38609375, 115.7165234375], [-33.37892000000001, 115.71315500000001], [-33.37172375, 115.7098184375], [-33.364505, 115.70651375], [-33.35726375, 115.7032409375], [-33.35, 115.7]],
+                {"bubblingMouseEvents": true, "color": "#3B82F6", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3B82F6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 3.794733192202055}
+            ).addTo(feature_group_c653e198cc60e02d3c6d7eeb527af6bf);
+        
+    
+        var popup_f08c2c3ce6ddf42ca4b3d6159f78b9fc = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_71cad5ac71218713712c73e270e7575f = $(`<div id="html_71cad5ac71218713712c73e270e7575f" style="width: 100.0%; height: 100.0%;"><b>spodumene concentrate</b><br>Greenbushes (AU) &rarr; Kemerton (AU)<br>Mass: <b>180 kg/pack</b><br>Confidence: confirmed<br>Companies: Talison, Albemarle</div>`)[0];
+                popup_f08c2c3ce6ddf42ca4b3d6159f78b9fc.setContent(html_71cad5ac71218713712c73e270e7575f);
+            
+        
+
+        poly_line_6ff9e4ed3c858b3cecc6007a0c7aa8cf.bindPopup(popup_f08c2c3ce6ddf42ca4b3d6159f78b9fc)
+        ;
+
+        
+    
+    
+            poly_line_6ff9e4ed3c858b3cecc6007a0c7aa8cf.bindTooltip(
+                `<div>
+                     Lithium: Greenbushes → Kemerton (180 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_6ff9e4ed3c858b3cecc6007a0c7aa8cf.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 5.25,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#3B82F6",
+  "font-weight": "bold",
+  "font-size": "15",
+},
+}
+            );
+        
+    
+            var poly_line_23a3dd87af6472e66e509a0a397bb917 = L.polyline(
+                [[-33.35, 115.7], [-32.467125, 115.68148312500001], [-31.584999999999997, 115.66723250000001], [-30.703625000000002, 115.65724812500002], [-29.823, 115.65153000000001], [-28.943125000000002, 115.65007812500001], [-28.064000000000004, 115.65289250000001], [-27.185625, 115.65997312500001], [-26.308000000000003, 115.67132000000002], [-25.431124999999998, 115.686933125], [-24.555, 115.7068125], [-23.679625000000005, 115.73095812500002], [-22.805, 115.75937], [-21.931124999999998, 115.79204812500001], [-21.057999999999996, 115.8289925], [-20.185625000000005, 115.870203125], [-19.314000000000007, 115.91568000000004], [-18.443125000000002, 115.965423125], [-17.573, 116.01943250000002], [-16.703625, 116.07770812499999], [-15.835000000000003, 116.14025], [-14.967125000000003, 116.20705812500002], [-14.100000000000001, 116.27813250000001], [-13.233625, 116.353473125], [-12.368000000000002, 116.43307999999999], [-11.503125000000002, 116.51695312500001], [-10.639000000000003, 116.60509250000001], [-9.775625000000002, 116.697498125], [-8.913000000000004, 116.79417000000001], [-8.051125000000003, 116.89510812500001], [-7.190000000000001, 117.0003125], [-6.329625000000004, 117.10978312500002], [-5.4700000000000015, 117.22352000000001], [-4.611125000000004, 117.34152312500001], [-3.753000000000002, 117.46379249999998], [-2.8956250000000017, 117.590328125], [-2.039000000000004, 117.72113000000002], [-1.1831250000000013, 117.85619812499999], [-0.32800000000000473, 117.99553250000001], [0.5263749999999998, 118.139133125], [1.3799999999999972, 118.287], [2.2328749999999955, 118.439133125], [3.0849999999999973, 118.59553250000002], [3.9363749999999964, 118.75619812500001], [4.787000000000001, 118.92113], [5.636874999999997, 119.09032812500001], [6.485999999999994, 119.2637925], [7.3343750000000005, 119.441523125], [8.181999999999997, 119.62352000000001], [9.028875000000001, 119.809783125], [9.874999999999996, 120.0003125], [10.720374999999997, 120.195108125], [11.565, 120.39417], [12.408874999999997, 120.597498125], [13.251999999999999, 120.8050925], [14.094374999999998, 121.01695312500001], [14.935999999999993, 121.23308], [15.776874999999999, 121.453473125], [16.616999999999997, 121.6781325], [17.456375, 121.90705812499999], [18.294999999999995, 122.14025000000001], [19.132874999999995, 122.377708125], [19.97, 122.6194325], [20.806374999999996, 122.865423125], [21.642, 123.11568000000003], [22.476874999999996, 123.37020312499999], [23.310999999999993, 123.6289925], [24.144374999999997, 123.892048125], [24.976999999999997, 124.15937], [25.808875, 124.43095812500002], [26.639999999999997, 124.70681250000001], [27.470374999999994, 124.98693312500001], [28.3, 125.27132], [29.128874999999997, 125.559973125], [29.956999999999997, 125.85289250000001], [30.784374999999997, 126.150078125], [31.610999999999994, 126.45153000000002], [32.436875, 126.757248125], [33.262, 127.0672325], [34.086375, 127.381483125], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#3B82F6", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3B82F6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.4142135623730951}
+            ).addTo(feature_group_c653e198cc60e02d3c6d7eeb527af6bf);
+        
+    
+        var popup_20f211e5a0adff3b98e5e4b0072f7b00 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_f59b31d35ddbccee9e3d4b33fe03997b = $(`<div id="html_f59b31d35ddbccee9e3d4b33fe03997b" style="width: 100.0%; height: 100.0%;"><b>lithium hydroxide</b><br>Kemerton (AU) &rarr; Gwangyang (KR)<br>Mass: <b>25 kg/pack</b><br>Confidence: confirmed<br>Companies: Albemarle, POSCO Future M</div>`)[0];
+                popup_20f211e5a0adff3b98e5e4b0072f7b00.setContent(html_f59b31d35ddbccee9e3d4b33fe03997b);
+            
+        
+
+        poly_line_23a3dd87af6472e66e509a0a397bb917.bindPopup(popup_20f211e5a0adff3b98e5e4b0072f7b00)
+        ;
+
+        
+    
+    
+            poly_line_23a3dd87af6472e66e509a0a397bb917.bindTooltip(
+                `<div>
+                     Lithium: Kemerton → Gwangyang (25 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_23a3dd87af6472e66e509a0a397bb917.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#3B82F6",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_0573e1ea8c70b4efb1ca3002654730d1 = L.polyline(
+                [[-23.46, -66.86], [-22.250055000000003, -64.5721009375], [-21.052269999999996, -62.28055374999999], [-19.866645000000002, -59.985358437500004], [-18.693179999999998, -57.686515], [-17.531875, -55.3840234375], [-16.382730000000002, -53.077883750000005], [-15.245745000000003, -50.7680959375], [-14.120920000000002, -48.454660000000004], [-13.008255, -46.137575937499996], [-11.90775, -43.816843750000004], [-10.819405000000003, -41.49246343750001], [-9.743219999999997, -39.164435], [-8.679195, -36.8327584375], [-7.627329999999999, -34.49743375], [-6.587625000000001, -32.1584609375], [-5.560080000000003, -29.815840000000005], [-4.544694999999999, -27.469570937499995], [-3.5414700000000012, -25.119653750000005], [-2.550404999999999, -22.76608843749999], [-1.5715000000000003, -20.408875], [-0.6047550000000022, -18.048013437499996], [0.34982999999999986, -15.683503749999998], [1.2922549999999982, -13.315345937500005], [2.222520000000001, -10.943539999999993], [3.1406249999999996, -8.568085937499998], [4.046569999999998, -6.188983750000004], [4.940355000000001, -3.806233437499996], [5.821979999999997, -1.4198350000000026], [6.691445000000001, 0.9702115625000047], [7.54875, 3.3639062499999994], [8.393894999999999, 5.761249062499999], [9.226880000000001, 8.162240000000008], [10.047704999999997, 10.566879062499993], [10.856369999999998, 12.975166250000001], [11.652875, 15.387101562500002], [12.43722, 17.802685000000004], [13.209405, 20.221916562500006], [13.96943, 22.64479625], [14.717295, 25.0713240625], [15.453, 27.5015], [16.176544999999997, 29.935324062499994], [16.887929999999997, 32.37279625], [17.587155, 34.8139165625], [18.274220000000003, 37.25868500000001], [18.949125, 39.7071015625], [19.611869999999996, 42.15916624999999], [20.262455000000003, 44.61487906250001], [20.90088, 47.07424], [21.527145, 49.53724906250001], [22.14125, 52.00390625], [22.743195, 54.474211562499995], [23.33298, 56.948165], [23.910604999999997, 59.425766562499994], [24.47607, 61.90701625000001], [25.029375, 64.3919140625], [25.570519999999995, 66.88046], [26.099505, 69.3726540625], [26.616329999999998, 71.86849625], [27.120995, 74.36798656250001], [27.613499999999995, 76.87112499999999], [28.093844999999995, 79.37791156249999], [28.56203, 81.88834625000001], [29.018054999999997, 84.40242906249999], [29.46192, 86.92016000000002], [29.893624999999997, 89.4415390625], [30.313169999999996, 91.96656624999999], [30.720554999999997, 94.49524156250001], [31.115779999999997, 97.02756499999998], [31.498845, 99.56353656250002], [31.86975, 102.10315625], [32.228494999999995, 104.6464240625], [32.57508, 107.19334], [32.909504999999996, 109.7439040625], [33.23177, 112.29811625], [33.541875, 114.8559765625], [33.839819999999996, 117.417485], [34.125605, 119.9826415625], [34.39923, 122.55144625], [34.660695, 125.1238990625], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#3B82F6", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3B82F6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_c653e198cc60e02d3c6d7eeb527af6bf);
+        
+    
+        var popup_95ee25edc77b0cb75b88cc65e6f2e2bb = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_e7f775f4984fb6d2e90ab0bfcf8ffbcf = $(`<div id="html_e7f775f4984fb6d2e90ab0bfcf8ffbcf" style="width: 100.0%; height: 100.0%;"><b>lithium carbonate (brine)</b><br>Olaroz (AR) &rarr; Gwangyang (KR)<br>Mass: <b>12 kg/pack</b><br>Confidence: confirmed<br>Companies: Allkem/Arcadium, POSCO Future M<br>Ford rel: FORD_REL_036</div>`)[0];
+                popup_95ee25edc77b0cb75b88cc65e6f2e2bb.setContent(html_e7f775f4984fb6d2e90ab0bfcf8ffbcf);
+            
+        
+
+        poly_line_0573e1ea8c70b4efb1ca3002654730d1.bindPopup(popup_95ee25edc77b0cb75b88cc65e6f2e2bb)
+        ;
+
+        
+    
+    
+            poly_line_0573e1ea8c70b4efb1ca3002654730d1.bindTooltip(
+                `<div>
+                     Lithium: Olaroz → Gwangyang (12 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_0573e1ea8c70b4efb1ca3002654730d1.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#3B82F6",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_c4fffb3fca799215e2612807717ea8f1 = L.polyline(
+                [[35.28, -81.28], [35.79129437500001, -78.6668365625], [36.2895275, -76.05369625], [36.774699375000004, -73.4405790625], [37.246809999999996, -70.827485], [37.705859375, -68.2144140625], [38.1518475, -65.60136625000001], [38.584774375, -62.9883415625], [39.00464, -60.37534000000001], [39.411444374999995, -57.76236156249999], [39.8051875, -55.149406250000006], [40.18586937500001, -52.53647406250001], [40.55349, -49.923564999999996], [40.908049375, -47.3106790625], [41.2495475, -44.69781625], [41.57798437500001, -42.0849765625], [41.89336000000001, -39.47216000000001], [42.195674374999996, -36.8593665625], [42.484927500000005, -34.24659625000001], [42.76111937499999, -31.633849062499994], [43.02425, -29.021125], [43.274319375000005, -26.408424062499996], [43.5113275, -23.795746249999993], [43.735274374999996, -21.183091562500003], [43.94616, -18.570459999999997], [44.143984375, -15.957851562500004], [44.3287475, -13.345266250000007], [44.500449375, -10.7327040625], [44.65909, -8.120165000000004], [44.804669375, -5.507649062499997], [44.9371875, -2.895156250000003], [45.056644375000005, -0.2826865625000039], [45.163039999999995, 2.329760000000004], [45.256374375, 4.942183437499992], [45.3366475, 7.554583749999999], [45.403859375, 10.166960937499999], [45.45801, 12.779315], [45.499099375, 15.391645937500005], [45.5271275, 18.003953749999997], [45.542094375, 20.6162384375], [45.544000000000004, 23.2285], [45.532844374999996, 25.840738437499994], [45.508627499999996, 28.452953750000002], [45.471349375, 31.065145937499995], [45.421009999999995, 33.67731500000001], [45.357609374999996, 36.2894609375], [45.2811475, 38.90158374999999], [45.191624375, 41.513683437500006], [45.08904, 44.12576], [44.973394375, 46.73781343750001], [44.8446875, 49.34984375], [44.702919375, 51.961850937499996], [44.54809, 54.573835], [44.380199375000004, 57.1857959375], [44.1992475, 59.797733750000006], [44.005234375, 62.4096484375], [43.798159999999996, 65.02153999999999], [43.578024375, 67.6334084375], [43.3448275, 70.24525375], [43.098569375, 72.8570759375], [42.83925, 75.468875], [42.566869374999996, 78.0806509375], [42.28142749999999, 80.69240375000001], [41.982924374999996, 83.3041334375], [41.67136, 85.91584000000002], [41.346734375, 88.5275234375], [41.009047499999994, 91.13918374999999], [40.658299375, 93.75082093750001], [40.294489999999996, 96.36243499999999], [39.917619375, 98.97402593750002], [39.5276875, 101.58559375], [39.124694375, 104.1971384375], [38.70864, 106.80866000000002], [38.279524375, 109.42015843749999], [37.83734749999999, 112.03163375000001], [37.382109375, 114.6430859375], [36.91381, 117.25451500000001], [36.432449375, 119.86592093750001], [35.938027500000004, 122.47730375], [35.430544375, 125.0886634375], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#3B82F6", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3B82F6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_c653e198cc60e02d3c6d7eeb527af6bf);
+        
+    
+        var popup_70c0d1e307e08c41fa2d5879b1f80fbc = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_c0838ceef9af6d3bc3830a90d9cba434 = $(`<div id="html_c0838ceef9af6d3bc3830a90d9cba434" style="width: 100.0%; height: 100.0%;"><b>lithium hydroxide</b><br>Bessemer City (US) &rarr; Gwangyang (KR)<br>Mass: <b>8 kg/pack</b><br>Confidence: industry reporting<br>Companies: Arcadium/Rio Tinto, LGES (pool)</div>`)[0];
+                popup_70c0d1e307e08c41fa2d5879b1f80fbc.setContent(html_c0838ceef9af6d3bc3830a90d9cba434);
+            
+        
+
+        poly_line_c4fffb3fca799215e2612807717ea8f1.bindPopup(popup_70c0d1e307e08c41fa2d5879b1f80fbc)
+        ;
+
+        
+    
+    
+            poly_line_c4fffb3fca799215e2612807717ea8f1.bindTooltip(
+                `<div>
+                     Lithium: Bessemer City → Gwangyang (8 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_c4fffb3fca799215e2612807717ea8f1.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#3B82F6",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_c653e198cc60e02d3c6d7eeb527af6bf.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_545fc0830adcf3e53fa3bb28dedd9d08 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_3d4d11b4f888370dd7c4a1e5b06a024d = L.polyline(
+                [[-27.26, 120.55], [-27.305871562500002, 120.55275906250002], [-27.35168625, 120.55573625], [-27.397444062500004, 120.55893156250002], [-27.443145000000005, 120.56234500000001], [-27.4887890625, 120.5659765625], [-27.53437625, 120.56982625], [-27.579906562500003, 120.57389406249999], [-27.625380000000007, 120.57818], [-27.6707965625, 120.58268406249998], [-27.71615625, 120.58740625], [-27.761459062500006, 120.5923465625], [-27.806704999999997, 120.59750499999998], [-27.851894062500005, 120.6028815625], [-27.89702625, 120.60847624999998], [-27.942101562500003, 120.6142890625], [-27.987120000000008, 120.62032000000002], [-28.0320815625, 120.6265690625], [-28.076986250000004, 120.63303625], [-28.121834062499996, 120.63972156249997], [-28.166625000000003, 120.646625], [-28.211359062500005, 120.6537465625], [-28.25603625, 120.66108625], [-28.300656562500002, 120.6686440625], [-28.345219999999998, 120.67641999999998], [-28.3897265625, 120.6844140625], [-28.434176250000007, 120.69262625], [-28.478569062500004, 120.7010565625], [-28.522905, 120.70970499999999], [-28.567184062500004, 120.71857156249999], [-28.61140625, 120.72765625], [-28.655571562500008, 120.73695906250002], [-28.699680000000004, 120.74647999999999], [-28.743731562500002, 120.75621906249998], [-28.787726250000002, 120.76617624999999], [-28.831664062500003, 120.7763515625], [-28.875545000000002, 120.78674500000002], [-28.919369062500003, 120.79735656249998], [-28.96313625, 120.80818625], [-29.0068465625, 120.81923406249999], [-29.050500000000003, 120.83049999999999], [-29.0940965625, 120.84198406249999], [-29.137636250000003, 120.85368625], [-29.181119062500002, 120.86560656249998], [-29.224545, 120.877745], [-29.2679140625, 120.8901015625], [-29.31122625, 120.90267624999998], [-29.354481562500002, 120.9154690625], [-29.39768, 120.92847999999998], [-29.440821562500002, 120.9417090625], [-29.48390625, 120.95515625], [-29.526934062500004, 120.9688215625], [-29.569905, 120.982705], [-29.6128190625, 120.9968065625], [-29.655676250000003, 121.01112625], [-29.6984765625, 121.0256640625], [-29.74122, 121.04041999999998], [-29.783906562500004, 121.0553940625], [-29.826536250000004, 121.07058624999999], [-29.8691090625, 121.08599656249999], [-29.911625, 121.10162499999998], [-29.954084062499998, 121.11747156249999], [-29.996486250000004, 121.13353624999999], [-30.0388315625, 121.1498190625], [-30.081120000000002, 121.16631999999998], [-30.1233515625, 121.1830390625], [-30.16552625, 121.19997624999999], [-30.207644062500002, 121.21713156249999], [-30.249705, 121.23450499999998], [-30.2917090625, 121.25209656249999], [-30.33365625, 121.26990624999999], [-30.3755465625, 121.2879340625], [-30.41738, 121.30617999999998], [-30.459156562500002, 121.3246440625], [-30.50087625, 121.34332625], [-30.5425390625, 121.3622265625], [-30.584145, 121.38134500000001], [-30.625694062500003, 121.4006815625], [-30.66718625, 121.42023624999999], [-30.7086215625, 121.44000906249998], [-30.75, 121.46]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4.1952353926806065}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_522a8e0f155fb269f972f883b80c2622 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_15ad553e79f1f51a394f47dfd5059980 = $(`<div id="html_15ad553e79f1f51a394f47dfd5059980" style="width: 100.0%; height: 100.0%;"><b>nickel sulfide concentrate</b><br>Mt Keith (AU) &rarr; Kalgoorlie (AU)<br>Mass: <b>220 kg/pack</b><br>Confidence: confirmed<br>Companies: BHP Nickel West<br>Ford rel: FORD_REL_073</div>`)[0];
+                popup_522a8e0f155fb269f972f883b80c2622.setContent(html_15ad553e79f1f51a394f47dfd5059980);
+            
+        
+
+        poly_line_3d4d11b4f888370dd7c4a1e5b06a024d.bindPopup(popup_522a8e0f155fb269f972f883b80c2622)
+        ;
+
+        
+    
+    
+            poly_line_3d4d11b4f888370dd7c4a1e5b06a024d.bindTooltip(
+                `<div>
+                     Nickel: Mt Keith → Kalgoorlie (220 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_3d4d11b4f888370dd7c4a1e5b06a024d.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 5.25,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "15",
+},
+}
+            );
+        
+    
+            var poly_line_990a268b1fcb488abf5abb627e486285 = L.polyline(
+                [[-27.84, 120.72], [-27.878201875, 120.72206593750002], [-27.9163575, 120.72431375], [-27.954466875, 120.72674343750002], [-27.99253, 120.729355], [-28.030546875, 120.7321484375], [-28.068517500000002, 120.73512375000001], [-28.106441875, 120.7382809375], [-28.14432, 120.74162000000001], [-28.182151875, 120.74514093749998], [-28.2199375, 120.74884375], [-28.257676875, 120.75272843750001], [-28.295369999999995, 120.756795], [-28.333016875, 120.76104343749999], [-28.370617499999998, 120.76547375], [-28.408171875, 120.7700859375], [-28.445680000000007, 120.77488000000004], [-28.483141874999998, 120.7798559375], [-28.520557500000002, 120.78501375], [-28.557926874999996, 120.79035343749997], [-28.59525, 120.79587500000001], [-28.632526875000003, 120.80157843750001], [-28.6697575, 120.80746375], [-28.706941875, 120.8135309375], [-28.744079999999997, 120.81977999999998], [-28.781171875, 120.82621093750001], [-28.818217500000006, 120.83282375], [-28.855216875, 120.83961843750001], [-28.89217, 120.84659500000001], [-28.929076875, 120.85375343749999], [-28.9659375, 120.86109375000001], [-29.002751875, 120.86861593750001], [-29.03952, 120.87631999999999], [-29.076241875, 120.8842059375], [-29.1129175, 120.89227374999999], [-29.149546875, 120.9005234375], [-29.186130000000002, 120.90895500000002], [-29.222666874999998, 120.91756843750001], [-29.259157499999997, 120.92636375000001], [-29.295601875, 120.9353409375], [-29.332, 120.94449999999999], [-29.368351875000002, 120.9538409375], [-29.4046575, 120.96336375], [-29.440916875, 120.97306843749999], [-29.477130000000002, 120.982955], [-29.513296875, 120.9930234375], [-29.5494175, 121.00327375], [-29.585491875000002, 121.0137059375], [-29.62152, 121.02431999999999], [-29.657501874999998, 121.0351159375], [-29.693437499999998, 121.04609375000001], [-29.729326875, 121.0572534375], [-29.765169999999998, 121.068595], [-29.800966875, 121.0801184375], [-29.8367175, 121.09182375], [-29.872421875, 121.10371093750001], [-29.908079999999998, 121.11578], [-29.943691875, 121.1280309375], [-29.979257500000003, 121.14046375], [-30.014776875, 121.1530784375], [-30.05025, 121.165875], [-30.085676874999997, 121.1788534375], [-30.1210575, 121.19201375], [-30.156391875, 121.2053559375], [-30.19168, 121.21888], [-30.226921875000002, 121.23258593749999], [-30.2621175, 121.24647375], [-30.297266875, 121.26054343749999], [-30.332369999999997, 121.274795], [-30.367426875, 121.2892284375], [-30.402437499999998, 121.30384375], [-30.437401875, 121.31864093749999], [-30.47232, 121.33362], [-30.507191875, 121.34878093750001], [-30.5420175, 121.36412375], [-30.576796875, 121.3796484375], [-30.611530000000002, 121.39535500000001], [-30.646216875000004, 121.41124343749999], [-30.680857500000002, 121.42731375], [-30.715451875, 121.44356593749998], [-30.75, 121.46]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 3.794733192202055}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_36fa63e065128429ed873dc46de963a5 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_2a5c344f4bffd1426f9a57ad1683d0f1 = $(`<div id="html_2a5c344f4bffd1426f9a57ad1683d0f1" style="width: 100.0%; height: 100.0%;"><b>nickel sulfide concentrate</b><br>Leinster (AU) &rarr; Kalgoorlie (AU)<br>Mass: <b>180 kg/pack</b><br>Confidence: confirmed<br>Companies: BHP Nickel West<br>Ford rel: FORD_REL_073</div>`)[0];
+                popup_36fa63e065128429ed873dc46de963a5.setContent(html_2a5c344f4bffd1426f9a57ad1683d0f1);
+            
+        
+
+        poly_line_990a268b1fcb488abf5abb627e486285.bindPopup(popup_36fa63e065128429ed873dc46de963a5)
+        ;
+
+        
+    
+    
+            poly_line_990a268b1fcb488abf5abb627e486285.bindTooltip(
+                `<div>
+                     Nickel: Leinster → Kalgoorlie (180 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_990a268b1fcb488abf5abb627e486285.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 5.25,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "15",
+},
+}
+            );
+        
+    
+            var poly_line_3e0b6912fa9ff95fc904c53df2cce9de = L.polyline(
+                [[-30.75, 121.46], [-30.782647500000003, 121.3926784375], [-30.81494, 121.32526374999999], [-30.8468775, 121.2577559375], [-30.87846, 121.190155], [-30.9096875, 121.1224609375], [-30.94056, 121.05467375], [-30.971077500000003, 120.98679343750001], [-31.001240000000006, 120.91882], [-31.031047499999996, 120.85075343749999], [-31.0605, 120.78259375], [-31.089597500000004, 120.71434093750001], [-31.11834, 120.645995], [-31.146727500000004, 120.5775559375], [-31.174759999999996, 120.50902374999998], [-31.202437500000002, 120.4403984375], [-31.229760000000006, 120.37168000000003], [-31.2567275, 120.30286843749998], [-31.283340000000003, 120.23396375], [-31.3095975, 120.16496593749997], [-31.335500000000003, 120.09587499999999], [-31.3610475, 120.0266909375], [-31.38624, 119.95741375], [-31.4110775, 119.8880434375], [-31.435559999999995, 119.81858], [-31.4596875, 119.7490234375], [-31.483460000000004, 119.67937375000002], [-31.506877500000005, 119.60963093750001], [-31.529940000000003, 119.53979499999998], [-31.5526475, 119.46986593749999], [-31.575000000000003, 119.39984375], [-31.5969975, 119.32972843750002], [-31.61864, 119.25952], [-31.639927500000002, 119.18921843749999], [-31.66086, 119.11882374999998], [-31.6814375, 119.04833593750001], [-31.701660000000004, 118.977755], [-31.7215275, 118.90708093750001], [-31.741039999999998, 118.83631374999999], [-31.7601975, 118.76545343749999], [-31.779000000000003, 118.6945], [-31.797447500000004, 118.62345343750002], [-31.81554, 118.55231375], [-31.8332775, 118.4810809375], [-31.850660000000005, 118.40975499999999], [-31.867687500000002, 118.3383359375], [-31.88436, 118.26682375000001], [-31.900677500000004, 118.1952184375], [-31.91664, 118.12352000000001], [-31.932247500000003, 118.0517284375], [-31.9475, 117.97984375], [-31.962397500000005, 117.9078659375], [-31.976940000000006, 117.83579499999999], [-31.991127500000005, 117.76363093750001], [-32.004960000000004, 117.69137375], [-32.018437500000005, 117.6190234375], [-32.03156, 117.54658], [-32.0443275, 117.4740434375], [-32.056740000000005, 117.40141374999999], [-32.0687975, 117.3286909375], [-32.0805, 117.255875], [-32.0918475, 117.1829659375], [-32.10284, 117.10996375], [-32.1134775, 117.0368684375], [-32.123760000000004, 116.96368000000001], [-32.1336875, 116.8903984375], [-32.14326, 116.81702375], [-32.1524775, 116.74355593749999], [-32.161339999999996, 116.669995], [-32.1698475, 116.5963409375], [-32.178, 116.52259375], [-32.18579750000001, 116.44875343750002], [-32.19324, 116.37482], [-32.2003275, 116.3007934375], [-32.207060000000006, 116.22667375], [-32.2134375, 116.1524609375], [-32.219460000000005, 116.07815500000001], [-32.225127500000006, 116.0037559375], [-32.23044, 115.92926375], [-32.235397500000005, 115.8546784375], [-32.24, 115.78]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 2.0}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_eee7f57c3e3ff6b4765095da166df359 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_ba6687e33c8294fd9f08ac8f06a244db = $(`<div id="html_ba6687e33c8294fd9f08ac8f06a244db" style="width: 100.0%; height: 100.0%;"><b>nickel matte</b><br>Kalgoorlie (AU) &rarr; Kwinana (AU)<br>Mass: <b>50 kg/pack</b><br>Confidence: confirmed<br>Companies: BHP Nickel West</div>`)[0];
+                popup_eee7f57c3e3ff6b4765095da166df359.setContent(html_ba6687e33c8294fd9f08ac8f06a244db);
+            
+        
+
+        poly_line_3e0b6912fa9ff95fc904c53df2cce9de.bindPopup(popup_eee7f57c3e3ff6b4765095da166df359)
+        ;
+
+        
+    
+    
+            poly_line_3e0b6912fa9ff95fc904c53df2cce9de.bindTooltip(
+                `<div>
+                     Nickel: Kalgoorlie → Kwinana (50 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_3e0b6912fa9ff95fc904c53df2cce9de.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_e1c78fb71bb67f047b038a10db253f92 = L.polyline(
+                [[-32.24, 115.78], [-31.371197500000008, 115.7632234375], [-30.50314, 115.75064375], [-29.635827500000005, 115.74226093750002], [-28.76926, 115.738075], [-27.903437500000003, 115.7380859375], [-27.038360000000004, 115.74229375000002], [-26.1740275, 115.7506984375], [-25.310440000000003, 115.7633], [-24.4475975, 115.7800984375], [-23.5855, 115.80109375], [-22.724147500000004, 115.82628593750002], [-21.86354, 115.855675], [-21.0036775, 115.88926093750001], [-20.14456, 115.92704374999998], [-19.286187500000004, 115.9690234375], [-18.428560000000004, 116.01520000000002], [-17.571677500000003, 116.06557343749998], [-16.71554, 116.12014375000001], [-15.860147499999998, 116.17891093749999], [-15.005500000000003, 116.24187500000001], [-14.151597500000005, 116.30903593750001], [-13.298440000000003, 116.38039375000001], [-12.446027500000003, 116.45594843750001], [-11.59436, 116.53569999999999], [-10.743437500000002, 116.6196484375], [-9.893260000000005, 116.70779375000002], [-9.043827500000003, 116.8001359375], [-8.195140000000006, 116.89667499999999], [-7.347197500000001, 116.9974109375], [-6.500000000000002, 117.10234375], [-5.6535475000000055, 117.21147343750002], [-4.8078400000000014, 117.3248], [-3.962877500000004, 117.4423234375], [-3.11866, 117.56404375], [-2.275187500000002, 117.6899609375], [-1.4324600000000034, 117.82007500000002], [-0.5904775000000013, 117.9543859375], [0.250759999999997, 118.09289375], [1.0912524999999986, 118.2355984375], [1.9309999999999974, 118.38250000000001], [2.770002499999994, 118.5335984375], [3.608259999999997, 118.68889375], [4.445772499999996, 118.8483859375], [5.282540000000001, 119.01207500000001], [6.118562499999998, 119.17996093750001], [6.953839999999994, 119.35204375], [7.7883724999999995, 119.5283234375], [8.622159999999997, 119.7088], [9.4552025, 119.8934734375], [10.287499999999996, 120.08234375], [11.119052499999995, 120.27541093750001], [11.94986, 120.47267500000001], [12.779922499999996, 120.67413593750001], [13.60924, 120.87979375], [14.437812499999998, 121.0896484375], [15.265639999999992, 121.30369999999999], [16.092722499999997, 121.5219484375], [16.919059999999998, 121.74439375], [17.7446525, 121.9710359375], [18.569499999999994, 122.201875], [19.393602499999993, 122.4369109375], [20.21696, 122.67614375], [21.039572499999995, 122.91957343749999], [21.86144, 123.16720000000001], [22.682562499999996, 123.4190234375], [23.502939999999995, 123.67504375], [24.3225725, 123.9352609375], [25.141459999999995, 124.19967499999998], [25.9596025, 124.46828593750001], [26.776999999999997, 124.74109375], [27.593652499999994, 125.01809843750002], [28.40956, 125.2993], [29.2247225, 125.58469843750001], [30.03914, 125.87429375], [30.852812499999995, 126.1680859375], [31.665739999999996, 126.46607500000002], [32.4779225, 126.7682609375], [33.289359999999995, 127.07464375], [34.1000525, 127.3852234375], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 2.1908902300206643}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_ae65e5923768a16cfbc2b4ab6eb1aabb = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_b0e7f855314c686fcc53ba80c0cfd470 = $(`<div id="html_b0e7f855314c686fcc53ba80c0cfd470" style="width: 100.0%; height: 100.0%;"><b>nickel sulfate (battery-grade)</b><br>Kwinana (AU) &rarr; Gwangyang (KR)<br>Mass: <b>60 kg/pack</b><br>Confidence: confirmed<br>Companies: BHP, POSCO Future M<br>Ford rel: FORD_REL_035</div>`)[0];
+                popup_ae65e5923768a16cfbc2b4ab6eb1aabb.setContent(html_b0e7f855314c686fcc53ba80c0cfd470);
+            
+        
+
+        poly_line_e1c78fb71bb67f047b038a10db253f92.bindPopup(popup_ae65e5923768a16cfbc2b4ab6eb1aabb)
+        ;
+
+        
+    
+    
+            poly_line_e1c78fb71bb67f047b038a10db253f92.bindTooltip(
+                `<div>
+                     Nickel: Kwinana → Gwangyang (60 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_e1c78fb71bb67f047b038a10db253f92.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_93aed2e788546ced1440bcae6ff34e5f = L.polyline(
+                [[56.3, -61.85], [56.209944375, -61.725975625000004], [56.11937749999999, -61.60250249999999], [56.028299375, -61.479580625000004], [55.93671, -61.35721], [55.844609375, -61.235390625], [55.7519975, -61.11412250000001], [55.658874374999996, -60.993405625], [55.56524, -60.87324000000001], [55.47109437499999, -60.75362562499999], [55.3764375, -60.6345625], [55.28126937500001, -60.51605062500001], [55.18558999999999, -60.39809], [55.089399375, -60.280680625], [54.99269749999999, -60.1638225], [54.895484374999995, -60.047515625], [54.797760000000004, -59.93176000000001], [54.699524374999996, -59.816555625], [54.6007775, -59.70190250000002], [54.50151937499999, -59.587800625], [54.40175, -59.47425], [54.30146937500001, -59.36125062500001], [54.2006775, -59.248802500000004], [54.099374375, -59.136905625000004], [53.99755999999999, -59.02556], [53.895234375, -58.914765625], [53.7923975, -58.80452250000001], [53.689049374999996, -58.694830625], [53.58519, -58.58569], [53.48081937499999, -58.477100625000006], [53.3759375, -58.369062500000005], [53.270544375, -58.26157562500001], [53.16464, -58.15464000000001], [53.058224375, -58.04825562500001], [52.95129749999999, -57.94242249999999], [52.843859375, -57.837140625], [52.735910000000004, -57.73241000000001], [52.627449375000005, -57.628230625], [52.518477499999996, -57.52460250000001], [52.40899437499999, -57.421525625], [52.299, -57.319], [52.188494375, -57.21702562500001], [52.0774775, -57.11560250000001], [51.96594937500001, -57.014730625000006], [51.85391, -56.914410000000004], [51.741359374999995, -56.814640625], [51.628297499999995, -56.7154225], [51.514724375, -56.61675562500001], [51.400639999999996, -56.518640000000005], [51.286044375, -56.421075625], [51.1709375, -56.324062500000004], [51.055319374999996, -56.22760062500001], [50.939189999999996, -56.13169], [50.822549374999994, -56.036330625000005], [50.705397500000004, -55.941522500000005], [50.587734375, -55.847265625000006], [50.46956, -55.75356000000001], [50.350874375, -55.66040562500001], [50.231677499999996, -55.567802500000006], [50.111969375, -55.475750625], [49.991749999999996, -55.38425000000001], [49.871019375, -55.293300625], [49.74977749999999, -55.20290250000001], [49.628024374999995, -55.113055625], [49.505759999999995, -55.02376], [49.382984375, -54.935015625], [49.259697499999994, -54.8468225], [49.135899374999994, -54.759180625], [49.01158999999999, -54.67209], [48.886769375, -54.58555062500001], [48.7614375, -54.4995625], [48.635594375, -54.414125625000004], [48.50923999999999, -54.32924], [48.382374375, -54.24490562500001], [48.2549975, -54.161122500000005], [48.127109375, -54.077890625], [47.99871, -53.99521000000001], [47.869799375, -53.913080625000006], [47.740377499999994, -53.8315025], [47.61044437499999, -53.750475625], [47.48, -53.67]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 2.6832815729997477}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_e4c106e7acd7495a247cf3b05d6cb718 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_22be0425536a285990c83e6de444128a = $(`<div id="html_22be0425536a285990c83e6de444128a" style="width: 100.0%; height: 100.0%;"><b>Ni-Co sulfide concentrate</b><br>Voisey's Bay (CA) &rarr; Long Harbour (CA)<br>Mass: <b>90 kg/pack</b><br>Confidence: confirmed<br>Companies: Vale Canada<br>Ford rel: FORD_REL_071</div>`)[0];
+                popup_e4c106e7acd7495a247cf3b05d6cb718.setContent(html_22be0425536a285990c83e6de444128a);
+            
+        
+
+        poly_line_93aed2e788546ced1440bcae6ff34e5f.bindPopup(popup_e4c106e7acd7495a247cf3b05d6cb718)
+        ;
+
+        
+    
+    
+            poly_line_93aed2e788546ced1440bcae6ff34e5f.bindTooltip(
+                `<div>
+                     Nickel: Voisey's Bay → Long Harbour (90 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_93aed2e788546ced1440bcae6ff34e5f.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_873b31f1701f04e4e55af8b60a5e4e6e = L.polyline(
+                [[47.48, -53.67], [47.535071249999994, -54.01394406250001], [47.58843499999999, -54.357826249999995], [47.64009125, -54.70164656250001], [47.690039999999996, -55.045405], [47.73828125, -55.3891015625], [47.784815, -55.73273625], [47.829641249999995, -56.07630906250001], [47.87276, -56.41982], [47.914171249999995, -56.7632690625], [47.953875, -57.10665625], [47.99187125, -57.44998156250001], [48.02815999999999, -57.79324499999999], [48.062741249999995, -58.1364465625], [48.09561499999998, -58.47958625], [48.12678125, -58.822664062499996], [48.15624000000001, -59.165680000000016], [48.18399124999999, -59.50863406249999], [48.210035000000005, -59.851526250000006], [48.23437124999999, -60.1943565625], [48.257000000000005, -60.537125], [48.27792125, -60.8798315625], [48.297135, -61.22247625], [48.314641249999994, -61.565059062500005], [48.330439999999996, -61.907579999999996], [48.34453125, -62.25003906250001], [48.356915, -62.592436250000006], [48.36759125, -62.9347715625], [48.37656, -63.277045], [48.38382124999999, -63.6192565625], [48.389375, -63.961406249999996], [48.39322125, -64.30349406250001], [48.39536, -64.64552], [48.39579125, -64.9874840625], [48.39451499999999, -65.32938624999998], [48.39153125, -65.6712265625], [48.38684000000001, -66.013005], [48.38044125, -66.3547215625], [48.37233499999999, -66.69637625], [48.36252124999999, -67.0379690625], [48.351, -67.37950000000001], [48.33777125, -67.7209690625], [48.322835, -68.06237625], [48.306191250000005, -68.40372156250001], [48.28784, -68.745005], [48.26778125, -69.0862265625], [48.246015, -69.42738625], [48.22254125, -69.7684840625], [48.19736, -70.10952], [48.170471250000006, -70.4504940625], [48.141875, -70.79140625], [48.11157125, -71.1322565625], [48.07956, -71.47304499999998], [48.04584125, -71.8137715625], [48.010415, -72.15443625], [47.97328125, -72.4950390625], [47.93444, -72.83558], [47.89389125, -73.1760590625], [47.851635, -73.51647625], [47.80767125, -73.85683156249999], [47.762, -74.197125], [47.71462125, -74.5373565625], [47.665535000000006, -74.87752625], [47.61474125, -75.2176340625], [47.56224, -75.55768], [47.50803125, -75.8976640625], [47.452115000000006, -76.23758624999999], [47.394491249999994, -76.5774465625], [47.33516, -76.91724499999998], [47.27412125, -77.2569815625], [47.211375000000004, -77.59665625], [47.146921250000005, -77.9362690625], [47.080760000000005, -78.27582], [47.01289125, -78.6153090625], [46.943315, -78.95473625], [46.87203125, -79.2941015625], [46.799040000000005, -79.63340500000001], [46.72434125000001, -79.9726465625], [46.647935000000004, -80.31182624999998], [46.569821250000004, -80.65094406249999], [46.49, -80.99]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.8973665961010275}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_14c4112185989370a019c1faeec9662e = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_0761ef985b74993bd32ecd0c62cbaeed = $(`<div id="html_0761ef985b74993bd32ecd0c62cbaeed" style="width: 100.0%; height: 100.0%;"><b>nickel intermediate</b><br>Long Harbour (CA) &rarr; Sudbury (CA)<br>Mass: <b>45 kg/pack</b><br>Confidence: confirmed<br>Companies: Vale Canada</div>`)[0];
+                popup_14c4112185989370a019c1faeec9662e.setContent(html_0761ef985b74993bd32ecd0c62cbaeed);
+            
+        
+
+        poly_line_873b31f1701f04e4e55af8b60a5e4e6e.bindPopup(popup_14c4112185989370a019c1faeec9662e)
+        ;
+
+        
+    
+    
+            poly_line_873b31f1701f04e4e55af8b60a5e4e6e.bindTooltip(
+                `<div>
+                     Nickel: Long Harbour → Sudbury (45 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_873b31f1701f04e4e55af8b60a5e4e6e.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_849d9cde11584e8081e212694e7086bc = L.polyline(
+                [[46.49, -80.99], [46.51035781250001, -80.882976875], [46.53018125, -80.77595749999999], [46.549470312500006, -80.668941875], [46.568225000000005, -80.56193], [46.586445312500004, -80.454921875], [46.60413125000001, -80.34791750000002], [46.6212828125, -80.240916875], [46.63790000000001, -80.13392], [46.6539828125, -80.026926875], [46.66953125, -79.91993749999999], [46.684545312500006, -79.81295187500001], [46.699025, -79.70597], [46.7129703125, -79.598991875], [46.72638125, -79.49201749999999], [46.73925781250001, -79.385046875], [46.7516, -79.27808], [46.7634078125, -79.171116875], [46.77468125000001, -79.06415750000001], [46.785420312499994, -78.95720187499998], [46.795624999999994, -78.85025], [46.80529531250001, -78.743301875], [46.81443125, -78.6363575], [46.8230328125, -78.529416875], [46.8311, -78.42247999999998], [46.838632812499995, -78.315546875], [46.84563125, -78.2086175], [46.852095312500005, -78.10169187499999], [46.858025, -77.99476999999999], [46.86342031249999, -77.887851875], [46.868281249999995, -77.7809375], [46.872607812500014, -77.67402687500001], [46.8764, -77.56712], [46.8796578125, -77.46021687500001], [46.882381249999995, -77.35331749999999], [46.884570312499996, -77.24642187500001], [46.886224999999996, -77.13953000000001], [46.8873453125, -77.032641875], [46.88793125, -76.9257575], [46.8879828125, -76.818876875], [46.8875, -76.712], [46.8864828125, -76.605126875], [46.88493125, -76.4982575], [46.8828453125, -76.39139187500001], [46.880225, -76.28453], [46.8770703125, -76.177671875], [46.873381249999994, -76.0708175], [46.869157812500006, -75.963966875], [46.8644, -75.85712000000001], [46.8591078125, -75.750276875], [46.853281249999995, -75.6434375], [46.8469203125, -75.536601875], [46.840025, -75.42977], [46.8325953125, -75.322941875], [46.824631249999996, -75.2161175], [46.8161328125, -75.109296875], [46.8071, -75.00248], [46.797532812499995, -74.895666875], [46.78743125, -74.7888575], [46.7767953125, -74.68205187499998], [46.765625, -74.57525000000001], [46.7539203125, -74.468451875], [46.74168125, -74.3616575], [46.7289078125, -74.254866875], [46.7156, -74.14808000000001], [46.7017578125, -74.041296875], [46.68738125, -73.9345175], [46.6724703125, -73.827741875], [46.657025, -73.72097], [46.6410453125, -73.61420187499999], [46.624531250000004, -73.5074375], [46.6074828125, -73.400676875], [46.5899, -73.29392], [46.571782812500004, -73.187166875], [46.55313125, -73.0804175], [46.5339453125, -72.973671875], [46.514225, -72.86693000000001], [46.493970312500004, -72.760191875], [46.47318125, -72.65345749999999], [46.451857812499995, -72.546726875], [46.43, -72.44]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.8973665961010275}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_50e3cfbda88ddd3be3a24c839f29e35d = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_e85054b9c922e5a0b0a63a9dbdbaad73 = $(`<div id="html_e85054b9c922e5a0b0a63a9dbdbaad73" style="width: 100.0%; height: 100.0%;"><b>nickel intermediate</b><br>Sudbury (CA) &rarr; Bécancour (CA)<br>Mass: <b>45 kg/pack</b><br>Confidence: confirmed<br>Companies: Vale-GM-LGES JV</div>`)[0];
+                popup_50e3cfbda88ddd3be3a24c839f29e35d.setContent(html_e85054b9c922e5a0b0a63a9dbdbaad73);
+            
+        
+
+        poly_line_849d9cde11584e8081e212694e7086bc.bindPopup(popup_50e3cfbda88ddd3be3a24c839f29e35d)
+        ;
+
+        
+    
+    
+            poly_line_849d9cde11584e8081e212694e7086bc.bindTooltip(
+                `<div>
+                     Nickel: Sudbury → Bécancour (45 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_849d9cde11584e8081e212694e7086bc.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_9776123f1e153985cef8b7bf1a85eb87 = L.polyline(
+                [[46.43, -72.44], [46.780095625, -69.90981000000001], [47.1176825, -67.38033999999999], [47.442760625000005, -64.85158999999999], [47.75533, -62.32356], [48.055390625, -59.79624999999999], [48.3429425, -57.26966], [48.617985624999996, -54.74379], [48.88052, -52.21864], [49.13054562499999, -49.69421], [49.3680625, -47.170500000000004], [49.59307062500001, -44.647510000000004], [49.805569999999996, -42.12523999999999], [50.005560625, -39.60369], [50.19304249999999, -37.08286], [50.368015625000005, -34.562749999999994], [50.53048000000001, -32.04336000000001], [50.680435625, -29.52469], [50.8178825, -27.00674], [50.94282062499999, -24.489509999999992], [51.055249999999994, -21.973000000000003], [51.155170625000004, -19.457209999999996], [51.2425825, -16.942140000000002], [51.317485624999996, -14.427790000000002], [51.37987999999999, -11.914159999999997], [51.429765625, -9.401249999999997], [51.4671425, -6.889059999999999], [51.492010625, -4.377589999999996], [51.504369999999994, -1.8668400000000034], [51.504220625, 0.6431900000000041], [51.4915625, 3.1525000000000016], [51.466395625000004, 5.6610900000000015], [51.42872, 8.168960000000009], [51.378535625, 10.676109999999996], [51.315842499999995, 13.182540000000003], [51.240640625, 15.688250000000005], [51.152930000000005, 18.193240000000003], [51.052710624999996, 20.69751000000001], [50.93998249999999, 23.201060000000002], [50.81474562499999, 25.70389], [50.677, 28.206000000000003], [50.526745625, 30.707389999999993], [50.36398249999999, 33.20806], [50.188710625, 35.70801], [50.00093, 38.20724000000001], [49.80064062499999, 40.70575000000001], [49.587842499999994, 43.20353999999999], [49.362535625, 45.70061000000001], [49.124719999999996, 48.196960000000004], [48.874395625, 50.69259000000002], [48.6115625, 53.1875], [48.336220624999996, 55.681689999999996], [48.04836999999999, 58.175160000000005], [47.748010625000006, 60.66791], [47.4351425, 63.159940000000006], [47.109765624999994, 65.65125], [46.771879999999996, 68.14183999999999], [46.421485624999995, 70.63171], [46.0585825, 73.12086000000001], [45.683170625, 75.60929], [45.295249999999996, 78.097], [44.894820624999994, 80.58399], [44.4818825, 83.07026], [44.056435625, 85.55581], [43.61848, 88.04064000000002], [43.168015624999995, 90.52475], [42.7050425, 93.00813999999998], [42.22956062499999, 95.49081000000001], [41.741569999999996, 97.97275999999998], [41.24107062499999, 100.45399000000002], [40.7280625, 102.9345], [40.202545625, 105.41429], [39.664519999999996, 107.89336000000002], [39.113985625, 110.37171], [38.55094249999999, 112.84934000000001], [37.975390624999996, 115.32625], [37.38733, 117.80244], [36.786760625, 120.27791], [36.1736825, 122.75266], [35.548095624999995, 125.22669], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 2.0199009876724157}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_5b232a1aeba869529988705611a887fb = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_bde9903f72418ae448323a2c470d76c0 = $(`<div id="html_bde9903f72418ae448323a2c470d76c0" style="width: 100.0%; height: 100.0%;"><b>nickel sulfate</b><br>Bécancour (CA) &rarr; Gwangyang (KR)<br>Mass: <b>51 kg/pack</b><br>Confidence: confirmed<br>Companies: Vale, GM, LGES<br>Ford rel: FORD_REL_034</div>`)[0];
+                popup_5b232a1aeba869529988705611a887fb.setContent(html_bde9903f72418ae448323a2c470d76c0);
+            
+        
+
+        poly_line_9776123f1e153985cef8b7bf1a85eb87.bindPopup(popup_5b232a1aeba869529988705611a887fb)
+        ;
+
+        
+    
+    
+            poly_line_9776123f1e153985cef8b7bf1a85eb87.bindTooltip(
+                `<div>
+                     Nickel: Bécancour → Gwangyang (51 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_9776123f1e153985cef8b7bf1a85eb87.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_89cd00fb3a921a874a24ff24388f794c = L.polyline(
+                [[0.65, 128.0], [1.078990625, 128.080829375], [1.5079625, 128.1595175], [1.9369156249999997, 128.236064375], [2.36585, 128.31047], [2.7947656249999997, 128.38273437499998], [3.2236625, 128.45285750000002], [3.6525406249999994, 128.52083937499998], [4.0814, 128.58668], [4.510240625, 128.650379375], [4.9390625, 128.7119375], [5.367865625, 128.77135437500002], [5.79665, 128.82863], [6.225415625, 128.883764375], [6.654162499999998, 128.93675749999997], [7.082890624999999, 128.987609375], [7.5116000000000005, 129.03632000000002], [7.940290624999999, 129.08288937499998], [8.368962499999999, 129.1273175], [8.797615624999997, 129.16960437499998], [9.226249999999999, 129.20974999999999], [9.654865625, 129.247754375], [10.0834625, 129.2836175], [10.512040624999997, 129.317339375], [10.9406, 129.34892], [11.369140625, 129.378359375], [11.797662500000001, 129.40565750000002], [12.226165625, 129.430814375], [12.654649999999997, 129.45382999999998], [13.083115625000001, 129.474704375], [13.511562499999998, 129.49343749999997], [13.939990625, 129.51002937500002], [14.368400000000001, 129.52448], [14.796790625, 129.53678937499998], [15.225162499999998, 129.5469575], [15.653515625, 129.554984375], [16.081850000000003, 129.56087], [16.510165625, 129.564614375], [16.9384625, 129.5662175], [17.366740625, 129.565679375], [17.794999999999998, 129.563], [18.223240624999995, 129.558179375], [18.651462499999997, 129.55121749999998], [19.079665624999997, 129.54211437499998], [19.507849999999998, 129.53087], [19.936015624999996, 129.51748437499998], [20.3641625, 129.5019575], [20.792290625, 129.484289375], [21.220399999999998, 129.46448], [21.648490625, 129.442529375], [22.076562499999998, 129.41843749999998], [22.504615625, 129.392204375], [22.93265, 129.36382999999998], [23.360665624999996, 129.333314375], [23.7886625, 129.3006575], [24.216640624999997, 129.265859375], [24.644599999999997, 129.22892000000002], [25.072540625, 129.189839375], [25.500462499999998, 129.1486175], [25.928365624999998, 129.105254375], [26.356249999999996, 129.05975], [26.784115624999995, 129.01210437499998], [27.2119625, 128.96231749999998], [27.639790624999996, 128.910389375], [28.0676, 128.85632], [28.495390624999995, 128.80010937499998], [28.923162499999997, 128.7417575], [29.350915625, 128.681264375], [29.778649999999995, 128.61863], [30.206365625, 128.55385437500001], [30.6340625, 128.4869375], [31.061740624999995, 128.417879375], [31.4894, 128.34668], [31.917040625, 128.273339375], [32.3446625, 128.1978575], [32.772265624999996, 128.120234375], [33.19985, 128.04047000000003], [33.627415625, 127.95856437500001], [34.0549625, 127.87451750000001], [34.482490625, 127.78832937499999], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#10B981", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#10B981", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2.0976176963403033}
+            ).addTo(feature_group_545fc0830adcf3e53fa3bb28dedd9d08);
+        
+    
+        var popup_7872188cb116feaadbc8c5c10d7574da = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_b20a83caf64f7e2a92cafd98b37d09f0 = $(`<div id="html_b20a83caf64f7e2a92cafd98b37d09f0" style="width: 100.0%; height: 100.0%;"><b>nickel MHP / NiSO4</b><br>Weda Bay (Halmahera) (ID) &rarr; Gwangyang (KR)<br>Mass: <b>55 kg/pack</b><br>Confidence: industry reporting<br>Companies: POSCO-Huayou JV<br>Ford rel: FORD_REL_038<br><i>Country-level disclosure only.</i></div>`)[0];
+                popup_7872188cb116feaadbc8c5c10d7574da.setContent(html_b20a83caf64f7e2a92cafd98b37d09f0);
+            
+        
+
+        poly_line_89cd00fb3a921a874a24ff24388f794c.bindPopup(popup_7872188cb116feaadbc8c5c10d7574da)
+        ;
+
+        
+    
+    
+            poly_line_89cd00fb3a921a874a24ff24388f794c.bindTooltip(
+                `<div>
+                     Nickel: Weda Bay (Halmahera) → Gwangyang (55 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_89cd00fb3a921a874a24ff24388f794c.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#10B981",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_545fc0830adcf3e53fa3bb28dedd9d08.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_5217954d07b53b51a8e5471244d06780 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_a343098b339f2bae5e7d0979d206deb4 = L.polyline(
+                [[-10.72, 25.47], [-9.782223125, 25.624819999999996], [-8.844592500000001, 25.774979999999996], [-7.9071081250000015, 25.92048], [-6.969769999999999, 26.06132], [-6.032578125, 26.1975], [-5.095532500000001, 26.32902], [-4.1586331250000015, 26.455879999999997], [-3.221879999999999, 26.578080000000003], [-2.2852731250000007, 26.695619999999998], [-1.3488125000000006, 26.808500000000002], [-0.4124981249999995, 26.91672], [0.5236700000000012, 27.020279999999996], [1.4596918750000014, 27.11918], [2.3955675000000003, 27.21342], [3.331296875000001, 27.302999999999997], [4.2668800000000005, 27.387920000000005], [5.202316875, 27.46818], [6.1376075000000005, 27.54378], [7.072751875000001, 27.61471999999999], [8.007750000000001, 27.680999999999997], [8.942601875000001, 27.742620000000002], [9.877307500000002, 27.79958], [10.811866875, 27.85188], [11.746280000000002, 27.899519999999995], [12.680546875000001, 27.9425], [13.614667500000003, 27.98082], [14.548641875000005, 28.014479999999995], [15.48247, 28.043479999999995], [16.416151875000004, 28.067819999999994], [17.3496875, 28.0875], [18.283076875000003, 28.102520000000002], [19.216320000000003, 28.112879999999997], [20.149416875, 28.118579999999998], [21.0823675, 28.119619999999998], [22.015171875, 28.115999999999996], [22.947830000000003, 28.10772], [23.880341875000006, 28.094779999999997], [24.812707500000002, 28.07718], [25.744926874999997, 28.054919999999996], [26.677000000000003, 28.028], [27.608926875, 27.996419999999997], [28.540707500000003, 27.960179999999994], [29.472341875, 27.919279999999993], [30.403830000000006, 27.87372], [31.335171875, 27.823499999999996], [32.2663675, 27.76862], [33.197416875, 27.709079999999997], [34.12832, 27.644879999999997], [35.05907687500001, 27.57602], [35.9896875, 27.502499999999998], [36.920151875, 27.42432], [37.85047, 27.341479999999997], [38.780641875, 27.25398], [39.71066750000001, 27.16182], [40.640546875000005, 27.064999999999998], [41.57028, 26.96352], [42.49986687500001, 26.85738], [43.4293075, 26.74658], [44.358601875000005, 26.631119999999996], [45.28775, 26.510999999999996], [46.216751875, 26.386219999999998], [47.145607500000004, 26.25678], [48.074316875, 26.12268], [49.00288000000001, 25.983919999999998], [49.931296875, 25.8405], [50.8595675, 25.69242], [51.78769187500001, 25.539679999999997], [52.715669999999996, 25.382279999999994], [53.643501875000005, 25.22022], [54.57118750000001, 25.0535], [55.498726875, 24.88212], [56.426120000000004, 24.706079999999996], [57.353366875000006, 24.525380000000002], [58.28046750000001, 24.340019999999996], [59.207421875, 24.15], [60.13423, 23.95532], [61.06089187500001, 23.755979999999997], [61.9874075, 23.551979999999997], [62.913776875, 23.34332], [63.84, 23.13]],
+                {"bubblingMouseEvents": true, "color": "#F59E0B", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#F59E0B", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.0954451150103321}
+            ).addTo(feature_group_5217954d07b53b51a8e5471244d06780);
+        
+    
+        var popup_73489144831bb983c46e87405fe7a22d = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_decf095b3bcb7b283a680aa539bb578d = $(`<div id="html_decf095b3bcb7b283a680aa539bb578d" style="width: 100.0%; height: 100.0%;"><b>cobalt hydroxide</b><br>Kolwezi (CD) &rarr; Kokkola (FI)<br>Mass: <b>15 kg/pack</b><br>Confidence: confirmed<br>Companies: Glencore<br>Ford rel: FORD_REL_074</div>`)[0];
+                popup_73489144831bb983c46e87405fe7a22d.setContent(html_decf095b3bcb7b283a680aa539bb578d);
+            
+        
+
+        poly_line_a343098b339f2bae5e7d0979d206deb4.bindPopup(popup_73489144831bb983c46e87405fe7a22d)
+        ;
+
+        
+    
+    
+            poly_line_a343098b339f2bae5e7d0979d206deb4.bindTooltip(
+                `<div>
+                     Cobalt: Kolwezi → Kokkola (15 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_a343098b339f2bae5e7d0979d206deb4.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#F59E0B",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_5a562b0d0882a6de210dffd348258bad = L.polyline(
+                [[63.84, 23.13], [63.7365321875, 24.508545937500003], [63.62652875, 25.885283749999996], [63.50998968750001, 27.2602134375], [63.386915, 28.633335], [63.257304687499996, 30.0046484375], [63.121158750000006, 31.37415375], [62.978477187500005, 32.7418509375], [62.82926000000001, 34.10774000000001], [62.67350718749999, 35.4718209375], [62.511218750000005, 36.834093749999994], [62.34239468750001, 38.19455843750001], [62.16703499999999, 39.553214999999994], [61.9851396875, 40.9100634375], [61.79670874999999, 42.265103749999994], [61.6017421875, 43.6183359375], [61.40024000000001, 44.969760000000015], [61.1922021875, 46.3193759375], [60.97762875000001, 47.66718375000001], [60.75651968749999, 49.0131834375], [60.528875000000006, 50.357375000000005], [60.294694687500005, 51.69975843750001], [60.05397875, 53.04033375], [59.8067271875, 54.3791009375], [59.55294, 55.716060000000006], [59.2926171875, 57.0512109375], [59.02575875, 58.38455375], [58.7523646875, 59.716088437500005], [58.472435, 61.04581499999999], [58.1859696875, 62.37373343750001], [57.89296875, 63.69984375], [57.59343218750001, 65.02414593750001], [57.28736, 66.34664000000001], [56.9747521875, 67.66732593750001], [56.65560875, 68.98620375], [56.3299296875, 70.30327343750001], [55.99771500000001, 71.61853500000001], [55.658964687499996, 72.9319884375], [55.31367875, 74.24363375], [54.9618571875, 75.5534709375], [54.603500000000004, 76.8615], [54.2386071875, 78.16772093750001], [53.867178749999994, 79.47213375], [53.489214687499995, 80.77473843749999], [53.104715, 82.075535], [52.7136796875, 83.3745234375], [52.31610875, 84.67170375], [51.9120021875, 85.9670759375], [51.50136, 87.26064], [51.0841821875, 88.55239593750002], [50.66046875, 89.84234375], [50.2302196875, 91.1304834375], [49.793435, 92.416815], [49.350114687499996, 93.7013384375], [48.90025874999999, 94.98405375000002], [48.443867187500004, 96.2649609375], [47.980940000000004, 97.54406], [47.5114771875, 98.8213509375], [47.035478749999996, 100.09683375], [46.5529446875, 101.3705084375], [46.063874999999996, 102.642375], [45.5682696875, 103.9124334375], [45.06612875, 105.18068375000001], [44.5574521875, 106.4471259375], [44.04224, 107.71176000000003], [43.5204921875, 108.9745859375], [42.99220875, 110.23560375], [42.4573896875, 111.4948134375], [41.916034999999994, 112.75221499999998], [41.3681446875, 114.00780843750002], [40.81371875, 115.26159375], [40.252757187499995, 116.5135709375], [39.68526, 117.76374000000001], [39.1112271875, 119.01210093750001], [38.53065874999999, 120.25865375000001], [37.9435546875, 121.5033984375], [37.349915, 122.74633500000002], [36.749739687499996, 123.98746343750001], [36.14302875, 125.22678375000001], [35.5297821875, 126.4642959375], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#F59E0B", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#F59E0B", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 1.0583005244258363}
+            ).addTo(feature_group_5217954d07b53b51a8e5471244d06780);
+        
+    
+        var popup_2fef842f4ce8f776892fec98f31b14be = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_c37152ad5152b5efa2c230edd5eab8b6 = $(`<div id="html_c37152ad5152b5efa2c230edd5eab8b6" style="width: 100.0%; height: 100.0%;"><b>cobalt sulfate</b><br>Kokkola (FI) &rarr; Gwangyang (KR)<br>Mass: <b>14 kg/pack</b><br>Confidence: industry reporting<br>Companies: Glencore, POSCO Future M<br>Ford rel: FORD_REL_039<br><i>Pool-allocated across Korean cathode makers.</i></div>`)[0];
+                popup_2fef842f4ce8f776892fec98f31b14be.setContent(html_c37152ad5152b5efa2c230edd5eab8b6);
+            
+        
+
+        poly_line_5a562b0d0882a6de210dffd348258bad.bindPopup(popup_2fef842f4ce8f776892fec98f31b14be)
+        ;
+
+        
+    
+    
+            poly_line_5a562b0d0882a6de210dffd348258bad.bindTooltip(
+                `<div>
+                     Cobalt: Kokkola → Gwangyang (14 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_5a562b0d0882a6de210dffd348258bad.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#F59E0B",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_5217954d07b53b51a8e5471244d06780.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_d49b4b3052b4859e066b056239503a62 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_0903a95e1f7b7ef9727c83259b2863cf = L.polyline(
+                [[-27.23, 22.95], [-26.771967187500003, 24.1970053125], [-26.30836875, 25.440621249999996], [-25.8392046875, 26.680847812499998], [-25.364475, 27.917685], [-24.8841796875, 29.151132812500002], [-24.39831875, 30.381191250000004], [-23.9068921875, 31.6078603125], [-23.4099, 32.83114], [-22.9073421875, 34.0510303125], [-22.39921875, 35.26753125], [-21.885529687500004, 36.4806428125], [-21.366275, 37.690365], [-20.8414546875, 38.8966978125], [-20.311068749999997, 40.09964124999999], [-19.7751171875, 41.2991953125], [-19.233600000000003, 42.495360000000005], [-18.686517187499998, 43.68813531249999], [-18.13386875, 44.87752125], [-17.5756546875, 46.063517812499995], [-17.011875, 47.246125], [-16.442529687500002, 48.425342812500006], [-15.867618749999998, 49.60117124999999], [-15.287142187500002, 50.7736103125], [-14.7011, 51.94266], [-14.109492187499999, 53.1083203125], [-13.512318750000002, 54.27059125000001], [-12.9095796875, 55.4294728125], [-12.301275000000002, 56.584965], [-11.687404687499999, 57.7370678125], [-11.067968749999999, 58.88578125], [-10.442967187500003, 60.0311053125], [-9.812399999999997, 61.17304], [-9.176267187500002, 62.3115853125], [-8.534568749999998, 63.44674124999999], [-7.8873046875, 64.57850781249999], [-7.234475000000001, 65.706885], [-6.576079687499999, 66.8318728125], [-5.912118749999999, 67.95347124999999], [-5.2425921875, 69.07168031249999], [-4.567499999999999, 70.1865], [-3.886842187500002, 71.2979303125], [-3.2006187499999994, 72.40597125], [-2.5088296875000013, 73.5106228125], [-1.811474999999998, 74.611885], [-1.1085546874999999, 75.70975781249999], [-0.40006875000000264, 76.80424124999999], [0.3139828125000008, 77.89533531250001], [1.0335999999999999, 78.98303999999999], [1.7587828125000033, 80.06735531250001], [2.4895312500000006, 81.14828125], [3.225845312499999, 82.2258178125], [3.9677250000000015, 83.299965], [4.715170312499999, 84.37072281249999], [5.468181250000002, 85.43809125000001], [6.226757812500001, 86.5020703125], [6.990899999999998, 87.56266], [7.760607812500001, 88.6198603125], [8.53588125, 89.67367125], [9.316720312500003, 90.7240928125], [10.103125, 91.771125], [10.895095312499997, 92.8147678125], [11.692631250000002, 93.85502125000001], [12.495732812499998, 94.8918853125], [13.304400000000005, 95.92536], [14.1186328125, 96.9554453125], [14.938431249999997, 97.98214125], [15.763795312500001, 99.0054478125], [16.594724999999997, 100.025365], [17.431220312500006, 101.04189281250001], [18.27328125, 102.05503125], [19.120907812499997, 103.0647803125], [19.9741, 104.07114], [20.8328578125, 105.0741103125], [21.697181250000003, 106.07369125000001], [22.5670703125, 107.0698828125], [23.442525, 108.062685], [24.323545312500002, 109.05209781250001], [25.210131249999996, 110.03812125], [26.102282812500004, 111.0207553125], [27.0, 112.0]],
+                {"bubblingMouseEvents": true, "color": "#8B5CF6", "dashArray": "6, 8", "dashOffset": null, "fill": false, "fillColor": "#8B5CF6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.25, "smoothFactor": 1.0, "stroke": true, "weight": 1.0583005244258363}
+            ).addTo(feature_group_d49b4b3052b4859e066b056239503a62);
+        
+    
+        var popup_c6e1ab63f468e04bd34b58112dd9ed12 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_21cfcb20d228ee2f2979c5df6dc7c7aa = $(`<div id="html_21cfcb20d228ee2f2979c5df6dc7c7aa" style="width: 100.0%; height: 100.0%;"><b>manganese ore</b><br>Hotazel (ZA) &rarr; Hunan / Guangdong region (CN)<br>Mass: <b>14 kg/pack</b><br>Confidence: inferred<br>Companies: Assmang/South32</div>`)[0];
+                popup_c6e1ab63f468e04bd34b58112dd9ed12.setContent(html_21cfcb20d228ee2f2979c5df6dc7c7aa);
+            
+        
+
+        poly_line_0903a95e1f7b7ef9727c83259b2863cf.bindPopup(popup_c6e1ab63f468e04bd34b58112dd9ed12)
+        ;
+
+        
+    
+    
+            poly_line_0903a95e1f7b7ef9727c83259b2863cf.bindTooltip(
+                `<div>
+                     Manganese: Hotazel → Hunan / Guangdong region (14 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_0903a95e1f7b7ef9727c83259b2863cf.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#8B5CF6",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_1cff878cf39314798618fae27dbb5af0 = L.polyline(
+                [[-1.57, 13.19], [-0.9689378125000001, 14.3545928125], [-0.3740512499999999, 15.520971249999999], [0.21465968749999986, 16.6891353125], [0.797195, 17.859085], [1.3735546875, 19.030820312499998], [1.9437387500000003, 20.204341250000002], [2.5077471874999993, 21.379647812499996], [3.06558, 22.55674], [3.6172371875000002, 23.7356178125], [4.16271875, 24.916281249999997], [4.702024687500001, 26.098730312500003], [5.235155000000001, 27.282965], [5.762109687500001, 28.4689853125], [6.282888749999999, 29.656791249999994], [6.7974921875000005, 30.846382812500003], [7.305920000000001, 32.037760000000006], [7.8081721874999985, 33.2309228125], [8.30424875, 34.42587125], [8.7941496875, 35.6226053125], [9.277875, 36.821124999999995], [9.755424687500001, 38.0214303125], [10.22679875, 39.22352125], [10.6919971875, 40.4273978125], [11.15102, 41.63305999999999], [11.6038671875, 42.8405078125], [12.05053875, 44.04974125], [12.491034687500001, 45.2607603125], [12.925354999999998, 46.473564999999994], [13.353499687500001, 47.6881553125], [13.77546875, 48.90453125], [14.191262187500001, 50.122692812500006], [14.60088, 51.342639999999996], [15.0043221875, 52.5643728125], [15.401588749999998, 53.787891249999994], [15.7926796875, 55.0131953125], [16.177595, 56.240285], [16.5563346875, 57.4691603125], [16.928898750000002, 58.69982125], [17.295287187499998, 59.9322678125], [17.6555, 61.1665], [18.0095371875, 62.402517812499994], [18.35739875, 63.64032125], [18.6990846875, 64.87991031249999], [19.034595, 66.121285], [19.3639296875, 67.36444531250001], [19.68708875, 68.60939124999999], [20.0040721875, 69.8561228125], [20.314879999999995, 71.10463999999999], [20.6195121875, 72.35494281250001], [20.91796875, 73.60703125], [21.2102496875, 74.8609053125], [21.496355, 76.11656500000001], [21.776284687500002, 77.37401031249999], [22.05003875, 78.63324125], [22.317617187499998, 79.8942578125], [22.57902, 81.15706], [22.8342471875, 82.4216478125], [23.083298749999997, 83.68802125], [23.3261746875, 84.9561803125], [23.562875, 86.226125], [23.7933996875, 87.4978553125], [24.017748750000003, 88.77137125], [24.235922187499998, 90.04667281249999], [24.447920000000003, 91.32376000000001], [24.6537421875, 92.6026328125], [24.85338875, 93.88329124999998], [25.0468596875, 95.1657353125], [25.234154999999998, 96.44996499999999], [25.415274687500002, 97.7359803125], [25.59021875, 99.02378125], [25.7589871875, 100.3133678125], [25.92158, 101.60473999999999], [26.0779971875, 102.89789781249999], [26.228238750000003, 104.19284125000001], [26.372304687499998, 105.4895703125], [26.510195000000003, 106.78808500000001], [26.6419096875, 108.08838531250001], [26.76744875, 109.39047125], [26.886812187500002, 110.6943428125], [27.0, 112.0]],
+                {"bubblingMouseEvents": true, "color": "#8B5CF6", "dashArray": "6, 8", "dashOffset": null, "fill": false, "fillColor": "#8B5CF6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.25, "smoothFactor": 1.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d49b4b3052b4859e066b056239503a62);
+        
+    
+        var popup_6ecce384f3ea23a532fc2549271d4a5b = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_08b6764650702098cf9861cb2cdf026c = $(`<div id="html_08b6764650702098cf9861cb2cdf026c" style="width: 100.0%; height: 100.0%;"><b>manganese ore</b><br>Moanda (GA) &rarr; Hunan / Guangdong region (CN)<br>Mass: <b>6 kg/pack</b><br>Confidence: inferred<br>Companies: Eramet COMILOG</div>`)[0];
+                popup_6ecce384f3ea23a532fc2549271d4a5b.setContent(html_08b6764650702098cf9861cb2cdf026c);
+            
+        
+
+        poly_line_1cff878cf39314798618fae27dbb5af0.bindPopup(popup_6ecce384f3ea23a532fc2549271d4a5b)
+        ;
+
+        
+    
+    
+            poly_line_1cff878cf39314798618fae27dbb5af0.bindTooltip(
+                `<div>
+                     Manganese: Moanda → Hunan / Guangdong region (6 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_1cff878cf39314798618fae27dbb5af0.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#8B5CF6",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_9560ca392af5d458ccb29faf7f393e31 = L.polyline(
+                [[27.0, 112.0], [27.137634375, 112.1767221875], [27.2742875, 112.35393875], [27.409959375000003, 112.53164968750002], [27.54465, 112.70985499999999], [27.678359375, 112.8885546875], [27.811087500000003, 113.06774875], [27.942834374999997, 113.2474371875], [28.073600000000003, 113.42762], [28.203384375, 113.6082971875], [28.3321875, 113.78946875], [28.460009375000002, 113.97113468750001], [28.58685, 114.15329499999999], [28.712709375, 114.3359496875], [28.837587499999998, 114.51909875], [28.961484374999998, 114.7027421875], [29.084400000000006, 114.88688000000002], [29.206334374999994, 115.07151218749999], [29.327287500000004, 115.25663875000001], [29.447259374999998, 115.4422596875], [29.566249999999997, 115.628375], [29.684259375, 115.8149846875], [29.801287499999997, 116.00208875], [29.917334375, 116.1896871875], [30.032399999999996, 116.37777999999999], [30.146484375, 116.56636718749999], [30.259587500000002, 116.75544875000001], [30.371709375, 116.94502468750001], [30.48285, 117.135095], [30.593009375, 117.3256596875], [30.7021875, 117.51671875000001], [30.810384374999998, 117.70827218750001], [30.917599999999997, 117.90032000000001], [31.023834375, 118.0928621875], [31.129087499999997, 118.28589874999997], [31.233359375, 118.4794296875], [31.336650000000002, 118.67345500000002], [31.438959375, 118.86797468749998], [31.540287499999998, 119.06298875], [31.640634374999994, 119.2584971875], [31.74, 119.4545], [31.838384374999997, 119.6509971875], [31.935787499999996, 119.84798874999998], [32.032209375, 120.0454746875], [32.12765, 120.24345500000001], [32.222109374999995, 120.44192968750001], [32.31558749999999, 120.64089874999999], [32.408084375, 120.8403621875], [32.4996, 121.04032000000001], [32.590134375, 121.2407721875], [32.6796875, 121.44171875], [32.768259375, 121.6431596875], [32.855850000000004, 121.84509499999999], [32.942459375, 122.0475246875], [33.0280875, 122.25044875], [33.112734375, 122.45386718750001], [33.1964, 122.65778], [33.279084375, 122.8621871875], [33.3607875, 123.06708875000001], [33.441509374999995, 123.2724846875], [33.521249999999995, 123.478375], [33.600009375, 123.6847596875], [33.677787499999994, 123.89163875], [33.75458437499999, 124.0990121875], [33.8304, 124.30688], [33.90523437499999, 124.5152421875], [33.9790875, 124.72409875], [34.051959374999996, 124.9334496875], [34.12385, 125.143295], [34.194759375, 125.3536346875], [34.2646875, 125.56446875], [34.333634374999995, 125.7757971875], [34.4016, 125.98762], [34.468584375, 126.1999371875], [34.534587499999994, 126.41274875], [34.599609375, 126.6260546875], [34.66365, 126.83985500000001], [34.726709375, 127.0541496875], [34.7887875, 127.26893875], [34.849884374999995, 127.4842221875], [34.91, 127.7]],
+                {"bubblingMouseEvents": true, "color": "#8B5CF6", "dashArray": "6, 8", "dashOffset": null, "fill": false, "fillColor": "#8B5CF6", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.25, "smoothFactor": 1.0, "stroke": true, "weight": 1.296148139681572}
+            ).addTo(feature_group_d49b4b3052b4859e066b056239503a62);
+        
+    
+        var popup_cc2c87f40d7b01fc7d77138f5a462dc0 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_a3b40f5bf9db25db123f67b241306dc6 = $(`<div id="html_a3b40f5bf9db25db123f67b241306dc6" style="width: 100.0%; height: 100.0%;"><b>manganese sulfate</b><br>Hunan / Guangdong region (CN) &rarr; Gwangyang (KR)<br>Mass: <b>21 kg/pack</b><br>Confidence: inferred<br>Companies: China Mn refining hub (representative)<br><i>FORD_GAP_006 — Mn supplier not disclosed; representative routing.</i></div>`)[0];
+                popup_cc2c87f40d7b01fc7d77138f5a462dc0.setContent(html_a3b40f5bf9db25db123f67b241306dc6);
+            
+        
+
+        poly_line_9560ca392af5d458ccb29faf7f393e31.bindPopup(popup_cc2c87f40d7b01fc7d77138f5a462dc0)
+        ;
+
+        
+    
+    
+            poly_line_9560ca392af5d458ccb29faf7f393e31.bindTooltip(
+                `<div>
+                     Manganese: Hunan / Guangdong region → Gwangyang (21 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_9560ca392af5d458ccb29faf7f393e31.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#8B5CF6",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_d49b4b3052b4859e066b056239503a62.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_76115dd9e6985ed0980b5d68f5750272 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_85115775d84fafa82efb0e6a51e78444 = L.polyline(
+                [[47.34, 131.02], [47.071870000000004, 130.746775], [46.80268, 130.47510000000003], [46.532430000000005, 130.20497500000002], [46.261120000000005, 129.9364], [45.98875, 129.669375], [45.715320000000006, 129.40390000000002], [45.440830000000005, 129.139975], [45.16528, 128.87760000000003], [44.88867, 128.616775], [44.611000000000004, 128.35750000000002], [44.33227000000001, 128.09977500000002], [44.05248, 127.8436], [43.77163, 127.58897500000002], [43.48971999999999, 127.33590000000001], [43.20675000000001, 127.08437500000001], [42.92272000000001, 126.83440000000002], [42.63763, 126.58597499999999], [42.35148, 126.33910000000002], [42.06426999999999, 126.09377499999998], [41.775999999999996, 125.85], [41.48667000000001, 125.60777500000002], [41.19628, 125.36710000000001], [40.904830000000004, 125.127975], [40.61232, 124.8904], [40.31875, 124.65437500000002], [40.024119999999996, 124.41990000000003], [39.72843, 124.18697500000002], [39.43168, 123.9556], [39.133869999999995, 123.725775], [38.835, 123.49750000000002], [38.53507, 123.27077500000003], [38.23408, 123.0456], [37.932030000000005, 122.82197500000001], [37.628919999999994, 122.59989999999999], [37.324749999999995, 122.37937500000001], [37.01952, 122.16040000000001], [36.713229999999996, 121.94297500000002], [36.405879999999996, 121.7271], [36.097469999999994, 121.512775], [35.788, 121.3], [35.47747, 121.088775], [35.165879999999994, 120.87910000000001], [34.853229999999996, 120.670975], [34.539519999999996, 120.46440000000001], [34.22475, 120.259375], [33.90892, 120.05590000000001], [33.59203, 119.85397499999999], [33.27408, 119.6536], [32.95506999999999, 119.45477500000001], [32.635, 119.25750000000001], [32.313869999999994, 119.06177500000001], [31.99168, 118.86760000000001], [31.668429999999997, 118.67497500000002], [31.344119999999997, 118.4839], [31.018749999999997, 118.294375], [30.692319999999995, 118.10640000000001], [30.364829999999998, 117.919975], [30.036279999999998, 117.7351], [29.706669999999995, 117.55177499999999], [29.375999999999998, 117.37], [29.044269999999997, 117.189775], [28.711479999999995, 117.0111], [28.37763, 116.83397500000001], [28.04272, 116.65840000000001], [27.70675, 116.484375], [27.36972, 116.31190000000001], [27.03163, 116.140975], [26.692479999999996, 115.9716], [26.352269999999997, 115.803775], [26.011000000000003, 115.63750000000002], [25.66867, 115.47277500000001], [25.32528, 115.3096], [24.98083, 115.14797500000002], [24.63532, 114.9879], [24.28875, 114.829375], [23.94112, 114.67240000000001], [23.59243, 114.51697500000002], [23.24268, 114.3631], [22.891869999999997, 114.210775], [22.54, 114.06]],
+                {"bubblingMouseEvents": true, "color": "#6B7280", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#6B7280", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 3.7841775856849003}
+            ).addTo(feature_group_76115dd9e6985ed0980b5d68f5750272);
+        
+    
+        var popup_4a2271bdcc841d1a6c5f5eedf1f239f3 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_276ece45497a8ed733ffc9a8d48b1f46 = $(`<div id="html_276ece45497a8ed733ffc9a8d48b1f46" style="width: 100.0%; height: 100.0%;"><b>natural flake graphite</b><br>Jixi / Hegang (CN) &rarr; Shenzhen (CN)<br>Mass: <b>179 kg/pack</b><br>Confidence: industry reporting<br>Companies: BTR<br>Ford rel: FORD_REL_033<br><i>FORD_GAP_002 — province-level mine attribution only.</i></div>`)[0];
+                popup_4a2271bdcc841d1a6c5f5eedf1f239f3.setContent(html_276ece45497a8ed733ffc9a8d48b1f46);
+            
+        
+
+        poly_line_85115775d84fafa82efb0e6a51e78444.bindPopup(popup_4a2271bdcc841d1a6c5f5eedf1f239f3)
+        ;
+
+        
+    
+    
+            poly_line_85115775d84fafa82efb0e6a51e78444.bindTooltip(
+                `<div>
+                     Graphite: Jixi / Hegang → Shenzhen (179 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_85115775d84fafa82efb0e6a51e78444.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 5.25,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#6B7280",
+  "font-weight": "bold",
+  "font-size": "15",
+},
+}
+            );
+        
+    
+            var poly_line_ede5e4e4088bd0ee6a7c052beddfe8f2 = L.polyline(
+                [[22.54, 114.06], [23.28727, 111.60799218750002], [24.02203, 109.15471874999999], [24.74428, 106.70017968750003], [25.45402, 104.244375], [26.15125, 101.78730468750001], [26.83597, 99.32896875], [27.50818, 96.8693671875], [28.167880000000004, 94.4085], [28.81507, 91.94636718749999], [29.44975, 89.48296875], [30.071920000000002, 87.01830468750002], [30.681579999999997, 84.552375], [31.27873, 82.0851796875], [31.863369999999996, 79.61671874999999], [32.4355, 77.14699218749999], [32.99512000000001, 74.67600000000002], [33.542229999999996, 72.20374218750001], [34.07683, 69.73021875], [34.59891999999999, 67.25542968749998], [35.1085, 64.779375], [35.60557, 62.302054687500004], [36.090129999999995, 59.82346875], [36.56218, 57.3436171875], [37.021719999999995, 54.8625], [37.46875, 52.380117187500005], [37.903270000000006, 49.896468750000004], [38.32528, 47.4115546875], [38.73477999999999, 44.925375], [39.131769999999996, 42.437929687499995], [39.51625, 39.94921875], [39.888220000000004, 37.45924218750001], [40.24768, 34.967999999999996], [40.594629999999995, 32.47549218750001], [40.929069999999996, 29.98171875], [41.251000000000005, 27.486679687500008], [41.56042, 24.99037500000001], [41.857330000000005, 22.4928046875], [42.141729999999995, 19.993968750000004], [42.413619999999995, 17.493867187499998], [42.672999999999995, 14.9925], [42.91987, 12.48986718750001], [43.15423, 9.985968750000001], [43.376079999999995, 7.480804687500008], [43.58542, 4.974374999999995], [43.78225, 2.4666796875000045], [43.96657, -0.042281249999987836], [44.13838, -2.5525078125], [44.29768, -5.063999999999989], [44.44447, -7.576757812500009], [44.57875, -10.09078125], [44.70052, -12.606070312499991], [44.809779999999996, -15.122625000000006], [44.906530000000004, -17.6404453125], [44.99077, -20.15953125], [45.0625, -22.679882812499994], [45.121719999999996, -25.20149999999999], [45.16843, -27.724382812500004], [45.20263, -30.24853125], [45.22431999999999, -32.773945312500004], [45.23350000000001, -35.300625], [45.23017, -37.82857031249998], [45.214330000000004, -40.35778125], [45.18598, -42.888257812499994], [45.14512, -45.42000000000001], [45.09175, -47.9530078125], [45.02587, -50.48728124999998], [44.94748, -53.0228203125], [44.856579999999994, -55.55962499999998], [44.75317, -58.09769531250001], [44.63725, -60.63703124999999], [44.50882, -63.177632812499986], [44.36788, -65.7195], [44.21443, -68.26263281249999], [44.04847, -70.80703125000001], [43.87, -73.3526953125], [43.67902000000001, -75.89962499999999], [43.475530000000006, -78.44782031250001], [43.25953, -80.99728124999999], [43.03102, -83.5480078125], [42.79, -86.1]],
+                {"bubblingMouseEvents": true, "color": "#6B7280", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#6B7280", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2.545584412271571}
+            ).addTo(feature_group_76115dd9e6985ed0980b5d68f5750272);
+        
+    
+        var popup_8afa9094a2df820410856884d3aecffa = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_4c1a41d4ae802e6d003986915208443a = $(`<div id="html_4c1a41d4ae802e6d003986915208443a" style="width: 100.0%; height: 100.0%;"><b>spheronized graphite anode</b><br>Shenzhen (CN) &rarr; Holland (US)<br>Mass: <b>81 kg/pack</b><br>Confidence: industry reporting<br>Companies: BTR, LGES<br>Ford rel: FORD_REL_033</div>`)[0];
+                popup_8afa9094a2df820410856884d3aecffa.setContent(html_4c1a41d4ae802e6d003986915208443a);
+            
+        
+
+        poly_line_ede5e4e4088bd0ee6a7c052beddfe8f2.bindPopup(popup_8afa9094a2df820410856884d3aecffa)
+        ;
+
+        
+    
+    
+            poly_line_ede5e4e4088bd0ee6a7c052beddfe8f2.bindTooltip(
+                `<div>
+                     Graphite: Shenzhen → Holland (81 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_ede5e4e4088bd0ee6a7c052beddfe8f2.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#6B7280",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_cff580ab1879c2ca8c1184b7fef67f65 = L.polyline(
+                [[22.54, 114.06], [23.1366678125, 112.91765718750001], [23.727271249999998, 111.77352875], [24.3118103125, 110.62761468750001], [24.890285, 109.47991499999999], [25.4626953125, 108.3304296875], [26.029041250000002, 107.17915875000001], [26.589322812499997, 106.0261021875], [27.14354, 104.87126], [27.6916928125, 103.71463218749999], [28.23378125, 102.55621875], [28.769805312500004, 101.39601968750002], [29.299765, 100.23403499999999], [29.823660312500003, 99.0702646875], [30.341491249999997, 97.90470875], [30.8532578125, 96.7373671875], [31.358960000000007, 95.56824000000003], [31.8585978125, 94.3973271875], [32.352171250000005, 93.22462875000001], [32.83968031249999, 92.05014468749998], [33.321125, 90.873875], [33.7965053125, 89.6958196875], [34.26582125, 88.51597874999999], [34.7290728125, 87.3343521875], [35.18626, 86.15093999999999], [35.6373828125, 84.9657421875], [36.08244125, 83.77875875000001], [36.5214353125, 82.5899896875], [36.954365, 81.399435], [37.381230312499994, 80.2070946875], [37.80203125, 79.01296875], [38.2167678125, 77.81705718750001], [38.625440000000005, 76.61936], [39.0280478125, 75.4198771875], [39.42459125, 74.21860874999999], [39.815070312500005, 73.01555468750001], [40.19948500000001, 71.81071500000002], [40.57783531250001, 70.6040896875], [40.950121249999995, 69.39567875], [41.3163428125, 68.18548218749999], [41.676500000000004, 66.9735], [42.030592812500004, 65.7597321875], [42.37862125, 64.54417875], [42.720585312500006, 63.326839687500005], [43.05648500000001, 62.10771499999999], [43.386320312500004, 60.8868046875], [43.71009125, 59.664108750000004], [44.027797812500005, 58.4396271875], [44.33944, 57.21336], [44.6450178125, 55.9853071875], [44.94453125, 54.75546875], [45.2379803125, 53.52384468750001], [45.525365, 52.290434999999995], [45.80668531250001, 51.0552396875], [46.08194125000001, 49.81825875], [46.3511328125, 48.57949218750001], [46.61426, 47.33894000000001], [46.8713228125, 46.096602187500004], [47.12232125, 44.85247875], [47.367255312500006, 43.6065696875], [47.606125000000006, 42.358875], [47.8389303125, 41.10939468750001], [48.06567125000001, 39.85812875], [48.2863478125, 38.60507718750001], [48.500960000000006, 37.35023999999999], [48.70950781250001, 36.0936171875], [48.91199125, 34.83520875000001], [49.108410312500006, 33.575014687499994], [49.298765, 32.313035], [49.48305531250001, 31.049269687499997], [49.66128125, 29.783718750000002], [49.833442812499996, 28.516382187500007], [49.99954, 27.247259999999997], [50.1595728125, 25.976352187500005], [50.31354125, 24.703658749999995], [50.461445312500004, 23.429179687500003], [50.603285, 22.152915000000007], [50.7390603125, 20.8748646875], [50.868771249999995, 19.595028750000004], [50.9924178125, 18.313407187499994], [51.11, 17.03]],
+                {"bubblingMouseEvents": true, "color": "#6B7280", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#6B7280", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 1.469693845669907}
+            ).addTo(feature_group_76115dd9e6985ed0980b5d68f5750272);
+        
+    
+        var popup_3e4d99c5b253396691a1054f762dbb6d = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_4d6011d87b3d636416edb8fe6074dd82 = $(`<div id="html_4d6011d87b3d636416edb8fe6074dd82" style="width: 100.0%; height: 100.0%;"><b>spheronized graphite anode</b><br>Shenzhen (CN) &rarr; Wrocław (PL)<br>Mass: <b>27 kg/pack</b><br>Confidence: industry reporting<br>Companies: BTR, LGES</div>`)[0];
+                popup_3e4d99c5b253396691a1054f762dbb6d.setContent(html_4d6011d87b3d636416edb8fe6074dd82);
+            
+        
+
+        poly_line_cff580ab1879c2ca8c1184b7fef67f65.bindPopup(popup_3e4d99c5b253396691a1054f762dbb6d)
+        ;
+
+        
+    
+    
+            poly_line_cff580ab1879c2ca8c1184b7fef67f65.bindTooltip(
+                `<div>
+                     Graphite: Shenzhen → Wrocław (27 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_cff580ab1879c2ca8c1184b7fef67f65.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#6B7280",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_76115dd9e6985ed0980b5d68f5750272.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_a12e9a24269c0474592710b079636e95 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_c780ed721a34bdbb9bcb50807a7e0186 = L.polyline(
+                [[34.91, 127.7], [35.53631875, 125.04695375000001], [36.149274999999996, 122.39341499999999], [36.74886875, 119.73938375000002], [37.33509999999999, 117.08486], [37.90796875, 114.42984375], [38.467475, 111.77433500000001], [39.01361874999999, 109.11833374999999], [39.5464, 106.46184000000001], [40.06581875, 103.80485375], [40.571875, 101.147375], [41.06456875, 98.48940375000002], [41.543899999999994, 95.83093999999998], [42.009868749999995, 93.17198375000001], [42.46247499999999, 90.51253499999999], [42.90171875, 87.85259375], [43.3276, 85.19216000000003], [43.74011874999999, 82.53123375], [44.139275, 79.86981500000002], [44.525068749999996, 77.20790375], [44.897499999999994, 74.5455], [45.25656875, 71.88260375], [45.602275, 69.219215], [45.93461875, 66.55533375], [46.25359999999999, 63.89096000000001], [46.55921875, 61.226093750000004], [46.851475, 58.56073500000001], [47.130368749999995, 55.894883750000005], [47.39589999999999, 53.22854000000001], [47.64806874999999, 50.56170375], [47.886874999999996, 47.894375000000004], [48.11231875000001, 45.22655375000001], [48.3244, 42.55824], [48.52311875, 39.88943375000001], [48.70847499999999, 37.220135], [48.88046874999999, 34.55034375], [49.039100000000005, 31.88006000000001], [49.184368750000004, 29.209283749999994], [49.316275, 26.538015000000005], [49.43481874999999, 23.866253750000002], [49.54, 21.194000000000003], [49.63181875, 18.521253750000014], [49.710274999999996, 15.848015000000007], [49.77536875, 13.174283750000011], [49.827099999999994, 10.500059999999998], [49.86546875, 7.825343750000005], [49.890474999999995, 5.150135000000017], [49.90211875, 2.4744337499999958], [49.90039999999999, -0.20175999999998595], [49.88531875, -2.8784462500000103], [49.856874999999995, -5.555624999999999], [49.815068749999995, -8.233296249999988], [49.759899999999995, -10.911460000000005], [49.691368749999995, -13.590116249999994], [49.609474999999996, -16.269265000000004], [49.51421875, -18.948906249999993], [49.4056, -21.629039999999986], [49.28361875, -24.30966625], [49.148275, -26.990784999999995], [48.999568749999995, -29.672396250000006], [48.8375, -32.3545], [48.66206875, -35.037096249999976], [48.473275, -37.720185], [48.27111875, -40.40376624999999], [48.0556, -43.08784000000001], [47.82671875, -45.772406249999996], [47.584475, -48.457464999999985], [47.32886875, -51.14301625], [47.0599, -53.829059999999984], [46.77756875, -56.51559625000001], [46.481875, -59.20262499999999], [46.17281875, -61.89014624999999], [45.85039999999999, -64.57816], [45.51461875, -67.26666624999999], [45.165475, -69.95566500000001], [44.80296875, -72.64515625], [44.42710000000001, -75.33514], [44.03786875, -78.02561625000001], [43.635275, -80.716585], [43.21931875, -83.40804625], [42.79, -86.1]],
+                {"bubblingMouseEvents": true, "color": "#B91C1C", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#B91C1C", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 2.7129319932501073}
+            ).addTo(feature_group_a12e9a24269c0474592710b079636e95);
+        
+    
+        var popup_911c2a5cfc1ae602bb4f3c978d2613bc = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_a1c9c34c8911e8d7940284c07b3965ef = $(`<div id="html_a1c9c34c8911e8d7940284c07b3965ef" style="width: 100.0%; height: 100.0%;"><b>NMC811 cathode active material</b><br>Gwangyang (KR) &rarr; Holland (US)<br>Mass: <b>92 kg/pack</b><br>Confidence: confirmed<br>Companies: POSCO Future M, LGES<br>Ford rel: FORD_REL_030</div>`)[0];
+                popup_911c2a5cfc1ae602bb4f3c978d2613bc.setContent(html_a1c9c34c8911e8d7940284c07b3965ef);
+            
+        
+
+        poly_line_c780ed721a34bdbb9bcb50807a7e0186.bindPopup(popup_911c2a5cfc1ae602bb4f3c978d2613bc)
+        ;
+
+        
+    
+    
+            poly_line_c780ed721a34bdbb9bcb50807a7e0186.bindTooltip(
+                `<div>
+                     Cam: Gwangyang → Holland (92 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_c780ed721a34bdbb9bcb50807a7e0186.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#B91C1C",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_a80e190fafa8521063cae929871ed025 = L.polyline(
+                [[34.91, 127.7], [35.3857165625, 126.35661875000001], [35.85451625, 125.012225], [36.316399062500004, 123.66681875], [36.771364999999996, 122.3204], [37.2194140625, 120.97296874999999], [37.66054625, 119.62452500000002], [38.0947615625, 118.27506874999999], [38.522059999999996, 116.92460000000001], [38.942441562499994, 115.57311874999999], [39.35590625, 114.220625], [39.7624540625, 112.86711875000003], [40.16208499999999, 111.51259999999999], [40.554799062499995, 110.15706875000002], [40.94059624999999, 108.800525], [41.31947656249999, 107.44296875], [41.69144000000001, 106.08440000000003], [42.05648656249999, 104.72481875], [42.41461625, 103.36422500000002], [42.76582906249999, 102.00261875], [43.110125, 100.64], [43.44750406250001, 99.27636875000002], [43.777966250000006, 97.911725], [44.101511562499994, 96.54606875], [44.41813999999999, 95.1794], [44.72785156249999, 93.81171875000001], [45.030646250000004, 92.44302500000002], [45.32652406249999, 91.07331875], [45.615485, 89.7026], [45.8975290625, 88.33086875000001], [46.17265625, 86.95812500000001], [46.440866562500005, 85.58436875000002], [46.70215999999999, 84.20960000000001], [46.9565365625, 82.83381875], [47.203996249999996, 81.45702499999999], [47.44453906249999, 80.07921875000002], [47.678165, 78.70040000000003], [47.9048740625, 77.32056875], [48.12466624999999, 75.93972500000001], [48.33754156249999, 74.55786874999998], [48.543499999999995, 73.17500000000001], [48.7425415625, 71.79111875000002], [48.93466624999999, 70.406225], [49.1198740625, 69.02031875], [49.298165, 67.6334], [49.4695390625, 66.24546875000001], [49.633996249999996, 64.85652500000002], [49.7915365625, 63.46656875], [49.94216, 62.075600000000016], [50.0858665625, 60.68361875], [50.22265625, 59.290625000000006], [50.3525290625, 57.896618750000016], [50.47548499999999, 56.5016], [50.5915240625, 55.10556875], [50.70064625, 53.708524999999995], [50.802851562499995, 52.31046875000001], [50.89814, 50.911400000000015], [50.9865115625, 49.51131875000001], [51.06796625, 48.11022500000001], [51.142504062499995, 46.70811875], [51.210125, 45.30500000000001], [51.2708290625, 43.90086875000001], [51.324616250000005, 42.495725], [51.371486562499996, 41.089568750000005], [51.41144, 39.6824], [51.4444765625, 38.27421875], [51.47059625, 36.86502500000001], [51.4897990625, 35.45481875], [51.502085, 34.043600000000005], [51.5074540625, 32.63136875], [51.505906249999995, 31.218125000000004], [51.4974415625, 29.803868750000007], [51.482060000000004, 28.3886], [51.4597615625, 26.972318750000007], [51.43054625, 25.555025], [51.3944140625, 24.13671875], [51.351365, 22.71740000000001], [51.301399062499996, 21.29706875], [51.24451625, 19.875725000000003], [51.1807165625, 18.453368749999996], [51.11, 17.03]],
+                {"bubblingMouseEvents": true, "color": "#B91C1C", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#B91C1C", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.7663521732655694}
+            ).addTo(feature_group_a12e9a24269c0474592710b079636e95);
+        
+    
+        var popup_c0092831378fd5b24e71933f4f3bdcb4 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_1d3b93be01a9040ad69772a11ad2447c = $(`<div id="html_1d3b93be01a9040ad69772a11ad2447c" style="width: 100.0%; height: 100.0%;"><b>NMC811 cathode active material</b><br>Gwangyang (KR) &rarr; Wrocław (PL)<br>Mass: <b>39 kg/pack</b><br>Confidence: confirmed<br>Companies: POSCO Future M, LGES<br>Ford rel: FORD_REL_030</div>`)[0];
+                popup_c0092831378fd5b24e71933f4f3bdcb4.setContent(html_1d3b93be01a9040ad69772a11ad2447c);
+            
+        
+
+        poly_line_a80e190fafa8521063cae929871ed025.bindPopup(popup_c0092831378fd5b24e71933f4f3bdcb4)
+        ;
+
+        
+    
+    
+            poly_line_a80e190fafa8521063cae929871ed025.bindTooltip(
+                `<div>
+                     Cam: Gwangyang → Wrocław (39 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_a80e190fafa8521063cae929871ed025.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#B91C1C",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_33ea0361fa3ee63b0ab33348f225650b = L.polyline(
+                [[36.02, 129.34], [36.6364925, 126.66371343750001], [37.23952, 123.98700374999999], [37.8290825, 121.30987093750002], [38.40518, 118.632315], [38.96781250000001, 115.9543359375], [39.516980000000004, 113.27593375000002], [40.052682499999996, 110.59710843749998], [40.574920000000006, 107.91786], [41.0836925, 105.23818843749999], [41.579, 102.55809375], [42.06084250000001, 99.87757593750003], [42.52922, 97.19663499999999], [42.9841325, 94.5152709375], [43.42557999999999, 91.83348374999998], [43.8535625, 89.1512734375], [44.268080000000005, 86.46864000000002], [44.6691325, 83.78558343750001], [45.056720000000006, 81.10210375000001], [45.43084249999999, 78.41820093749999], [45.7915, 75.73387500000001], [46.1386925, 73.04912593750001], [46.47241999999999, 70.36395375000001], [46.792682500000005, 67.67835843750001], [47.09948, 64.99234], [47.3928125, 62.305898437500005], [47.67268000000001, 59.619033750000014], [47.939082500000005, 56.93174593750001], [48.19202, 54.244035000000004], [48.4314925, 51.55590093749999], [48.657500000000006, 48.867343749999996], [48.87004250000001, 46.17836343750001], [49.06912, 43.48896], [49.2547325, 40.79913343750002], [49.42688, 38.108883750000004], [49.585562499999995, 35.41821093750001], [49.73078, 32.72711500000001], [49.8625325, 30.035595937500002], [49.980819999999994, 27.343653750000005], [50.0856425, 24.651288437500003], [50.177, 21.958500000000008], [50.254892500000004, 19.26528843750001], [50.31932, 16.57165375], [50.3702825, 13.877595937500008], [50.40778, 11.183114999999994], [50.4318125, 8.488210937500003], [50.44238, 5.792883750000019], [50.4394825, 3.0971334374999984], [50.42312, 0.400960000000012], [50.3932925, -2.2956365625000075], [50.35, -4.99265625], [50.293242500000005, -7.690099062499989], [50.22302, -10.387965000000001], [50.1393325, -13.086254062499997], [50.04218, -15.784966250000004], [49.9315625, -18.484101562499994], [49.80748, -21.18365999999999], [49.6699325, -23.883641562500003], [49.518919999999994, -26.584046249999997], [49.35444249999999, -29.284874062500002], [49.1765, -31.986124999999994], [48.9850925, -34.68779906249998], [48.78022, -37.38989625000001], [48.561882499999996, -40.09241656249999], [48.330079999999995, -42.79536000000001], [48.0848125, -45.498726562499996], [47.826080000000005, -48.20251624999998], [47.5538825, -50.9067290625], [47.26822, -53.611364999999985], [46.9690925, -56.316424062500005], [46.6565, -59.021906249999994], [46.3304425, -61.72781156249999], [45.99092, -64.43414], [45.6379325, -67.14089156249999], [45.27148, -69.84806625], [44.8915625, -72.5556640625], [44.498180000000005, -75.263685], [44.09133250000001, -77.97212906250002], [43.67102, -80.68099624999999], [43.237242499999994, -83.39028656250001], [42.79, -86.1]],
+                {"bubblingMouseEvents": true, "color": "#B91C1C", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#B91C1C", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.2}
+            ).addTo(feature_group_a12e9a24269c0474592710b079636e95);
+        
+    
+        var popup_f8f3cf2cf64b98d4cacfe6193b805597 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_bd4c94600b6818152abf7d204096218a = $(`<div id="html_bd4c94600b6818152abf7d204096218a" style="width: 100.0%; height: 100.0%;"><b>NMC811 CAM (secondary)</b><br>Pohang (KR) &rarr; Holland (US)<br>Mass: <b>18 kg/pack</b><br>Confidence: confirmed<br>Companies: EcoPro BM, LGES<br>Ford rel: FORD_REL_032</div>`)[0];
+                popup_f8f3cf2cf64b98d4cacfe6193b805597.setContent(html_bd4c94600b6818152abf7d204096218a);
+            
+        
+
+        poly_line_33ea0361fa3ee63b0ab33348f225650b.bindPopup(popup_f8f3cf2cf64b98d4cacfe6193b805597)
+        ;
+
+        
+    
+    
+            poly_line_33ea0361fa3ee63b0ab33348f225650b.bindTooltip(
+                `<div>
+                     Cam: Pohang → Holland (18 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_33ea0361fa3ee63b0ab33348f225650b.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#B91C1C",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_14be50903b54d855b643e2abb2587823 = L.polyline(
+                [[35.87, 128.6], [36.486540624999996, 125.93333375], [37.089662499999996, 123.26623499999998], [37.679365625, 120.59870375000001], [38.255649999999996, 117.93074], [38.818515625, 115.26234375], [39.3679625, 112.59351500000001], [39.90399062499999, 109.92425374999998], [40.4266, 107.25456], [40.935790624999996, 104.58443374999999], [41.4315625, 101.91387499999999], [41.913915625, 99.24288375000002], [42.38285, 96.57145999999997], [42.838365624999994, 93.89960375000001], [43.28046249999999, 91.22731499999998], [43.709140625, 88.55459374999998], [44.1244, 85.88144000000001], [44.526240624999986, 83.20785374999998], [44.9146625, 80.533835], [45.28966562499999, 77.85938374999999], [45.65124999999999, 75.1845], [45.999415625000005, 72.50918374999999], [46.3341625, 69.83343500000001], [46.655490625000006, 67.15725375], [46.96339999999999, 64.48064], [47.257890625, 61.80359374999999], [47.538962500000004, 59.126115], [47.806615625, 56.448203750000005], [48.060849999999995, 53.76986], [48.30166562499999, 51.09108374999999], [48.5290625, 48.411875], [48.743040625000006, 45.732233750000006], [48.943599999999996, 43.05215999999999], [49.130740624999994, 40.37165375000001], [49.30446249999999, 37.690715], [49.464765625, 35.009343750000006], [49.61165, 32.32754000000001], [49.745115625, 29.645303749999993], [49.8651625, 26.962635000000002], [49.971790625, 24.279533749999995], [50.065, 21.595999999999997], [50.144790625, 18.912033750000006], [50.21116249999999, 16.227635000000003], [50.264115625, 13.542803750000001], [50.30365, 10.857539999999993], [50.32976562499999, 8.171843750000004], [50.342462499999996, 5.48571500000001], [50.341740625, 2.799153749999995], [50.32759999999999, 0.11216000000001003], [50.300040625, -2.5752662500000127], [50.2590625, -5.263125000000002], [50.204665625000004, -7.9514162499999905], [50.136849999999995, -10.64014000000001], [50.055615625, -13.329296249999999], [49.9609625, -16.018885000000004], [49.852890625, -18.708906249999995], [49.7314, -21.399359999999987], [49.596490625, -24.090246250000003], [49.448162499999995, -26.781565], [49.286415625, -29.473316250000003], [49.11125, -32.1655], [48.92266562499999, -34.85811624999998], [48.7206625, -37.551165000000005], [48.505240625, -40.244646249999995], [48.276399999999995, -42.93856000000001], [48.034140625, -45.63290625], [47.7784625, -48.32768499999998], [47.509365625, -51.02289625], [47.22685, -53.71853999999999], [46.930915625, -56.41461625000001], [46.621562499999996, -59.111124999999994], [46.298790624999995, -61.80806624999999], [45.962599999999995, -64.50544000000001], [45.612990624999995, -67.20324624999999], [45.249962499999995, -69.90148500000001], [44.873515624999996, -72.60015625], [44.483650000000004, -75.29925999999999], [44.080365625000006, -77.99879625000001], [43.6636625, -80.698765], [43.233540624999996, -83.39916625000001], [42.79, -86.1]],
+                {"bubblingMouseEvents": true, "color": "#B91C1C", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#B91C1C", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 1.0583005244258363}
+            ).addTo(feature_group_a12e9a24269c0474592710b079636e95);
+        
+    
+        var popup_e4e4d3b3dd39e8a8b627c95b201cf1c5 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_61824f740ce27d274e685fee200c7c1a = $(`<div id="html_61824f740ce27d274e685fee200c7c1a" style="width: 100.0%; height: 100.0%;"><b>NMC811 CAM (secondary)</b><br>Daegu (KR) &rarr; Holland (US)<br>Mass: <b>14 kg/pack</b><br>Confidence: confirmed<br>Companies: L&F, LGES<br>Ford rel: FORD_REL_031</div>`)[0];
+                popup_e4e4d3b3dd39e8a8b627c95b201cf1c5.setContent(html_61824f740ce27d274e685fee200c7c1a);
+            
+        
+
+        poly_line_14be50903b54d855b643e2abb2587823.bindPopup(popup_e4e4d3b3dd39e8a8b627c95b201cf1c5)
+        ;
+
+        
+    
+    
+            poly_line_14be50903b54d855b643e2abb2587823.bindTooltip(
+                `<div>
+                     Cam: Daegu → Holland (14 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_14be50903b54d855b643e2abb2587823.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#B91C1C",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_a12e9a24269c0474592710b079636e95.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var feature_group_318437e3b63449655857bc86dd100ee8 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_f7ad68edc10fda6c5297fbeee9c612ae = L.polyline(
+                [[42.79, -86.1], [42.53326500000001, -86.3211021875], [42.27571, -86.54075875], [42.01733500000001, -86.75896968750001], [41.75814, -86.975735], [41.498125, -87.1910546875], [41.23729, -87.40492875000001], [40.975635, -87.61735718749999], [40.713159999999995, -87.82834], [40.449864999999996, -88.03787718749999], [40.18575, -88.24596875], [39.920815000000005, -88.4526146875], [39.65505999999999, -88.65781499999999], [39.388484999999996, -88.86156968750001], [39.121089999999995, -89.06387874999999], [38.852875000000004, -89.2647421875], [38.58384000000001, -89.46416], [38.313984999999995, -89.66213218749999], [38.043310000000005, -89.85865874999999], [37.77181499999999, -90.05373968749998], [37.4995, -90.24737499999999], [37.226365, -90.4395646875], [36.95241, -90.63030875], [36.677635, -90.81960718750001], [36.40203999999999, -91.00746], [36.125625, -91.19386718749999], [35.84839000000001, -91.37882875000001], [35.570335, -91.5623446875], [35.29146, -91.744415], [35.011765, -91.92503968749999], [34.73125, -92.10421875], [34.449915000000004, -92.28195218750001], [34.16776, -92.45823999999999], [33.884785, -92.6330821875], [33.600989999999996, -92.80647874999998], [33.316375, -92.9784296875], [33.03094, -93.14893500000001], [32.744685, -93.3179946875], [32.45761, -93.48560874999998], [32.169715, -93.6517771875], [31.881, -93.81649999999999], [31.591465000000003, -93.97977718749999], [31.301109999999998, -94.14160874999999], [31.009935000000002, -94.3019946875], [30.71794, -94.460935], [30.425125, -94.6184296875], [30.131490000000003, -94.77447875], [29.837035, -94.9290821875], [29.54176, -95.08224], [29.245665, -95.2339521875], [28.94875, -95.38421875], [28.651015, -95.53303968750001], [28.35246, -95.680415], [28.053085000000003, -95.8263446875], [27.75289, -95.97082875], [27.451875, -96.1138671875], [27.15004, -96.25546], [26.847385, -96.39560718749999], [26.54391, -96.53430875000001], [26.239615, -96.6715646875], [25.9345, -96.80737500000001], [25.628565, -96.94173968749999], [25.32181, -97.07465875], [25.014235, -97.2061321875], [24.705840000000002, -97.33616], [24.396625, -97.46474218750001], [24.08659, -97.59187875], [23.775734999999997, -97.7175696875], [23.464059999999996, -97.841815], [23.151564999999998, -97.96461468750002], [22.838250000000002, -98.08596874999999], [22.524115000000002, -98.20587718750001], [22.20916, -98.32434], [21.893385000000002, -98.4413571875], [21.576790000000003, -98.55692875], [21.259375, -98.6710546875], [20.941140000000004, -98.78373500000001], [20.622085000000002, -98.89496968750001], [20.30221, -99.00475875], [19.981514999999998, -99.11310218749999], [19.66, -99.22]],
+                {"bubblingMouseEvents": true, "color": "#EF4444", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#EF4444", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4.2708313008125245}
+            ).addTo(feature_group_318437e3b63449655857bc86dd100ee8);
+        
+    
+        var popup_921f7ebe13f1ceb53233dbffbddaf4d1 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_a96017bf7185803d545de32c89e563d4 = $(`<div id="html_a96017bf7185803d545de32c89e563d4" style="width: 100.0%; height: 100.0%;"><b>NMC811 pouch cells</b><br>Holland (US) &rarr; Cuautitlán Izcalli (MX)<br>Mass: <b>228 kg/pack</b><br>Confidence: confirmed<br>Companies: LGES, Ford<br>Ford rel: FORD_REL_002</div>`)[0];
+                popup_921f7ebe13f1ceb53233dbffbddaf4d1.setContent(html_a96017bf7185803d545de32c89e563d4);
+            
+        
+
+        poly_line_f7ad68edc10fda6c5297fbeee9c612ae.bindPopup(popup_921f7ebe13f1ceb53233dbffbddaf4d1)
+        ;
+
+        
+    
+    
+            poly_line_f7ad68edc10fda6c5297fbeee9c612ae.bindTooltip(
+                `<div>
+                     Cell: Holland → Cuautitlán Izcalli (228 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_f7ad68edc10fda6c5297fbeee9c612ae.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 5.25,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#EF4444",
+  "font-weight": "bold",
+  "font-size": "15",
+},
+}
+            );
+        
+    
+            var poly_line_9aabf748191e942448e4335fdcf86b92 = L.polyline(
+                [[51.11, 17.03], [51.003867187500006, 15.499232812499999], [50.89046875, 13.970431249999999], [50.769804687500006, 12.443595312500003], [50.64187499999999, 10.918725000000002], [50.5066796875, 9.395820312500001], [50.364218750000006, 7.874881250000001], [50.2144921875, 6.355907812500002], [50.0575, 4.8389], [49.89324218749999, 3.3238578125], [49.721718749999994, 1.8107812500000002], [49.542929687500006, 0.2996703125000013], [49.356874999999995, -1.2094750000000012], [49.1635546875, -2.716654687500001], [48.962968749999995, -4.221868749999999], [48.7551171875, -5.7251171875], [48.540000000000006, -7.226400000000003], [48.31761718749999, -8.725717187499999], [48.08796875, -10.22306875], [47.851054687499996, -11.7184546875], [47.606874999999995, -13.211875], [47.355429687500006, -14.703329687499998], [47.09671875, -16.19281875], [46.8307421875, -17.6803421875], [46.5575, -19.1659], [46.2769921875, -20.6494921875], [45.989218750000006, -22.131118750000002], [45.6941796875, -23.610779687500006], [45.391875, -25.088475], [45.08230468749999, -26.564204687500002], [44.765468750000004, -28.03796875], [44.441367187500006, -29.509767187500003], [44.11, -30.9796], [43.771367187500005, -32.447467187499996], [43.42546874999999, -33.91336875], [43.072304687499994, -35.3773046875], [42.711875000000006, -36.839275], [42.344179687499995, -38.299279687500004], [41.969218749999996, -39.757318749999996], [41.586992187499995, -41.2133921875], [41.1975, -42.667500000000004], [40.800742187500006, -44.1196421875], [40.39671875, -45.569818749999996], [39.985429687499995, -47.018029687500004], [39.566874999999996, -48.46427500000001], [39.1410546875, -49.9085546875], [38.70796875, -51.350868750000004], [38.2676171875, -52.79121718750001], [37.82, -54.2296], [37.3651171875, -55.6660171875], [36.90296875, -57.100468750000005], [36.4335546875, -58.532954687499995], [35.956875, -59.963475], [35.4729296875, -61.3920296875], [34.98171875, -62.81861875000001], [34.4832421875, -64.2432421875], [33.9775, -65.6659], [33.4644921875, -67.0865921875], [32.94421875, -68.50531875], [32.41667968749999, -69.9220796875], [31.881875, -71.336875], [31.3398046875, -72.74970468749999], [30.79046875, -74.16056875000001], [30.2338671875, -75.5694671875], [29.669999999999998, -76.97640000000001], [29.098867187499998, -78.3813671875], [28.52046875, -79.78436875], [27.934804687499998, -81.18540468750001], [27.341874999999995, -82.584475], [26.741679687499996, -83.98157968750002], [26.134218750000002, -85.37671875], [25.5194921875, -86.7698921875], [24.8975, -88.1611], [24.2682421875, -89.5503421875], [23.631718749999997, -90.93761875000001], [22.9879296875, -92.3229296875], [22.336875000000006, -93.706275], [21.6785546875, -95.0876546875], [21.01296875, -96.46706875], [20.3401171875, -97.8445171875], [19.66, -99.22]],
+                {"bubblingMouseEvents": true, "color": "#EF4444", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#EF4444", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2.7856776554368237}
+            ).addTo(feature_group_318437e3b63449655857bc86dd100ee8);
+        
+    
+        var popup_442c47accd26b0e38e1254393403284a = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_f45e086eef2027e0d4f8d185644b5881 = $(`<div id="html_f45e086eef2027e0d4f8d185644b5881" style="width: 100.0%; height: 100.0%;"><b>NMC811 pouch cells</b><br>Wrocław (PL) &rarr; Cuautitlán Izcalli (MX)<br>Mass: <b>97 kg/pack</b><br>Confidence: industry reporting<br>Companies: LGES, Ford<br>Ford rel: FORD_REL_003<br><i>25% backstop estimate.</i></div>`)[0];
+                popup_442c47accd26b0e38e1254393403284a.setContent(html_f45e086eef2027e0d4f8d185644b5881);
+            
+        
+
+        poly_line_9aabf748191e942448e4335fdcf86b92.bindPopup(popup_442c47accd26b0e38e1254393403284a)
+        ;
+
+        
+    
+    
+            poly_line_9aabf748191e942448e4335fdcf86b92.bindTooltip(
+                `<div>
+                     Cell: Wrocław → Cuautitlán Izcalli (97 kg/pack)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_9aabf748191e942448e4335fdcf86b92.setText(
+                "  \u25b6",
+                {
+  "repeat": false,
+  "center": false,
+  "below": false,
+  "offset": 4.8999999999999995,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#EF4444",
+  "font-weight": "bold",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_318437e3b63449655857bc86dd100ee8.addTo(map_b2a1dea25789cbc409080a1eb8216245);
+        
+    
+            var layer_control_6e327e6b95b7a947bdeb403aa03f2364_layers = {
+                base_layers : {
+                },
+                overlays :  {
+                    "Locations" : feature_group_a2d94d42faf2010a436380196bd6e6ff,
+                    "Lithium" : feature_group_c653e198cc60e02d3c6d7eeb527af6bf,
+                    "Nickel" : feature_group_545fc0830adcf3e53fa3bb28dedd9d08,
+                    "Cobalt" : feature_group_5217954d07b53b51a8e5471244d06780,
+                    "Manganese" : feature_group_d49b4b3052b4859e066b056239503a62,
+                    "Graphite" : feature_group_76115dd9e6985ed0980b5d68f5750272,
+                    "Cathode (CAM)" : feature_group_a12e9a24269c0474592710b079636e95,
+                    "Cell" : feature_group_318437e3b63449655857bc86dd100ee8,
+                },
+            };
+            let layer_control_6e327e6b95b7a947bdeb403aa03f2364 = L.control.layers(
+                layer_control_6e327e6b95b7a947bdeb403aa03f2364_layers.base_layers,
+                layer_control_6e327e6b95b7a947bdeb403aa03f2364_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_b2a1dea25789cbc409080a1eb8216245);
+
+        
+    
+            map_b2a1dea25789cbc409080a1eb8216245.fitBounds(
+                [[-55, -179], [70, 179]],
+                {}
+            );
+        
+</script>
+</html>

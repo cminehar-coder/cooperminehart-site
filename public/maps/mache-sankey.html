@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ford — Mustang Mach-E</title>
+<style>
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; color:#222; background:#fff; }
+  .header { padding:14px 24px 4px; }
+  .header h1 { margin:0; font-size:18px; font-weight:600; }
+  .header .sub { margin-top:4px; font-size:11px; color:#555; }
+  .panel { padding:18px 24px; border-bottom:1px solid #eee; }
+  .panel-title { font-size:14px; font-weight:600; margin:0 0 6px 0; }
+  .panel-sub { font-size:11px; color:#666; margin:0 0 8px 0; }
+  .col-axis text { font-size:10.5px; fill:#666; }
+  .col-axis line { stroke:#e5e5e5; stroke-dasharray:2,3; }
+  .node rect { stroke:rgba(0,0,0,0.35); stroke-width:0.5; }
+  .node-label { font-size:11px; pointer-events:none; }
+  .node-label tspan { dominant-baseline:middle; }
+  .link { fill:none; stroke-opacity:0.45; }
+  .link:hover { stroke-opacity:0.8; }
+  #tip { position:absolute; pointer-events:none; padding:8px 10px; background:rgba(20,20,20,0.92); color:#fff; font-size:11px; line-height:1.4; border-radius:4px; max-width:340px; opacity:0; transition:opacity 0.08s; box-shadow:0 4px 12px rgba(0,0,0,0.18); white-space:normal; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Ford — Mustang Mach-E</h1>
+  <div class="sub">Per-pack absolute mass; chains from ford.yaml; regions filtered to disclosed suppliers.</div>
+</div>
+<div id="panels"></div>
+<div id="tip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12"></script>
+<script>
+const PANELS = [{"title": "Mustang Mach-E Standard Range (RWD) (LFP, 70 kWh) \u2014 Mass (kg/pack)", "subtitle": "Per-pack absolute mass; chains derived from ford.yaml; regions filtered to disclosed Ford suppliers.", "unit": "kg/pack", "height": 1100, "nodes": [{"id": "mining_iron_phosphorus_CN", "label": "Mining\nIron + Phosphorus\nChina", "hover": "<b>Mining<br>Iron + Phosphorus<br>China</b><br>Total through node: 277.9 kg/pack", "rank": 0, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "beneficiation_iron_phosphorus_CN", "label": "Beneficiation\nIron + Phosphorus\nChina", "hover": "<b>Beneficiation<br>Iron + Phosphorus<br>China</b><br>Total through node: 277.9 kg/pack", "rank": 1, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_iron_phosphorus_CN", "label": "Chemical Processing\nIron + Phosphorus\nChina", "hover": "<b>Chemical Processing<br>Iron + Phosphorus<br>China</b><br>Total through node: 143.5 kg/pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "precursor_mfg", "label": "Precursor Manufacturing", "hover": "<b>Precursor Manufacturing</b><br>Total through node: 178.5 kg/pack", "rank": 3, "color": "rgba(80,80,80,0.85)", "track": "cathode"}, {"id": "chem_processing_lithium_CN", "label": "Chemical Processing\nLithium\nChina", "hover": "<b>Chemical Processing<br>Lithium<br>China</b><br>Total through node: 35 kg/pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "cam_mfg", "label": "Cathode Active Material\nHunan Yuneng New Energy Battery Material / Brunp Recycling", "hover": "<b>Cathode Active Material</b><br>Total through node: 142.1 kg/pack<br><b>Operator:</b> Hunan Yuneng New Energy Battery Material / Brunp Recycling", "rank": 4, "color": "rgba(80,80,80,0.85)", "track": "cathode"}, {"id": "electrode_mfg_CN", "label": "Electrode Manufacturing\nChina\nCATL", "hover": "<b>Electrode Manufacturing<br>China</b><br>Total through node: 345.1 kg/pack<br><b>Operator:</b> CATL", "rank": 5, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "mining_anode_CN", "label": "Mining\nGraphite Anode\nChina", "hover": "<b>Mining<br>Graphite Anode<br>China</b><br>Total through node: 2625 kg/pack", "rank": 0, "color": "rgba(80,80,80,0.85)", "track": "anode"}, {"id": "beneficiation_anode_CN", "label": "Beneficiation\nGraphite Anode\nChina", "hover": "<b>Beneficiation<br>Graphite Anode<br>China</b><br>Total through node: 2625 kg/pack", "rank": 1, "color": "rgba(80,80,80,0.85)", "track": "anode"}, {"id": "anode_mfg_anode_CN", "label": "Anode Manufacturing\nGraphite Anode\nChina\nBTR New Material Group", "hover": "<b>Anode Manufacturing<br>Graphite Anode<br>China</b><br>Total through node: 178.5 kg/pack<br><b>Operator:</b> BTR New Material Group", "rank": 4, "color": "rgba(80,80,80,0.85)", "track": "anode"}, {"id": "cell_mfg_CN", "label": "Cell Manufacturing\nChina\nCATL", "hover": "<b>Cell Manufacturing<br>China</b><br>Total through node: 415.573 kg/pack<br><b>Operator:</b> CATL", "rank": 6, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_current_collector_CN", "label": "Chemical Processing\nCurrent Collector\nChina\nNanshan Aluminum / Dingsheng New Material +5", "hover": "<b>Chemical Processing<br>Current Collector<br>China</b><br>Total through node: 89.3421 kg/pack<br><b>Operator:</b> Nanshan Aluminum / Dingsheng New Material +5", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_current_collector_KR", "label": "Chemical Processing\nCurrent Collector\nSouth Korea\nIljin Materials / SK Nexilis (SKC)", "hover": "<b>Chemical Processing<br>Current Collector<br>South Korea</b><br>Total through node: 8.13474 kg/pack<br><b>Operator:</b> Iljin Materials / SK Nexilis (SKC)", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_current_collector_JP", "label": "Chemical Processing\nCurrent Collector\nJapan\nFurukawa Electric / Mitsui Mining", "hover": "<b>Chemical Processing<br>Current Collector<br>Japan</b><br>Total through node: 5.42316 kg/pack<br><b>Operator:</b> Furukawa Electric / Mitsui Mining", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_electrolyte_CN", "label": "Chemical Processing\nElectrolyte\nChina\nTinci Materials / Capchem +3", "hover": "<b>Chemical Processing<br>Electrolyte<br>China</b><br>Total through node: 53.6727 kg/pack<br><b>Operator:</b> Tinci Materials / Capchem +3", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_separator_CN", "label": "Chemical Processing\nSeparator\nChina\nYunnan Energy New Material (Semcorp) / Sinoma Science +2", "hover": "<b>Chemical Processing<br>Separator<br>China</b><br>Total through node: 13.2632 kg/pack<br><b>Operator:</b> Yunnan Energy New Material (Semcorp) / Sinoma Science +2", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_separator_JP", "label": "Chemical Processing\nSeparator\nJapan\nAsahi Kasei / Toray", "hover": "<b>Chemical Processing<br>Separator<br>Japan</b><br>Total through node: 2.12211 kg/pack<br><b>Operator:</b> Asahi Kasei / Toray", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_separator_KR", "label": "Chemical Processing\nSeparator\nSouth Korea\nSK IE Technology (SKIET) / W-Scope", "hover": "<b>Chemical Processing<br>Separator<br>South Korea</b><br>Total through node: 1.41474 kg/pack<br><b>Operator:</b> SK IE Technology (SKIET) / W-Scope", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "module_assembly_CN", "label": "Module Assembly\nChina\nCATL", "hover": "<b>Module Assembly<br>China</b><br>Total through node: 427.7 kg/pack<br><b>Operator:</b> CATL", "rank": 7, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "pack_mfg_CN", "label": "Pack Manufacturing\nChina\nCATL", "hover": "<b>Pack Manufacturing<br>China</b><br>Total through node: 598.5 kg/pack<br><b>Operator:</b> CATL", "rank": 8, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "app_vehicle", "label": "Mustang Mach-E Standard Range (RWD) (LFP)", "hover": "<b>Mustang Mach-E Standard Range (RWD) (LFP)</b><br>Share of pack: 100.0%<br>Total through node: 598.5 kg/pack", "rank": 9, "color": "rgba(80,80,80,0.85)", "track": "mid"}], "links": [{"source": "mining_iron_phosphorus_CN", "target": "beneficiation_iron_phosphorus_CN", "value": 277.90000000000003, "raw_value": 277.90000000000003, "color": "rgba(229,57,53,0.55)", "hover": "<b>F001 \u2014 phosphate rock</b><br>Total: 277.9 kg/pack<sup>1,2,3</sup><br>Region: <b>CN</b> (100.0%<sup>3,2</sup>) \u2014 277.9 kg/pack<sup>3,2</sup><br>Companies: Yuntianhua, Hubei Xingfa, Wengfu Group, Guizhou Phosphate<br>Sources: [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023; [3] U.S. Geological Survey 2024<br>\u26a0 allocation_dependent (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "beneficiation_iron_phosphorus_CN", "target": "chem_processing_iron_phosphorus_CN", "value": 95.9, "raw_value": 95.9, "color": "rgba(229,57,53,0.55)", "hover": "<b>F002 \u2014 phosphoric acid (wet process)</b><br>Total: 95.9 kg/pack<sup>1,4</sup><br>Region: <b>CN</b> (100.0%<sup>2,4</sup>) \u2014 95.9 kg/pack<sup>2,4</sup><br>Companies: Yuntianhua, Hubei Xingfa, Wengfu Group, Chuandong Chemical, Chengxing Industrial<br>Sources: [1] Argonne National Laboratory 2023; [4] Mauger 2019<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_iron_phosphorus_CN", "target": "precursor_mfg", "value": 143.5, "raw_value": 143.5, "color": "rgba(229,57,53,0.55)", "hover": "<b>F012 \u2014 iron phosphate (battery-grade FePO4)</b><br>Total: 143.5 kg/pack<sup>1,4,5</sup><br>Region: <b>CN</b> (100.0%<sup>2,4</sup>) \u2014 143.5 kg/pack<sup>2,4</sup><br>Companies: Hunan Yuneng New Energy Battery Material, Shenzhen Dynanonic, Hubei Wanrun, Hubei Xingfa, Lomon Billions<br>Sources: [1] Argonne National Laboratory 2023; [4] Mauger 2019; [5] Pell 2021<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_lithium_CN", "target": "precursor_mfg", "value": 35.0, "raw_value": 35.0, "color": "rgba(245,195,0,0.55)", "hover": "<b>F022 \u2014 lithium carbonate (battery-grade)</b><br>Total: 35 kg/pack<sup>1,5,4,6</sup><br>Region: <b>CN</b> (100.0%<sup>2,3</sup>) \u2014 35 kg/pack<sup>2,3</sup><br>Companies: Tianqi Lithium, Ganfeng Lithium, Yongxing Materials, Sichuan Yahua, Jiangxi Special Electric Motor (+1 more)<br>Sources: [1] Argonne National Laboratory 2023; [5] Pell 2021; [4] Mauger 2019; [6] Lain 2019<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "precursor_mfg", "target": "cam_mfg", "value": 71.05, "raw_value": 71.05, "color": "rgba(229,57,53,0.55)", "hover": "<b>F030 \u2014 iron phosphate precursor (FePO4)</b><br>Total: 142.1 kg/pack<sup>1,4,5</sup><br>Region: <b>CN</b> (50.0%<sup>2</sup>) \u2014 71.05 kg/pack<sup>2</sup><br>Companies: Hunan Yuneng, Shenzhen Dynanonic, Hubei Wanrun, Hubei Xingfa, Lomon Billions<br>Sources: [1] Argonne National Laboratory 2023; [4] Mauger 2019; [5] Pell 2021<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "precursor_mfg", "target": "cam_mfg", "value": 71.05, "raw_value": 71.05, "color": "rgba(229,57,53,0.55)", "hover": "<b>F030 \u2014 iron phosphate precursor (FePO4)</b><br>Total: 142.1 kg/pack<sup>1,4,5</sup><br>Region: <b>CN</b> (50.0%<sup>2</sup>) \u2014 71.05 kg/pack<sup>2</sup><br>Companies: Hunan Yuneng, Shenzhen Dynanonic, Hubei Wanrun, Hubei Xingfa, Lomon Billions<br>Sources: [1] Argonne National Laboratory 2023; [4] Mauger 2019; [5] Pell 2021<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "cam_mfg", "target": "electrode_mfg_CN", "value": 141.4, "raw_value": 141.4, "color": "rgba(255,112,67,0.55)", "hover": "<b>F031 \u2014 LFP cathode active material (standard, carbon-coated)</b><br>Total: 141.4 kg/pack<sup>1,5,4,7</sup><br>Region: <b>CN</b> (100.0%<sup>2,5</sup>) \u2014 141.4 kg/pack<sup>2,5</sup><br>Companies: Hunan Yuneng New Energy Battery Material, Shenzhen Dynanonic, Hubei Wanrun, Hunan Changyuan Lico, Beijing Easpring (+2 more)<br>Sources: [1] Argonne National Laboratory 2023; [5] Pell 2021; [4] Mauger 2019; [7] Argonne National Laboratory (Nelson 2022<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "mining_anode_CN", "target": "beneficiation_anode_CN", "value": 2625.0, "raw_value": 2625.0, "color": "rgba(66,66,66,0.55)", "hover": "<b>F040 \u2014 natural flake graphite ore (run-of-mine)</b><br>Total: 2625 kg/pack<sup>1,2,3</sup><br>Region: <b>CN</b> (100.0%<sup>3,2</sup>) \u2014 2625 kg/pack<sup>3,2</sup><br>Companies: BTR New Material, Shanshan, Heilongjiang Aoyu, Luobei County operations<br>Sources: [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023; [3] U.S. Geological Survey 2024<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "beneficiation_anode_CN", "target": "anode_mfg_anode_CN", "value": 178.5, "raw_value": 178.5, "color": "rgba(66,66,66,0.55)", "hover": "<b>F041 \u2014 graphite concentrate</b><br>Total: 178.5 kg/pack<sup>1,2</sup><br>Region: <b>CN</b> (100.0%<sup>2</sup>) \u2014 178.5 kg/pack<sup>2</sup><br>Companies: BTR, Shanshan, Heilongjiang Aoyu<br>Sources: [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023"}, {"source": "anode_mfg_anode_CN", "target": "electrode_mfg_CN", "value": 93.80000000000001, "raw_value": 93.80000000000001, "color": "rgba(66,66,66,0.55)", "hover": "<b>F042 \u2014 spheronized purified natural graphite (SPNG)</b><br>Total: 93.8 kg/pack<sup>1,5,7</sup><br>Region: <b>CN</b> (100.0%<sup>2</sup>) \u2014 93.8 kg/pack<sup>2</sup><br>Companies: BTR New Material, Shanshan Technology, Putailai (Zichen), Kaijin New Energy<br>Sources: [1] Argonne National Laboratory 2023; [5] Pell 2021; [7] Argonne National Laboratory (Nelson 2022<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "electrode_mfg_CN", "target": "cell_mfg_CN", "value": 190.4, "raw_value": 190.4, "color": "rgba(229,57,53,0.55)", "hover": "<b>F050 \u2014 coated LFP cathode electrode</b><br>Total: 190.4 kg/pack<sup>7,8</sup><br>Region: <b>CN</b> (100.0%<sup>2,7</sup>) \u2014 190.4 kg/pack<sup>2,7</sup><br>Companies: CATL, BYD, EVE Energy, Gotion, CALB (+2 more)<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018"}, {"source": "electrode_mfg_CN", "target": "cell_mfg_CN", "value": 154.7, "raw_value": 154.7, "color": "rgba(66,66,66,0.55)", "hover": "<b>F051 \u2014 coated anode electrode</b><br>Total: 154.7 kg/pack<sup>7,8</sup><br>Region: <b>CN</b> (100.0%<sup>2</sup>) \u2014 154.7 kg/pack<sup>2</sup><br>Companies: CATL, BYD, EVE Energy, Gotion, CALB<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018"}, {"source": "chem_processing_current_collector_CN", "target": "electrode_mfg_CN", "value": 38.5, "raw_value": 38.5, "color": "rgba(121,85,72,0.55)", "hover": "<b>F052 \u2014 aluminum foil</b><br>Total: 38.5 kg/pack<sup>7,9,8</sup><br>Region: <b>CN</b> (100.0%<sup>2</sup>) \u2014 38.5 kg/pack<sup>2</sup><br>Companies: Nanshan Aluminum, Dingsheng New Material, Loften Aluminum<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [9] Degen 2023; [8] Kwade 2018"}, {"source": "chem_processing_current_collector_CN", "target": "electrode_mfg_CN", "value": 50.8421052631579, "raw_value": 50.8421052631579, "color": "rgba(121,85,72,0.55)", "hover": "<b>F053 \u2014 copper foil</b><br>Total: 64.4 kg/pack<sup>7,9,8</sup><br>Region: <b>CN</b> (78.9%<sup>2</sup>) \u2014 50.8421 kg/pack<sup>2</sup><br>Companies: Nuode New Materials, Jiayuan Technology, Lingbao Wason, Tongling Nonferrous<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [9] Degen 2023; [8] Kwade 2018"}, {"source": "chem_processing_current_collector_KR", "target": "electrode_mfg_CN", "value": 8.134736842105264, "raw_value": 8.134736842105264, "color": "rgba(121,85,72,0.55)", "hover": "<b>F053 \u2014 copper foil</b><br>Total: 64.4 kg/pack<sup>7,9,8</sup><br>Region: <b>KR</b> (12.6%<sup>2</sup>) \u2014 8.13474 kg/pack<sup>2</sup><br>Companies: Iljin Materials, SK Nexilis (SKC)<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [9] Degen 2023; [8] Kwade 2018"}, {"source": "chem_processing_current_collector_JP", "target": "electrode_mfg_CN", "value": 5.423157894736843, "raw_value": 5.423157894736843, "color": "rgba(121,85,72,0.55)", "hover": "<b>F053 \u2014 copper foil</b><br>Total: 64.4 kg/pack<sup>7,9,8</sup><br>Region: <b>JP</b> (8.4%<sup>2</sup>) \u2014 5.42316 kg/pack<sup>2</sup><br>Companies: Furukawa Electric, Mitsui Mining<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [9] Degen 2023; [8] Kwade 2018"}, {"source": "chem_processing_electrolyte_CN", "target": "cell_mfg_CN", "value": 53.672680412371136, "raw_value": 53.672680412371136, "color": "rgba(30,136,229,0.55)", "hover": "<b>F060 \u2014 liquid electrolyte</b><br>Total: 61.25 kg/pack<sup>1,7,6</sup><br>Region: <b>CN</b> (87.6%<sup>2</sup>) \u2014 53.6727 kg/pack<sup>2</sup><br>Companies: Tinci Materials, Capchem, Shenzhen Capchem, Guotai Huarong, Do-Fluoride New Materials<br>Sources: [1] Argonne National Laboratory 2023; [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019"}, {"source": "chem_processing_separator_CN", "target": "cell_mfg_CN", "value": 13.263157894736842, "raw_value": 13.263157894736842, "color": "rgba(129,212,250,0.55)", "hover": "<b>F061 \u2014 separator</b><br>Total: 16.8 kg/pack<sup>7,8</sup><br>Region: <b>CN</b> (78.9%<sup>2</sup>) \u2014 13.2632 kg/pack<sup>2</sup><br>Companies: Yunnan Energy New Material (Semcorp), Sinoma Science, Gellec, Cangzhou Mingzhu<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018"}, {"source": "chem_processing_separator_JP", "target": "cell_mfg_CN", "value": 2.122105263157895, "raw_value": 2.122105263157895, "color": "rgba(129,212,250,0.55)", "hover": "<b>F061 \u2014 separator</b><br>Total: 16.8 kg/pack<sup>7,8</sup><br>Region: <b>JP</b> (12.6%<sup>2</sup>) \u2014 2.12211 kg/pack<sup>2</sup><br>Companies: Asahi Kasei, Toray<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018"}, {"source": "chem_processing_separator_KR", "target": "cell_mfg_CN", "value": 1.414736842105263, "raw_value": 1.414736842105263, "color": "rgba(129,212,250,0.55)", "hover": "<b>F061 \u2014 separator</b><br>Total: 16.8 kg/pack<sup>7,8</sup><br>Region: <b>KR</b> (8.4%<sup>2</sup>) \u2014 1.41474 kg/pack<sup>2</sup><br>Companies: SK IE Technology (SKIET), W-Scope<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018"}, {"source": "cell_mfg_CN", "target": "module_assembly_CN", "value": 389.2, "raw_value": 389.2, "color": "rgba(229,57,53,0.55)", "hover": "<b>F070 \u2014 formed LFP cells</b><br>Total: 389.2 kg/pack<sup>7,1,8</sup><br>Region: <b>CN</b> (100.0%<sup>2,7</sup>) \u2014 389.2 kg/pack<sup>2,7</sup><br>Companies: CATL<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [1] Argonne National Laboratory 2023; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "module_assembly_CN", "target": "pack_mfg_CN", "value": 427.70000000000005, "raw_value": 427.70000000000005, "color": "rgba(144,164,174,0.55)", "hover": "<b>F080 \u2014 battery modules</b><br>Total: 427.7 kg/pack<sup>7,10</sup><br>Region: <b>CN</b> (100.0%<sup>2</sup>) \u2014 427.7 kg/pack<sup>2</sup><br>Companies: CATL<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [10] Cusenza 2022"}, {"source": "pack_mfg_CN", "target": "app_vehicle", "value": 598.5, "raw_value": 598.5, "color": "rgba(144,164,174,0.55)", "hover": "<b>F090 \u2014 battery pack</b><br>Total: 598.5 kg/pack<sup>7,11,10</sup><br>Region: <b>CN</b> (100.0%<sup>2</sup>) \u2014 598.5 kg/pack<sup>2</sup><br>Companies: CATL<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [11] International Energy Agency 2023; [10] Cusenza 2022"}]}, {"title": "Mustang Mach-E Standard Range (RWD) (LFP, 70 kWh) \u2014 Energy & water (MJ or L /pack)", "subtitle": "Per-pack absolute mass; chains derived from ford.yaml; regions filtered to disclosed Ford suppliers.", "unit": "MJ or L /pack", "height": 220, "nodes": [{"id": "chem_processing_AU", "label": "Chemical Processing\nAustralia", "hover": "<b>Chemical Processing<br>Australia</b><br>Total through node: 1400 MJ or L /pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "cam_mfg", "label": "Cathode Active Material\nHunan Yuneng New Energy Battery Material / Brunp Recycling", "hover": "<b>Cathode Active Material</b><br>Total through node: 2800 MJ or L /pack<br><b>Operator:</b> Hunan Yuneng New Energy Battery Material / Brunp Recycling", "rank": 4, "color": "rgba(80,80,80,0.85)", "track": "cathode"}, {"id": "chem_processing_CN", "label": "Chemical Processing\nChina", "hover": "<b>Chemical Processing<br>China</b><br>Total through node: 1400 MJ or L /pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}], "links": []}, {"title": "Mustang Mach-E Extended Range (RWD / AWD; incl. GT) (NMC, 91 kWh) \u2014 Mass (kg/pack)", "subtitle": "Per-pack absolute mass; chains derived from ford.yaml; regions filtered to disclosed Ford suppliers.", "unit": "kg/pack", "height": 1100, "nodes": [{"id": "mining_lithium_AU", "label": "Mining\nLithium\nAustralia", "hover": "<b>Mining<br>Lithium<br>Australia</b><br>Total through node: 2015.12 kg/pack", "rank": 0, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "beneficiation_lithium_AU", "label": "Beneficiation\nLithium\nAustralia", "hover": "<b>Beneficiation<br>Lithium<br>Australia</b><br>Total through node: 2015.12 kg/pack", "rank": 1, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_lithium_AU", "label": "Chemical Processing\nLithium\nAustralia", "hover": "<b>Chemical Processing<br>Lithium<br>Australia</b><br>Total through node: 445.9 kg/pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_lithium_AR", "label": "Chemical Processing\nLithium\nArgentina", "hover": "<b>Chemical Processing<br>Lithium<br>Argentina</b><br>Total through node: 29.302 kg/pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "precursor_mfg", "label": "Precursor Manufacturing", "hover": "<b>Precursor Manufacturing</b><br>Total through node: 251.069 kg/pack", "rank": 3, "color": "rgba(80,80,80,0.85)", "track": "cathode"}, {"id": "mining_nickel_CA", "label": "Mining\nNickel\nCanada", "hover": "<b>Mining<br>Nickel<br>Canada</b><br>Total through node: 2752.75 kg/pack", "rank": 0, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "beneficiation_nickel_CA", "label": "Beneficiation\nNickel\nCanada", "hover": "<b>Beneficiation<br>Nickel<br>Canada</b><br>Total through node: 2752.75 kg/pack", "rank": 1, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_nickel_CA", "label": "Chemical Processing\nNickel\nCanada", "hover": "<b>Chemical Processing<br>Nickel<br>Canada</b><br>Total through node: 171.08 kg/pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_cobalt_CA", "label": "Chemical Processing\nCobalt\nCanada", "hover": "<b>Chemical Processing<br>Cobalt<br>Canada</b><br>Total through node: 21.385 kg/pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "cam_mfg", "label": "Cathode Active Material\nPOSCO Future M / L&F +1", "hover": "<b>Cathode Active Material</b><br>Total through node: 131.04 kg/pack<br><b>Operator:</b> POSCO Future M / L&F +1", "rank": 4, "color": "rgba(80,80,80,0.85)", "track": "cathode"}, {"id": "electrode_mfg_PL", "label": "Electrode Manufacturing\nPoland\nLG Energy Solution", "hover": "<b>Electrode Manufacturing<br>Poland</b><br>Total through node: 65.5655 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 5, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "electrode_mfg_US", "label": "Electrode Manufacturing\nUnited States\nLG Energy Solution", "hover": "<b>Electrode Manufacturing<br>United States</b><br>Total through node: 196.697 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 5, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "mining_anode_CN", "label": "Mining\nGraphite Anode\nChina", "hover": "<b>Mining<br>Graphite Anode<br>China</b><br>Total through node: 2648.1 kg/pack", "rank": 0, "color": "rgba(80,80,80,0.85)", "track": "anode"}, {"id": "beneficiation_anode_CN", "label": "Beneficiation\nGraphite Anode\nChina", "hover": "<b>Beneficiation<br>Graphite Anode<br>China</b><br>Total through node: 2648.1 kg/pack", "rank": 1, "color": "rgba(80,80,80,0.85)", "track": "anode"}, {"id": "anode_mfg_anode_CN", "label": "Anode Manufacturing\nGraphite Anode\nChina\nBTR New Material Group", "hover": "<b>Anode Manufacturing<br>Graphite Anode<br>China</b><br>Total through node: 179.998 kg/pack<br><b>Operator:</b> BTR New Material Group", "rank": 4, "color": "rgba(80,80,80,0.85)", "track": "anode"}, {"id": "cell_mfg_US", "label": "Cell Manufacturing\nUnited States\nLG Energy Solution", "hover": "<b>Cell Manufacturing<br>United States</b><br>Total through node: 243.653 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 6, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "cell_mfg_PL", "label": "Cell Manufacturing\nPoland\nLG Energy Solution", "hover": "<b>Cell Manufacturing<br>Poland</b><br>Total through node: 81.2175 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 6, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_current_collector_CN", "label": "Chemical Processing\nCurrent Collector\nChina\nNanshan Aluminum / Dingsheng New Material +7", "hover": "<b>Chemical Processing<br>Current Collector<br>China</b><br>Total through node: 30.0887 kg/pack<br><b>Operator:</b> Nanshan Aluminum / Dingsheng New Material +7", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_current_collector_KR", "label": "Chemical Processing\nCurrent Collector\nSouth Korea\nLotte Aluminium / Sam-A Aluminum +5", "hover": "<b>Chemical Processing<br>Current Collector<br>South Korea</b><br>Total through node: 5.06371 kg/pack<br><b>Operator:</b> Lotte Aluminium / Sam-A Aluminum +5", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_current_collector_JP", "label": "Chemical Processing\nCurrent Collector\nJapan\nUACJ / Toyo Aluminium +4", "hover": "<b>Chemical Processing<br>Current Collector<br>Japan</b><br>Total through node: 2.20161 kg/pack<br><b>Operator:</b> UACJ / Toyo Aluminium +4", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "module_assembly_US", "label": "Module Assembly\nUnited States\nLG Energy Solution", "hover": "<b>Module Assembly<br>United States</b><br>Total through node: 268.223 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 7, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "module_assembly_PL", "label": "Module Assembly\nPoland\nLG Energy Solution", "hover": "<b>Module Assembly<br>Poland</b><br>Total through node: 89.4075 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 7, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_electrolyte_CN", "label": "Chemical Processing\nElectrolyte\nChina\nTinci Materials / Capchem +3", "hover": "<b>Chemical Processing<br>Electrolyte<br>China</b><br>Total through node: 48.9245 kg/pack<br><b>Operator:</b> Tinci Materials / Capchem +3", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_electrolyte_KR", "label": "Chemical Processing\nElectrolyte\nSouth Korea\nSoulbrain / Enchem +2", "hover": "<b>Chemical Processing<br>Electrolyte<br>South Korea</b><br>Total through node: 5.87094 kg/pack<br><b>Operator:</b> Soulbrain / Enchem +2", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_separator_CN", "label": "Chemical Processing\nSeparator\nChina\nYunnan Energy New Material/Semcorp / Senior Technology Material +3", "hover": "<b>Chemical Processing<br>Separator<br>China</b><br>Total through node: 3.73579 kg/pack<br><b>Operator:</b> Yunnan Energy New Material/Semcorp / Senior Technology Material +3", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_separator_JP", "label": "Chemical Processing\nSeparator\nJapan\nAsahi Kasei (Hipore) / Toray Industries (Setela) +1", "hover": "<b>Chemical Processing<br>Separator<br>Japan</b><br>Total through node: 0.775895 kg/pack<br><b>Operator:</b> Asahi Kasei (Hipore) / Toray Industries (Setela) +1", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "chem_processing_separator_KR", "label": "Chemical Processing\nSeparator\nSouth Korea\nSK IE Technology (SKIET) / W-Scope +1", "hover": "<b>Chemical Processing<br>Separator<br>South Korea</b><br>Total through node: 0.517263 kg/pack<br><b>Operator:</b> SK IE Technology (SKIET) / W-Scope +1", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "pack_mfg_US", "label": "Pack Manufacturing\nUnited States\nLG Energy Solution", "hover": "<b>Pack Manufacturing<br>United States</b><br>Total through node: 361.725 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 8, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "pack_mfg_PL", "label": "Pack Manufacturing\nPoland\nLG Energy Solution", "hover": "<b>Pack Manufacturing<br>Poland</b><br>Total through node: 120.575 kg/pack<br><b>Operator:</b> LG Energy Solution", "rank": 8, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "app_vehicle", "label": "Mustang Mach-E Extended Range (RWD / AWD; incl. GT) (NMC)", "hover": "<b>Mustang Mach-E Extended Range (RWD / AWD; incl. GT) (NMC)</b><br>Share of pack: 100.0%<br>Total through node: 482.3 kg/pack", "rank": 9, "color": "rgba(80,80,80,0.85)", "track": "mid"}], "links": [{"source": "mining_lithium_AU", "target": "beneficiation_lithium_AU", "value": 2015.125, "raw_value": 2015.125, "color": "rgba(245,195,0,0.55)", "hover": "<b>F001 \u2014 spodumene ore</b><br>Total: 2229.5 kg/pack<sup>1,3,2,12</sup><br>Region: <b>AU</b> (90.4%<sup>3,2</sup>) \u2014 2015.12 kg/pack<sup>3,2</sup><br>Companies: Pilbara Minerals, Mineral Resources, Allkem, Albemarle (Greenbushes JV), Tianqi (Greenbushes JV)<br>Sources: [1] Argonne National Laboratory 2023; [3] U.S. Geological Survey 2024; [2] International Energy Agency 2023; [12] Kelly 2021<br>\u26a0 regional_share_uncertain (open)"}, {"source": "beneficiation_lithium_AU", "target": "chem_processing_lithium_AU", "value": 445.9, "raw_value": 445.9, "color": "rgba(245,195,0,0.55)", "hover": "<b>F002 \u2014 spodumene concentrate (6% Li2O)</b><br>Total: 445.9 kg/pack<sup>1,2,3,12</sup><br>Region: <b>AU</b> (100.0%<sup>2,3</sup>) \u2014 445.9 kg/pack<sup>2,3</sup><br>Companies: Pilbara Minerals, Mineral Resources, Allkem, Talison Lithium (Albemarle/Tianqi JV at Greenbushes)<br>Sources: [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023; [3] U.S. Geological Survey 2024; [12] Kelly 2021"}, {"source": "chem_processing_lithium_AR", "target": "precursor_mfg", "value": 29.302, "raw_value": 29.302, "color": "rgba(245,195,0,0.55)", "hover": "<b>F003 \u2014 lithium hydroxide monohydrate</b><br>Total: 58.604 kg/pack<sup>1,9,5</sup><br>Region: <b>AR</b> (50.0%<sup>2</sup>) \u2014 29.302 kg/pack<sup>2</sup><br>Companies: Livent, Allkem, Ganfeng Lithium<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021"}, {"source": "chem_processing_lithium_AU", "target": "precursor_mfg", "value": 29.302, "raw_value": 29.302, "color": "rgba(245,195,0,0.55)", "hover": "<b>F003 \u2014 lithium hydroxide monohydrate</b><br>Total: 58.604 kg/pack<sup>1,9,5</sup><br>Region: <b>AU</b> (50.0%<sup>2</sup>) \u2014 29.302 kg/pack<sup>2</sup><br>Companies: Albemarle (Kemerton), Tianqi/IGO (Kwinana)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021"}, {"source": "mining_nickel_CA", "target": "beneficiation_nickel_CA", "value": 2752.75, "raw_value": 2752.75, "color": "rgba(76,175,80,0.55)", "hover": "<b>F010 \u2014 nickel ore (laterite or sulfide, global weighted mix)</b><br>Total: 5505.5 kg/pack<sup>3,1,2,13</sup><br>Region: <b>CA</b> (50.0%<sup>2,3</sup>) \u2014 2752.75 kg/pack<sup>2,3</sup><br>Companies: Vale (Sudbury, Voisey's Bay), Glencore (Sudbury, Raglan)<br>Sources: [3] U.S. Geological Survey 2024; [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023; [13] Tran 2015<br>\u26a0 allocation_dependent (accepted_uncertainty)<br>\u26a0 source_contradiction (accepted_uncertainty)"}, {"source": "beneficiation_nickel_CA", "target": "chem_processing_nickel_CA", "value": 98.28, "raw_value": 98.28, "color": "rgba(76,175,80,0.55)", "hover": "<b>F011 \u2014 nickel intermediate (MHP for laterite; matte for sulfide)</b><br>Total: 180.18 kg/pack<sup>13,1,2</sup><br>Region: <b>CA</b> (54.5%<sup>2</sup>) \u2014 98.28 kg/pack<sup>2</sup><br>Companies: Vale (Sudbury matte), Glencore (Sudbury)<br>Sources: [13] Tran 2015; [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023"}, {"source": "chem_processing_nickel_CA", "target": "precursor_mfg", "value": 171.08, "raw_value": 171.08, "color": "rgba(76,175,80,0.55)", "hover": "<b>F012 \u2014 nickel sulfate (battery-grade, anhydrous equivalent)</b><br>Total: 171.08 kg/pack<sup>1,9,5</sup><br>Region: <b>CA</b> (100.0%<sup>2</sup>) \u2014 171.08 kg/pack<sup>2</sup><br>Companies: Vale Canada, Sherritt<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021"}, {"source": "chem_processing_cobalt_CA", "target": "precursor_mfg", "value": 21.385, "raw_value": 21.385, "color": "rgba(233,30,99,0.55)", "hover": "<b>F022 \u2014 cobalt sulfate (battery-grade, anhydrous equivalent)</b><br>Total: 21.385 kg/pack<sup>1,9,5</sup><br>Region: <b>CA</b> (100.0%<sup>2</sup>) \u2014 21.385 kg/pack<sup>2</sup><br>Companies: Sherritt (Fort Saskatchewan), Vale<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021"}, {"source": "precursor_mfg", "target": "cam_mfg", "value": 32.76, "raw_value": 32.76, "color": "rgba(126,87,194,0.55)", "hover": "<b>F040 \u2014 NMC811 hydroxide precursor (PCAM)</b><br>Total: 131.04 kg/pack<sup>1,9,5,8</sup><br>Region: <b>KR</b> (25.0%<sup>2</sup>) \u2014 32.76 kg/pack<sup>2</sup><br>Companies: POSCO Future M, EcoPro BM (precursor sister EcoPro Materials), L&F (precursor partnership)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [8] Kwade 2018"}, {"source": "precursor_mfg", "target": "cam_mfg", "value": 32.76, "raw_value": 32.76, "color": "rgba(126,87,194,0.55)", "hover": "<b>F040 \u2014 NMC811 hydroxide precursor (PCAM)</b><br>Total: 131.04 kg/pack<sup>1,9,5,8</sup><br>Region: <b>KR</b> (25.0%<sup>2</sup>) \u2014 32.76 kg/pack<sup>2</sup><br>Companies: POSCO Future M, EcoPro BM (precursor sister EcoPro Materials), L&F (precursor partnership)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [8] Kwade 2018"}, {"source": "precursor_mfg", "target": "cam_mfg", "value": 32.76, "raw_value": 32.76, "color": "rgba(126,87,194,0.55)", "hover": "<b>F040 \u2014 NMC811 hydroxide precursor (PCAM)</b><br>Total: 131.04 kg/pack<sup>1,9,5,8</sup><br>Region: <b>KR</b> (25.0%<sup>2</sup>) \u2014 32.76 kg/pack<sup>2</sup><br>Companies: POSCO Future M, EcoPro BM (precursor sister EcoPro Materials), L&F (precursor partnership)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [8] Kwade 2018"}, {"source": "precursor_mfg", "target": "cam_mfg", "value": 32.76, "raw_value": 32.76, "color": "rgba(126,87,194,0.55)", "hover": "<b>F040 \u2014 NMC811 hydroxide precursor (PCAM)</b><br>Total: 131.04 kg/pack<sup>1,9,5,8</sup><br>Region: <b>KR</b> (25.0%<sup>2</sup>) \u2014 32.76 kg/pack<sup>2</sup><br>Companies: POSCO Future M, EcoPro BM (precursor sister EcoPro Materials), L&F (precursor partnership)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [8] Kwade 2018"}, {"source": "cam_mfg", "target": "electrode_mfg_PL", "value": 32.64625, "raw_value": 32.64625, "color": "rgba(255,112,67,0.55)", "hover": "<b>F041 \u2014 NMC811 cathode active material (CAM)</b><br>Total: 130.585 kg/pack<sup>1,9,5,6</sup><br>Region: <b>KR</b> (25.0%<sup>2</sup>) \u2014 32.6463 kg/pack<sup>2</sup><br>Companies: POSCO Future M, EcoPro BM, L&F, LG Chem (CAM division)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [6] Lain 2019"}, {"source": "cam_mfg", "target": "electrode_mfg_US", "value": 97.93875, "raw_value": 97.93875, "color": "rgba(255,112,67,0.55)", "hover": "<b>F041 \u2014 NMC811 cathode active material (CAM)</b><br>Total: 130.585 kg/pack<sup>1,9,5,6</sup><br>Region: <b>KR</b> (75.0%<sup>2</sup>) \u2014 97.9387 kg/pack<sup>2</sup><br>Companies: POSCO Future M, EcoPro BM, L&F, LG Chem (CAM division)<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [6] Lain 2019"}, {"source": "mining_anode_CN", "target": "beneficiation_anode_CN", "value": 2648.1, "raw_value": 2648.1, "color": "rgba(66,66,66,0.55)", "hover": "<b>F050 \u2014 natural flake graphite (run-of-mine ore)</b><br>Total: 2648.1 kg/pack<sup>3,1,2,9</sup><br>Region: <b>CN</b> (100.0%<sup>2,3</sup>) \u2014 2648.1 kg/pack<sup>2,3</sup><br>Companies: BTR (Heilongjiang ops), Shanshan, Putailai/Jiangxi Zichen, Aoyu Graphite, Luxi Graphite<br>Sources: [3] U.S. Geological Survey 2024; [1] Argonne National Laboratory 2023; [2] International Energy Agency 2023; [9] Degen 2023"}, {"source": "beneficiation_anode_CN", "target": "anode_mfg_anode_CN", "value": 179.998, "raw_value": 179.998, "color": "rgba(66,66,66,0.55)", "hover": "<b>F051 \u2014 graphite concentrate (high-purity flake, >=94% Cg)</b><br>Total: 179.998 kg/pack<sup>1,9,5,2</sup><br>Region: <b>CN</b> (100.0%<sup>2,3</sup>) \u2014 179.998 kg/pack<sup>2,3</sup><br>Companies: BTR, Shanshan, Putailai/Jiangxi Zichen, Luxi Graphite<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [2] International Energy Agency 2023<br>\u26a0 source_contradiction (resolved)"}, {"source": "anode_mfg_anode_CN", "target": "electrode_mfg_PL", "value": 20.2475, "raw_value": 20.2475, "color": "rgba(66,66,66,0.55)", "hover": "<b>F052 \u2014 spheronized purified natural graphite (SPNG)</b><br>Total: 80.99 kg/pack<sup>1,9,5,6</sup><br>Region: <b>CN</b> (25.0%<sup>2</sup>) \u2014 20.2475 kg/pack<sup>2</sup><br>Companies: BTR (Shenzhen, Huizhou plants), Shanshan, Putailai/Jiangxi Zichen, Kaijin New Energy<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [6] Lain 2019<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "anode_mfg_anode_CN", "target": "electrode_mfg_US", "value": 60.7425, "raw_value": 60.7425, "color": "rgba(66,66,66,0.55)", "hover": "<b>F052 \u2014 spheronized purified natural graphite (SPNG)</b><br>Total: 80.99 kg/pack<sup>1,9,5,6</sup><br>Region: <b>CN</b> (75.0%<sup>2</sup>) \u2014 60.7425 kg/pack<sup>2</sup><br>Companies: BTR (Shenzhen, Huizhou plants), Shanshan, Putailai/Jiangxi Zichen, Kaijin New Energy<br>Sources: [1] Argonne National Laboratory 2023; [9] Degen 2023; [5] Pell 2021; [6] Lain 2019<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "electrode_mfg_US", "target": "cell_mfg_US", "value": 112.27125, "raw_value": 112.27125, "color": "rgba(144,164,174,0.55)", "hover": "<b>F060 \u2014 coated cathode electrode (calendered)</b><br>Total: 149.695 kg/pack<sup>8,6,7,1</sup><br>Region: <b>US</b> (75.0%<sup>11</sup>) \u2014 112.271 kg/pack<sup>11</sup><br>Companies: Tesla (Fremont, Reno, Austin, Berlin), Ultium Cells (LG/GM JV), SK On (Georgia)<br>Sources: [8] Kwade 2018; [6] Lain 2019; [7] Argonne National Laboratory (Nelson 2022; [1] Argonne National Laboratory 2023"}, {"source": "electrode_mfg_PL", "target": "cell_mfg_PL", "value": 37.42375, "raw_value": 37.42375, "color": "rgba(144,164,174,0.55)", "hover": "<b>F060 \u2014 coated cathode electrode (calendered)</b><br>Total: 149.695 kg/pack<sup>8,6,7,1</sup><br>Region: <b>PL</b> (25.0%<sup>11</sup>) \u2014 37.4237 kg/pack<sup>11</sup><br>Companies: Northvolt (SE), ACC (FR/DE), LG Energy Solution (PL), CATL (DE)<br>Sources: [8] Kwade 2018; [6] Lain 2019; [7] Argonne National Laboratory (Nelson 2022; [1] Argonne National Laboratory 2023"}, {"source": "electrode_mfg_US", "target": "cell_mfg_US", "value": 84.42525000000002, "raw_value": 84.42525000000002, "color": "rgba(66,66,66,0.55)", "hover": "<b>F061 \u2014 coated anode electrode (calendered)</b><br>Total: 112.567 kg/pack<sup>8,6,7,1</sup><br>Region: <b>US</b> (75.0%<sup>11</sup>) \u2014 84.4253 kg/pack<sup>11</sup><br>Companies: Tesla, Ultium Cells, SK On<br>Sources: [8] Kwade 2018; [6] Lain 2019; [7] Argonne National Laboratory (Nelson 2022; [1] Argonne National Laboratory 2023"}, {"source": "electrode_mfg_PL", "target": "cell_mfg_PL", "value": 28.141750000000002, "raw_value": 28.141750000000002, "color": "rgba(66,66,66,0.55)", "hover": "<b>F061 \u2014 coated anode electrode (calendered)</b><br>Total: 112.567 kg/pack<sup>8,6,7,1</sup><br>Region: <b>PL</b> (25.0%<sup>11</sup>) \u2014 28.1418 kg/pack<sup>11</sup><br>Companies: Northvolt, ACC, LG Energy Solution, CATL<br>Sources: [8] Kwade 2018; [6] Lain 2019; [7] Argonne National Laboratory (Nelson 2022; [1] Argonne National Laboratory 2023"}, {"source": "chem_processing_current_collector_CN", "target": "electrode_mfg_PL", "value": 2.752016129032258, "raw_value": 2.752016129032258, "color": "rgba(184,115,51,0.55)", "hover": "<b>F062 \u2014 aluminum foil (cathode current collector)</b><br>Total: 13.65 kg/pack<sup>7,6,8,1</sup><br>Region: <b>CN</b> (20.2%<sup>2,1</sup>) \u2014 2.75202 kg/pack<sup>2,1</sup><br>Companies: Nanshan Aluminum, Dingsheng New Material, Loften Aluminum, Granges Shanghai<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_current_collector_CN", "target": "electrode_mfg_US", "value": 8.256048387096774, "raw_value": 8.256048387096774, "color": "rgba(184,115,51,0.55)", "hover": "<b>F062 \u2014 aluminum foil (cathode current collector)</b><br>Total: 13.65 kg/pack<sup>7,6,8,1</sup><br>Region: <b>CN</b> (60.5%<sup>2,1</sup>) \u2014 8.25605 kg/pack<sup>2,1</sup><br>Companies: Nanshan Aluminum, Dingsheng New Material, Loften Aluminum, Granges Shanghai<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_current_collector_KR", "target": "electrode_mfg_US", "value": 1.1008064516129032, "raw_value": 1.1008064516129032, "color": "rgba(184,115,51,0.55)", "hover": "<b>F062 \u2014 aluminum foil (cathode current collector)</b><br>Total: 13.65 kg/pack<sup>7,6,8,1</sup><br>Region: <b>KR</b> (8.1%<sup>2</sup>) \u2014 1.10081 kg/pack<sup>2</sup><br>Companies: Lotte Aluminium, Sam-A Aluminum, DI Corporation<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_current_collector_CN", "target": "electrode_mfg_PL", "value": 4.77016129032258, "raw_value": 4.77016129032258, "color": "rgba(184,115,51,0.55)", "hover": "<b>F063 \u2014 copper foil (anode current collector)</b><br>Total: 27.3 kg/pack<sup>7,6,8,1</sup><br>Region: <b>CN</b> (17.5%<sup>2,1</sup>) \u2014 4.77016 kg/pack<sup>2,1</sup><br>Companies: Nuode New Materials (Hongqi), Jiayuan Technology, Lingbao Wason, Jiujiang Defu, Tongling Nonferrous<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_current_collector_CN", "target": "electrode_mfg_US", "value": 14.310483870967742, "raw_value": 14.310483870967742, "color": "rgba(184,115,51,0.55)", "hover": "<b>F063 \u2014 copper foil (anode current collector)</b><br>Total: 27.3 kg/pack<sup>7,6,8,1</sup><br>Region: <b>CN</b> (52.4%<sup>2,1</sup>) \u2014 14.3105 kg/pack<sup>2,1</sup><br>Companies: Nuode New Materials (Hongqi), Jiayuan Technology, Lingbao Wason, Jiujiang Defu, Tongling Nonferrous<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_current_collector_KR", "target": "electrode_mfg_US", "value": 3.9629032258064516, "raw_value": 3.9629032258064516, "color": "rgba(184,115,51,0.55)", "hover": "<b>F063 \u2014 copper foil (anode current collector)</b><br>Total: 27.3 kg/pack<sup>7,6,8,1</sup><br>Region: <b>KR</b> (14.5%<sup>2</sup>) \u2014 3.9629 kg/pack<sup>2</sup><br>Companies: Iljin Materials, SK Nexilis (SKC), Solus Advanced Materials, Doosan<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "chem_processing_current_collector_JP", "target": "electrode_mfg_US", "value": 2.2016129032258065, "raw_value": 2.2016129032258065, "color": "rgba(184,115,51,0.55)", "hover": "<b>F063 \u2014 copper foil (anode current collector)</b><br>Total: 27.3 kg/pack<sup>7,6,8,1</sup><br>Region: <b>JP</b> (8.1%<sup>2</sup>) \u2014 2.20161 kg/pack<sup>2</sup><br>Companies: Furukawa Electric, Mitsui Mining & Smelting, Nippon Denkai<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018; [1] Argonne National Laboratory 2023<br>\u26a0 unaccounted_material (accepted_uncertainty)<br>\u26a0 regional_share_uncertain (accepted_uncertainty)"}, {"source": "cell_mfg_US", "target": "module_assembly_US", "value": 243.6525, "raw_value": 243.6525, "color": "rgba(144,164,174,0.55)", "hover": "<b>F070 \u2014 formed NMC811 cells</b><br>Total: 324.87 kg/pack<sup>7,8,6,1</sup><br>Region: <b>US</b> (75.0%<sup>11</sup>) \u2014 243.653 kg/pack<sup>11</sup><br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018; [6] Lain 2019; [1] Argonne National Laboratory 2023"}, {"source": "cell_mfg_PL", "target": "module_assembly_PL", "value": 81.2175, "raw_value": 81.2175, "color": "rgba(144,164,174,0.55)", "hover": "<b>F070 \u2014 formed NMC811 cells</b><br>Total: 324.87 kg/pack<sup>7,8,6,1</sup><br>Region: <b>PL</b> (25.0%<sup>11</sup>) \u2014 81.2175 kg/pack<sup>11</sup><br>Companies: LG Energy Solution (Wroclaw)<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [8] Kwade 2018; [6] Lain 2019; [1] Argonne National Laboratory 2023"}, {"source": "chem_processing_electrolyte_CN", "target": "cell_mfg_PL", "value": 12.231118421052631, "raw_value": 12.231118421052631, "color": "rgba(30,136,229,0.55)", "hover": "<b>F071 \u2014 liquid electrolyte (LiPF6 in EC/DMC or EC/EMC)</b><br>Total: 61.971 kg/pack<sup>7,6,1,8</sup><br>Region: <b>CN</b> (19.7%<sup>2,1</sup>) \u2014 12.2311 kg/pack<sup>2,1</sup><br>Companies: Tinci Materials, Capchem, Kunlun (CNGR-affiliated), Guotai Huarong, Do-Fluoride New Materials<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [1] Argonne National Laboratory 2023; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "chem_processing_electrolyte_CN", "target": "cell_mfg_US", "value": 36.69335526315789, "raw_value": 36.69335526315789, "color": "rgba(30,136,229,0.55)", "hover": "<b>F071 \u2014 liquid electrolyte (LiPF6 in EC/DMC or EC/EMC)</b><br>Total: 61.971 kg/pack<sup>7,6,1,8</sup><br>Region: <b>CN</b> (59.2%<sup>2,1</sup>) \u2014 36.6934 kg/pack<sup>2,1</sup><br>Companies: Tinci Materials, Capchem, Kunlun (CNGR-affiliated), Guotai Huarong, Do-Fluoride New Materials<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [1] Argonne National Laboratory 2023; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "chem_processing_electrolyte_KR", "target": "cell_mfg_US", "value": 5.870936842105263, "raw_value": 5.870936842105263, "color": "rgba(30,136,229,0.55)", "hover": "<b>F071 \u2014 liquid electrolyte (LiPF6 in EC/DMC or EC/EMC)</b><br>Total: 61.971 kg/pack<sup>7,6,1,8</sup><br>Region: <b>KR</b> (9.5%<sup>2</sup>) \u2014 5.87094 kg/pack<sup>2</sup><br>Companies: Soulbrain, Enchem, Panaxetec, Dongwha Electrolyte<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [1] Argonne National Laboratory 2023; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "chem_processing_separator_CN", "target": "cell_mfg_PL", "value": 0.9339473684210526, "raw_value": 0.9339473684210526, "color": "rgba(129,212,250,0.55)", "hover": "<b>F072 \u2014 separator (polyolefin, PE/PP trilayer or ceramic-coated)</b><br>Total: 5.46 kg/pack<sup>7,6,8</sup><br>Region: <b>CN</b> (17.1%<sup>2,1</sup>) \u2014 0.933947 kg/pack<sup>2,1</sup><br>Companies: Yunnan Energy New Material/Semcorp, Senior Technology Material, Sinoma Lithium Battery Separator, Gellec, Cangzhou Mingzhu<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "chem_processing_separator_CN", "target": "cell_mfg_US", "value": 2.801842105263158, "raw_value": 2.801842105263158, "color": "rgba(129,212,250,0.55)", "hover": "<b>F072 \u2014 separator (polyolefin, PE/PP trilayer or ceramic-coated)</b><br>Total: 5.46 kg/pack<sup>7,6,8</sup><br>Region: <b>CN</b> (51.3%<sup>2,1</sup>) \u2014 2.80184 kg/pack<sup>2,1</sup><br>Companies: Yunnan Energy New Material/Semcorp, Senior Technology Material, Sinoma Lithium Battery Separator, Gellec, Cangzhou Mingzhu<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "chem_processing_separator_JP", "target": "cell_mfg_US", "value": 0.7758947368421052, "raw_value": 0.7758947368421052, "color": "rgba(129,212,250,0.55)", "hover": "<b>F072 \u2014 separator (polyolefin, PE/PP trilayer or ceramic-coated)</b><br>Total: 5.46 kg/pack<sup>7,6,8</sup><br>Region: <b>JP</b> (14.2%<sup>2</sup>) \u2014 0.775895 kg/pack<sup>2</sup><br>Companies: Asahi Kasei (Hipore), Toray Industries (Setela), Mitsubishi Chemical<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "chem_processing_separator_KR", "target": "cell_mfg_US", "value": 0.5172631578947369, "raw_value": 0.5172631578947369, "color": "rgba(129,212,250,0.55)", "hover": "<b>F072 \u2014 separator (polyolefin, PE/PP trilayer or ceramic-coated)</b><br>Total: 5.46 kg/pack<sup>7,6,8</sup><br>Region: <b>KR</b> (9.5%<sup>2</sup>) \u2014 0.517263 kg/pack<sup>2</sup><br>Companies: SK IE Technology (SKIET), W-Scope, Doosan Solus (separator division)<br>Sources: [7] Argonne National Laboratory (Nelson 2022; [6] Lain 2019; [8] Kwade 2018<br>\u26a0 regional_share_uncertain (accepted_uncertainty)<br>\u26a0 unaccounted_material (accepted_uncertainty)"}, {"source": "module_assembly_US", "target": "pack_mfg_US", "value": 268.2225, "raw_value": 268.2225, "color": "rgba(144,164,174,0.55)", "hover": "<b>F080 \u2014 battery modules</b><br>Total: 357.63 kg/pack<sup>7,10,6</sup><br>Region: <b>US</b> (75.0%<sup>11</sup>) \u2014 268.223 kg/pack<sup>11</sup><br>Sources: [7] Argonne National Laboratory (Nelson 2022; [10] Cusenza 2022; [6] Lain 2019"}, {"source": "module_assembly_PL", "target": "pack_mfg_PL", "value": 89.4075, "raw_value": 89.4075, "color": "rgba(144,164,174,0.55)", "hover": "<b>F080 \u2014 battery modules</b><br>Total: 357.63 kg/pack<sup>7,10,6</sup><br>Region: <b>PL</b> (25.0%<sup>11</sup>) \u2014 89.4075 kg/pack<sup>11</sup><br>Sources: [7] Argonne National Laboratory (Nelson 2022; [10] Cusenza 2022; [6] Lain 2019"}, {"source": "pack_mfg_US", "target": "app_vehicle", "value": 361.725, "raw_value": 361.725, "color": "rgba(144,164,174,0.55)", "hover": "<b>F090 \u2014 battery pack</b><br>Total: 482.3 kg/pack<sup>7,10,11</sup><br>Region: <b>US</b> (75.0%<sup>11</sup>) \u2014 361.725 kg/pack<sup>11</sup><br>Sources: [7] Argonne National Laboratory (Nelson 2022; [10] Cusenza 2022; [11] International Energy Agency 2023"}, {"source": "pack_mfg_PL", "target": "app_vehicle", "value": 120.575, "raw_value": 120.575, "color": "rgba(144,164,174,0.55)", "hover": "<b>F090 \u2014 battery pack</b><br>Total: 482.3 kg/pack<sup>7,10,11</sup><br>Region: <b>PL</b> (25.0%<sup>11</sup>) \u2014 120.575 kg/pack<sup>11</sup><br>Sources: [7] Argonne National Laboratory (Nelson 2022; [10] Cusenza 2022; [11] International Energy Agency 2023"}]}, {"title": "Mustang Mach-E Extended Range (RWD / AWD; incl. GT) (NMC, 91 kWh) \u2014 Energy & water (MJ or L /pack)", "subtitle": "Per-pack absolute mass; chains derived from ford.yaml; regions filtered to disclosed Ford suppliers.", "unit": "MJ or L /pack", "height": 220, "nodes": [{"id": "chem_processing_KR", "label": "Chemical Processing\nSouth Korea", "hover": "<b>Chemical Processing<br>South Korea</b><br>Total through node: 1729 MJ or L /pack", "rank": 2, "color": "rgba(80,80,80,0.85)", "track": "mid"}, {"id": "cam_mfg", "label": "Cathode Active Material\nPOSCO Future M / L&F +1", "hover": "<b>Cathode Active Material</b><br>Total through node: 1729 MJ or L /pack<br><b>Operator:</b> POSCO Future M / L&F +1", "rank": 4, "color": "rgba(80,80,80,0.85)", "track": "cathode"}], "links": []}];
+const COLUMN_LABELS = {"0": "Mining", "1": "Beneficiation", "2": "Chemical Processing", "3": "Precursor Mfg", "4": "CAM / Anode Mfg", "5": "Electrode Mfg", "6": "Cell Mfg", "7": "Module Assembly", "8": "Pack Mfg", "9": "Application", "10": "EoL / Waste"};
+
+const tip = d3.select("#tip");
+function showTip(html, evt) {
+  tip.html(html)
+     .style("left", (evt.pageX + 14) + "px")
+     .style("top", (evt.pageY + 14) + "px")
+     .style("opacity", 1);
+}
+function hideTip() { tip.style("opacity", 0); }
+
+function renderPanel(panel, container) {
+  const W = 2600;
+  // PAD_T raised from 36 → 56 so the column-axis labels ("Mining",
+  // "Beneficiation", ...) get breathing room above the node rectangles
+  // and don't crowd against the panel subtitle.
+  const PAD_L = 30, PAD_R = 320, PAD_T = 56, PAD_B = 64;
+  const H = panel.height || 1100;
+
+  const root = d3.select(container).append("div").attr("class", "panel");
+  root.append("p").attr("class", "panel-title").text(panel.title);
+  if (panel.subtitle) root.append("p").attr("class", "panel-sub").text(panel.subtitle);
+  const svg = root.append("svg").attr("width", W).attr("height", H);
+
+  const innerW = W - PAD_L - PAD_R;
+  const innerH = H - PAD_T - PAD_B;
+  const g = svg.append("g").attr("transform", `translate(${PAD_L},${PAD_T})`);
+
+  // Build d3-sankey graph
+  const nodes = panel.nodes.map(n => ({...n}));
+  const links = panel.links.map(l => ({...l}));
+
+  const sankey = d3.sankey()
+    .nodeId(d => d.id)
+    .nodeWidth(18)
+    .nodePadding(18)
+    .nodeAlign(d => d.rank)        // <<< pin every node to its assigned column
+    .iterations(32)
+    .extent([[0, 0], [innerW, innerH]]);
+
+  // Augment links with source/target object refs (d3-sankey wants ids OR objects)
+  const graph = sankey({nodes: nodes, links: links});
+
+  // Sort nodes within each column: cathode-track top, anode-track bottom,
+  // others in middle. Within a track, sort by REGION (stable global order)
+  // so that the same geography (e.g. United States) sits at the same
+  // vertical band across every column — this stops US/PL/CN swapping
+  // places between Mining → Beneficiation → Chem Processing → ... and
+  // eliminates the snake-like crossing of links.
+  // Region rank: lower = higher up. Western Hemisphere first, then EU,
+  // then Asia, then commodity-mining regions (AU/BR/CL/AR/etc.).
+  const REGION_RANK = {
+    "US": 0, "CA": 1, "MX": 2,
+    "GB": 5, "IE": 6, "NO": 7, "SE": 8, "FI": 9, "DK": 10,
+    "DE": 12, "FR": 13, "BE": 14, "NL": 15, "LU": 16, "AT": 17,
+    "ES": 18, "PT": 19, "IT": 20,
+    "PL": 22, "CZ": 23, "SK": 24, "HU": 25, "RO": 26, "BG": 27,
+    "HR": 28, "SI": 29, "EE": 30, "LV": 31, "LT": 32, "GR": 33,
+    "EU": 35,
+    "TR": 38, "RU": 40, "IL": 41, "JO": 42, "MA": 43, "ZA": 44,
+    "GA": 45, "GH": 46, "MZ": 47, "MG": 48, "TZ": 49, "CD": 50,
+    "KR": 60, "JP": 61, "TW": 62, "VN": 63, "IN": 64, "ID": 65, "PH": 66,
+    "CN": 70,
+    "AU": 80, "NZ": 81,
+    "BR": 90, "CL": 91, "AR": 92, "PE": 93, "ZW": 94,
+    "OTHER": 999, "ROW": 999, "OTH": 999,
+  };
+  function regionFromId(nid) {
+    // Composite IDs end with "_<REGION>" (e.g. "electrode_mfg_US",
+    // "chem_processing_current_collector_PL"). Anode track has form
+    // "anode_mfg_anode_CN" so strip a leading "anode_" if present.
+    const parts = String(nid || "").split("_");
+    if (parts.length < 2) return "";
+    let last = parts[parts.length - 1].toUpperCase();
+    // App nodes (app_xxx) don't carry regions — keep them out of the rank
+    if (String(nid).startsWith("app_")) return "";
+    // Region tokens are 2-3 letter uppercase
+    if (last.length >= 2 && last.length <= 3 && /^[A-Z]+$/.test(last)) return last;
+    return "";
+  }
+  function regionRank(nid) {
+    const r = regionFromId(nid);
+    if (!r) return 1000;  // unattributed nodes (no region) at bottom
+    return (r in REGION_RANK) ? REGION_RANK[r] : 500;  // unknown region: middle
+  }
+
+  // Material category rank: lower = higher up. Same-material nodes cluster
+  // together vertically across columns so a flow like
+  // "iron-phosphorus mining → iron-phosphorus chem processing → iron-
+  // phosphorus precursor" doesn't have to arc up and down between columns.
+  // Without this, the same-region-different-material nodes get sorted by
+  // mass per column and end up at very different y-positions, producing
+  // long looping ribbons that misread as data anomalies.
+  const PROCESS_STEPS = [
+    "chem_processing", "precursor_mfg", "anode_mfg", "cam_mfg",
+    "module_assembly", "pack_mfg", "electrode_mfg", "cell_mfg",
+    "mining", "beneficiation", "application", "eol_recycling", "waste",
+  ];
+  const MATERIAL_RANK = {
+    "lithium": 0,
+    "iron_phosphorus": 1,
+    "phosphorus": 2,
+    "nickel": 3,
+    "cobalt": 4,
+    "manganese": 5,
+    "precursor": 6,
+    "cam": 7,
+    "current_collector": 8,
+    "electrolyte": 9,
+    "separator": 10,
+    "anode": 11,
+    "loss": 90,
+    "energy": 91,
+    "water": 92,
+    "other": 99,
+  };
+  function categoryFromId(nid) {
+    let s = String(nid || "");
+    for (const step of PROCESS_STEPS) {
+      if (s.startsWith(step + "_")) {
+        s = s.slice(step.length + 1);
+        break;
+      }
+    }
+    // s is now like "iron_phosphorus_CN" or "lithium_AU" or "anode_CN"
+    // Strip a trailing 2-3-letter uppercase region token.
+    const parts = s.split("_");
+    if (parts.length > 1) {
+      const last = parts[parts.length - 1];
+      if (last.length >= 2 && last.length <= 3 && /^[A-Z]+$/.test(last)) {
+        parts.pop();
+      }
+    }
+    return parts.join("_");
+  }
+  function materialRank(nid) {
+    const c = categoryFromId(nid);
+    return (c in MATERIAL_RANK) ? MATERIAL_RANK[c] : 50;
+  }
+
+  const byCol = d3.group(graph.nodes, d => d.rank);
+  byCol.forEach((arr, rank) => {
+    arr.forEach(n => {
+      const inSum = (n.targetLinks || []).reduce((s, l) => s + l.value, 0);
+      const outSum = (n.sourceLinks || []).reduce((s, l) => s + l.value, 0);
+      n._mass = Math.max(inSum, outSum);
+      n._regionRank = regionRank(n.id);
+      n._materialRank = materialRank(n.id);
+    });
+    arr.sort((a, b) => {
+      const tA = a.track || "mid", tB = b.track || "mid";
+      const trackOrder = {cathode: 0, mid: 1, anode: 2};
+      if (trackOrder[tA] !== trackOrder[tB]) return trackOrder[tA] - trackOrder[tB];
+      // Sort by MATERIAL CATEGORY first within a track, so same-material
+      // nodes (e.g. iron_phosphorus across mining/beneficiation/chem_processing)
+      // sit at the same vertical band across columns.
+      if (a._materialRank !== b._materialRank) return a._materialRank - b._materialRank;
+      // Within a material group, sort by region (US top, CN bottom).
+      if (a._regionRank !== b._regionRank) return a._regionRank - b._regionRank;
+      // Tiebreak by mass.
+      return b._mass - a._mass;
+    });
+    // Re-assign y0/y1 based on the new sort order, packing into the column
+    const total = arr.reduce((s, n) => s + (n.y1 - n.y0), 0);
+    const slack = innerH - total;
+    const gap = arr.length > 1 ? slack / (arr.length - 1) : 0;
+    let y = 0;
+    for (const n of arr) {
+      const h = n.y1 - n.y0;
+      n.y0 = y;
+      n.y1 = y + h;
+      y += h + gap;
+    }
+    // Re-route source/target endpoints
+    arr.forEach(n => {
+      if (n.sourceLinks) n.sourceLinks.forEach(l => l.y0 = (l.source.y0 + l.source.y1) / 2);
+      if (n.targetLinks) n.targetLinks.forEach(l => l.y1 = (l.target.y0 + l.target.y1) / 2);
+    });
+  });
+  // Recompute link y endpoints from updated node positions
+  graph.nodes.forEach(n => {
+    let y = n.y0;
+    (n.sourceLinks || []).sort((a, b) => a.target.y0 - b.target.y0).forEach(l => {
+      l.y0 = y + l.width / 2;
+      y += l.width;
+    });
+    y = n.y0;
+    (n.targetLinks || []).sort((a, b) => a.source.y0 - b.source.y0).forEach(l => {
+      l.y1 = y + l.width / 2;
+      y += l.width;
+    });
+  });
+
+  // Column axis — draw light vertical guides + step labels at the top
+  const colAxis = g.append("g").attr("class", "col-axis");
+  const ranks = Array.from(byCol.keys()).sort((a, b) => a - b);
+  const xByRank = new Map();
+  ranks.forEach(r => {
+    const sample = byCol.get(r)[0];
+    xByRank.set(r, (sample.x0 + sample.x1) / 2);
+  });
+  ranks.forEach(r => {
+    const x = xByRank.get(r);
+    colAxis.append("line").attr("x1", x).attr("x2", x).attr("y1", -8).attr("y2", innerH);
+    colAxis.append("text")
+      .attr("x", x).attr("y", -14).attr("text-anchor", "middle")
+      .text(COLUMN_LABELS[r] || `col ${r}`);
+  });
+
+  // Links
+  g.append("g").attr("fill", "none")
+    .selectAll("path").data(graph.links).join("path")
+    .attr("class", "link")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", d => d.color || "#888")
+    .attr("stroke-width", d => Math.max(1, d.width))
+    .on("mousemove", function(evt, d) { showTip(d.hover || (d.value.toFixed(2) + " " + (panel.unit || "")), evt); })
+    .on("mouseout", hideTip);
+
+  // Nodes
+  const nodeG = g.append("g").selectAll("g").data(graph.nodes).join("g")
+    .attr("class", "node");
+  nodeG.append("rect")
+    .attr("x", d => d.x0).attr("y", d => d.y0)
+    .attr("height", d => Math.max(2, d.y1 - d.y0))
+    .attr("width", d => d.x1 - d.x0)
+    .attr("fill", d => d.color || "#555")
+    .on("mousemove", function(evt, d) { showTip(d.hover || d.label, evt); })
+    .on("mouseout", hideTip);
+  // Per-column label de-overlap: collect nodes in each column, sort by y,
+  // and bump labels apart vertically if they would collide. Tiny nodes
+  // (< MIN_LABEL_HEIGHT) get their label drawn at an offset y with a
+  // light leader line back to the rect.
+  const LH = 12;                       // line-height in px
+  const MIN_GAP = 14;                  // min vertical gap between label centers
+  const lastColRank = Math.max(...graph.nodes.map(n => n.rank));
+  const labelData = graph.nodes.map(d => {
+    const lines = (d.label || "").split("\n");
+    const onLeftOfCol = d.x0 < innerW / 2;
+    // Rightmost-column label goes to the RIGHT of the rect (we reserve
+    // PAD_R width on the SVG for it). Other right-side labels go left of
+    // their rect to avoid colliding with the next column's labels.
+    const isLast = (d.rank === lastColRank);
+    const xAnchor = isLast ? d.x1 + 8
+                           : onLeftOfCol ? d.x1 + 6 : d.x0 - 6;
+    const textAnchor = isLast ? "start"
+                              : onLeftOfCol ? "start" : "end";
+    const yIdeal = (d.y0 + d.y1) / 2;
+    const totalH = lines.length * LH;
+    return {d, lines, xAnchor, textAnchor, yIdeal, totalH, yPlaced: yIdeal};
+  });
+  // Group by column and resolve overlaps top-down
+  const colGroups = d3.group(labelData, l => l.d.rank);
+  colGroups.forEach(arr => {
+    arr.sort((a, b) => a.yIdeal - b.yIdeal);
+    let cursor = -Infinity;
+    for (const lab of arr) {
+      const halfH = lab.totalH / 2;
+      const minY = cursor + MIN_GAP / 2 + halfH;
+      lab.yPlaced = Math.max(lab.yIdeal, minY);
+      cursor = lab.yPlaced + halfH;
+    }
+    // If we ran past the panel bottom, push everything up
+    const last = arr[arr.length - 1];
+    if (last && last.yPlaced + last.totalH / 2 > innerH) {
+      const overflow = (last.yPlaced + last.totalH / 2) - innerH;
+      arr.forEach(lab => lab.yPlaced -= overflow);
+    }
+  });
+
+  // Draw leader lines for labels that moved away from their node
+  const leadersG = g.append("g").attr("class", "leaders").attr("fill", "none")
+    .attr("stroke", "#bbb").attr("stroke-width", 0.6);
+  labelData.forEach(lab => {
+    if (Math.abs(lab.yPlaced - lab.yIdeal) > 4) {
+      leadersG.append("line")
+        .attr("x1", (lab.d.x0 + lab.d.x1) / 2)
+        .attr("y1", lab.yIdeal)
+        .attr("x2", lab.xAnchor + (lab.textAnchor === "start" ? -2 : 2))
+        .attr("y2", lab.yPlaced);
+    }
+  });
+
+  // Multi-line labels via tspans, placed at yPlaced
+  nodeG.append("text")
+    .attr("class", "node-label")
+    .each(function(d) {
+      const lab = labelData.find(L => L.d === d);
+      const sel = d3.select(this);
+      const startY = lab.yPlaced - ((lab.lines.length - 1) * LH) / 2;
+      lab.lines.forEach((ln, i) => {
+        sel.append("tspan")
+          .attr("x", lab.xAnchor)
+          .attr("y", startY + i * LH)
+          .attr("text-anchor", lab.textAnchor)
+          .text(ln);
+      });
+    });
+}
+
+PANELS.forEach(p => renderPanel(p, "#panels"));
+</script>
+</body>
+</html>
