@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_408cc536922c38eec72aa74a9d34ee6c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+    <div style="position: fixed; top: 12px; left: 60px; z-index: 9999;
+                padding: 12px 18px; background: rgba(255,255,255,0.92);
+                border: 1px solid #ccc; border-radius: 6px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                max-width: 460px;">
+      <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">
+        US Battery Supply Chain &mdash; Section 45X Recipients
+      </div>
+      <div style="font-size: 11px; color: #444; line-height: 1.4;">
+        Disclosed Section 45X advanced manufacturing production credit
+        recognition by parent company, mapped to operating plants.
+        Hover or click for citation. Data anchored to FY2023&ndash;FY2025
+        SEC and home-jurisdiction annual filings.
+      </div>
+    </div>
+    
+    
+    <div style="position: fixed; bottom: 24px; left: 24px; z-index: 9999;
+                padding: 10px 14px; background: rgba(255,255,255,0.94);
+                border: 1px solid #ccc; border-radius: 6px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                font-size: 11px; line-height: 1.5; max-width: 240px;">
+      <div style="font-weight: 600; margin-bottom: 4px;">Product type (fill)</div>
+      <div><span style="display:inline-block;width:10px;height:10px;background:#1f77b4;border-radius:50%;"></span> Cell</div>
+      <div><span style="display:inline-block;width:10px;height:10px;background:#a6cee3;border-radius:50%;"></span> Module</div>
+      <div><span style="display:inline-block;width:10px;height:10px;background:#ff7f0e;border-radius:50%;"></span> CAM</div>
+      <div><span style="display:inline-block;width:10px;height:10px;background:#fdb863;border-radius:50%;"></span> PCAM</div>
+      <div><span style="display:inline-block;width:10px;height:10px;background:#4d4d4d;border-radius:50%;"></span> Anode</div>
+      <div><span style="display:inline-block;width:10px;height:10px;background:#2ca02c;border-radius:50%;"></span> Mineral refining</div>
+      <div style="margin-top:6px; font-weight: 600;">FEOC status (ring)</div>
+      <div><span style="display:inline-block;width:10px;height:10px;border:2px solid #1a9850;border-radius:50%;"></span> Clear</div>
+      <div><span style="display:inline-block;width:10px;height:10px;border:2px solid #fd8d3c;border-radius:50%;"></span> Pending Treasury guidance</div>
+      <div><span style="display:inline-block;width:10px;height:10px;border:2px solid #d73027;border-radius:50%;"></span> FIE / SFE / PFE</div>
+      <div style="margin-top:6px; font-weight: 600;">Size (radius)</div>
+      <div>Cumulative disclosed 45X $ (FY2023&ndash;FY2025); minimum size for plants without disclosed $</div>
+    </div>
+    
+    
+            <div class="folium-map" id="map_408cc536922c38eec72aa74a9d34ee6c" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_408cc536922c38eec72aa74a9d34ee6c = L.map(
+                "map_408cc536922c38eec72aa74a9d34ee6c",
+                {
+                    center: [39.5, -95.5],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_1b307e06a62729001626c0ca6fe23200 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_1b307e06a62729001626c0ca6fe23200.addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+            var circle_marker_483f478fdd04100049ec34e05ccd16cc = L.circleMarker(
+                [39.538, -119.435],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 36.0, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_5d9a018eaf8dbf76a2f1b466ed0899fe = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_9d4590f14352aefdcf0cc16c96a7cc67 = $(`<div id="html_9d4590f14352aefdcf0cc16c96a7cc67" style="width: 100.0%; height: 100.0%;"><b>Panasonic Energy Nevada (Gigafactory Nevada)</b><br>Operator: Panasonic Energy of North America<br>Parent: Panasonic Holdings Corporation<br>Type: cell<br>Chemistry: NCA<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $1727.0M<br><i>Estimated by production-volume allocation.</i><br><u>via Panasonic Holdings Corporation:</u> $1727.0M estimated <i>(parent's verified total: $1752.0M)</i><br>&middot; FY2023: $667.0M <i>(100.0% of parent's FY total)</i><br>&middot; FY2024: $579.0M <i>(100.0% of parent's FY total)</i><br>&middot; FY2025: $481.0M <i>(95.0% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; Panasonic Holdings (JP), not SFE</div>`)[0];
+                popup_5d9a018eaf8dbf76a2f1b466ed0899fe.setContent(html_9d4590f14352aefdcf0cc16c96a7cc67);
+            
+        
+
+        circle_marker_483f478fdd04100049ec34e05ccd16cc.bindPopup(popup_5d9a018eaf8dbf76a2f1b466ed0899fe)
+        ;
+
+        
+    
+    
+            circle_marker_483f478fdd04100049ec34e05ccd16cc.bindTooltip(
+                `<div>
+                     Panasonic Energy Nevada (Gigafactory Nevada)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9f20c170f4359d3b9419c7b2279ece2e = L.circleMarker(
+                [38.9642, -94.9747],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9.611407502497745, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_331bb975149fe58dcbb61aba371c4a9b = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_5c75c529e93f28d379b11d1fc6fcc932 = $(`<div id="html_5c75c529e93f28d379b11d1fc6fcc932" style="width: 100.0%; height: 100.0%;"><b>Panasonic Energy Kansas (PEKS)</b><br>Operator: Panasonic Energy of North America<br>Parent: Panasonic Holdings Corporation<br>Type: cell<br>Chemistry: NCA<br>Status: ramping<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $25.0M<br><i>Estimated by production-volume allocation.</i><br><u>via Panasonic Holdings Corporation:</u> $25.0M estimated <i>(parent's verified total: $1752.0M)</i><br>&middot; FY2023: $0.0M <i>(0.0% of parent's FY total)</i><br>&middot; FY2024: $0.0M <i>(0.0% of parent's FY total)</i><br>&middot; FY2025: $25.0M <i>(5.0% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; Panasonic Holdings (JP)</div>`)[0];
+                popup_331bb975149fe58dcbb61aba371c4a9b.setContent(html_5c75c529e93f28d379b11d1fc6fcc932);
+            
+        
+
+        circle_marker_9f20c170f4359d3b9419c7b2279ece2e.bindPopup(popup_331bb975149fe58dcbb61aba371c4a9b)
+        ;
+
+        
+    
+    
+            circle_marker_9f20c170f4359d3b9419c7b2279ece2e.bindTooltip(
+                `<div>
+                     Panasonic Energy Kansas (PEKS)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3ff03ce26fec52e6ac0dc8c47dcfb194 = L.circleMarker(
+                [39.538, -119.728],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15.403683990829593, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_79b04cd79ce27839133f14e4f5d78d85 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_3cef4208f438e52b72941d6f395ff17a = $(`<div id="html_3cef4208f438e52b72941d6f395ff17a" style="width: 100.0%; height: 100.0%;"><b>Tesla Gigafactory Nevada — 4680 cells</b><br>Operator: Tesla, Inc.<br>Parent: Tesla, Inc.<br>Type: cell<br>Chemistry: NMx<br>Status: ramping<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $169.7M<br><i>Estimated by production-volume allocation.</i><br><u>via Tesla, Inc.:</u> $169.7M estimated <i>(parent's verified total: $871.0M)</i><br>&middot; FY2023: $0.0M <i>(0.0% of parent's FY total)</i><br>&middot; FY2024: $169.7M <i>(22.4% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; Tesla wholly owned (US)</div>`)[0];
+                popup_79b04cd79ce27839133f14e4f5d78d85.setContent(html_3cef4208f438e52b72941d6f395ff17a);
+            
+        
+
+        circle_marker_3ff03ce26fec52e6ac0dc8c47dcfb194.bindPopup(popup_79b04cd79ce27839133f14e4f5d78d85)
+        ;
+
+        
+    
+    
+            circle_marker_3ff03ce26fec52e6ac0dc8c47dcfb194.bindTooltip(
+                `<div>
+                     Tesla Gigafactory Nevada — 4680 cells
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0e90ae6210ef75b9f9de33b5e25bffea = L.circleMarker(
+                [37.8225, -121.2766],
+                {"bubblingMouseEvents": true, "color": "#888888", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#a6cee3", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.24605495444215, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_c226c5ea5aac41a6c1dcce9fd4e3dd30 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_cbd11f2db080b24c329692d292372b51 = $(`<div id="html_cbd11f2db080b24c329692d292372b51" style="width: 100.0%; height: 100.0%;"><b>Tesla Megapack Megafactory Lathrop CA</b><br>Operator: Tesla, Inc.<br>Parent: Tesla, Inc.<br>Type: module<br>Chemistry: LFP<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $130.5M<br><i>Estimated by production-volume allocation.</i><br><u>via Tesla, Inc.:</u> $130.5M estimated <i>(parent's verified total: $871.0M)</i><br>&middot; FY2023: $21.4M <i>(18.6% of parent's FY total)</i><br>&middot; FY2024: $109.1M <i>(14.4% of parent's FY total)</i><br><b>OBBBA FEOC:</b> at_risk_macr &mdash; Tesla wholly owned but Megapack uses imported CATL LFP cells; module-level §45X eligibility ok but cell-level MACR is the question</div>`)[0];
+                popup_c226c5ea5aac41a6c1dcce9fd4e3dd30.setContent(html_cbd11f2db080b24c329692d292372b51);
+            
+        
+
+        circle_marker_0e90ae6210ef75b9f9de33b5e25bffea.bindPopup(popup_c226c5ea5aac41a6c1dcce9fd4e3dd30)
+        ;
+
+        
+    
+    
+            circle_marker_0e90ae6210ef75b9f9de33b5e25bffea.bindTooltip(
+                `<div>
+                     Tesla Megapack Megafactory Lathrop CA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6b1468eba4180896e3d2b3c571679ee9 = L.circleMarker(
+                [30.222, -97.601],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.2478614019047, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_898526e67f8ed3bdae893efb886153bf = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_6ae42c614b6c57b442f6b73845fb1ef0 = $(`<div id="html_6ae42c614b6c57b442f6b73845fb1ef0" style="width: 100.0%; height: 100.0%;"><b>Tesla Gigafactory Texas — 4680 cells</b><br>Operator: Tesla, Inc.<br>Parent: Tesla, Inc.<br>Type: cell<br>Chemistry: NMx<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $570.8M<br><i>Estimated by production-volume allocation.</i><br><u>via Tesla, Inc.:</u> $570.8M estimated <i>(parent's verified total: $871.0M)</i><br>&middot; FY2023: $93.6M <i>(81.4% of parent's FY total)</i><br>&middot; FY2024: $477.2M <i>(63.1% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; Tesla wholly owned (US)</div>`)[0];
+                popup_898526e67f8ed3bdae893efb886153bf.setContent(html_6ae42c614b6c57b442f6b73845fb1ef0);
+            
+        
+
+        circle_marker_6b1468eba4180896e3d2b3c571679ee9.bindPopup(popup_898526e67f8ed3bdae893efb886153bf)
+        ;
+
+        
+    
+    
+            circle_marker_6b1468eba4180896e3d2b3c571679ee9.bindTooltip(
+                `<div>
+                     Tesla Gigafactory Texas — 4680 cells
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f786817ea9acf4b01bb9dbdcac145ce4 = L.circleMarker(
+                [41.2353, -80.8184],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 26.22955817469579, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_29224c50b3e96fb4fc756fdb27c92dfa = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_372ba1610770d6fd2d91c1d8d60683f8 = $(`<div id="html_372ba1610770d6fd2d91c1d8d60683f8" style="width: 100.0%; height: 100.0%;"><b>Ultium Cells Warren / Lordstown</b><br>Operator: Ultium Cells LLC (GM/LGES 50/50)<br>Parent: GM-LGES JV<br>Type: cell<br>Chemistry: NMC<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $785.3M<br><i>Estimated by production-volume allocation.</i><br><u>via LG Energy Solution Ltd.:</u> $785.3M estimated <i>(parent's verified total: $1671.0M)</i><br>&middot; FY2023: $272.7M <i>(47.4% of parent's FY total, JV equity 50%)</i><br>&middot; FY2024: $512.6M <i>(46.8% of parent's FY total, JV equity 50%)</i><br><b>OBBBA FEOC:</b> clear &mdash; GM-LGES JV (no SFE)</div>`)[0];
+                popup_29224c50b3e96fb4fc756fdb27c92dfa.setContent(html_372ba1610770d6fd2d91c1d8d60683f8);
+            
+        
+
+        circle_marker_f786817ea9acf4b01bb9dbdcac145ce4.bindPopup(popup_29224c50b3e96fb4fc756fdb27c92dfa)
+        ;
+
+        
+    
+    
+            circle_marker_f786817ea9acf4b01bb9dbdcac145ce4.bindTooltip(
+                `<div>
+                     Ultium Cells Warren / Lordstown
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7f4bfc9a823818b29ee0953a66b86598 = L.circleMarker(
+                [35.7512, -86.93],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 24.6862884069322, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_8e57b259e06c9785daabdb26e74b7b73 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_4a1d3f390b0e0399f3706ad569df4642 = $(`<div id="html_4a1d3f390b0e0399f3706ad569df4642" style="width: 100.0%; height: 100.0%;"><b>Ultium Cells Spring Hill TN (NMC + LFP-ESS retrofit)</b><br>Operator: Ultium Cells LLC<br>Parent: GM-LGES JV<br>Type: cell<br>Chemistry: mixed<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $670.0M<br><i>Estimated by production-volume allocation.</i><br><u>via LG Energy Solution Ltd.:</u> $670.0M estimated <i>(parent's verified total: $1671.0M)</i><br>&middot; FY2023: $211.6M <i>(36.8% of parent's FY total, JV equity 50%)</i><br>&middot; FY2024: $458.4M <i>(41.8% of parent's FY total, JV equity 50%)</i><br><b>OBBBA FEOC:</b> clear &mdash; GM-LGES JV</div>`)[0];
+                popup_8e57b259e06c9785daabdb26e74b7b73.setContent(html_4a1d3f390b0e0399f3706ad569df4642);
+            
+        
+
+        circle_marker_7f4bfc9a823818b29ee0953a66b86598.bindPopup(popup_8e57b259e06c9785daabdb26e74b7b73)
+        ;
+
+        
+    
+    
+            circle_marker_7f4bfc9a823818b29ee0953a66b86598.bindTooltip(
+                `<div>
+                     Ultium Cells Spring Hill TN (NMC + LFP-ESS retrofit)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e153174a9d2e7f0b8fb473a33c3ca997 = L.circleMarker(
+                [42.7325, -84.5555],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_d2f2720f875561c89d135cb247a72da6 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_1b134b66f5a8dd0c2f910678bc0aa5de = $(`<div id="html_1b134b66f5a8dd0c2f910678bc0aa5de" style="width: 100.0%; height: 100.0%;"><b>LG Energy Solution Michigan — Lansing (formerly Ultium 3)</b><br>Operator: LG Energy Solution Michigan, Inc.<br>Parent: LG Energy Solution Ltd.<br>Type: cell<br>Chemistry: LFP<br>Status: ramping<br><i>Parent (LG Energy Solution Ltd.) disclosed $1671.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> clear &mdash; LGES (KR)</div>`)[0];
+                popup_d2f2720f875561c89d135cb247a72da6.setContent(html_1b134b66f5a8dd0c2f910678bc0aa5de);
+            
+        
+
+        circle_marker_e153174a9d2e7f0b8fb473a33c3ca997.bindPopup(popup_d2f2720f875561c89d135cb247a72da6)
+        ;
+
+        
+    
+    
+            circle_marker_e153174a9d2e7f0b8fb473a33c3ca997.bindTooltip(
+                `<div>
+                     LG Energy Solution Michigan — Lansing (formerly Ultium 3)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8522a52e567e16ee038b386082be89b8 = L.circleMarker(
+                [42.7876, -86.1089],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.602702266266665, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_b1387c559148175fcc4d6b4acc39f9cf = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_ca47bbdbefdc1027f8743c11d93a1c2d = $(`<div id="html_ca47bbdbefdc1027f8743c11d93a1c2d" style="width: 100.0%; height: 100.0%;"><b>LG Energy Solution Holland MI (NMC EV cells)</b><br>Operator: LG Energy Solution Michigan, Inc.<br>Parent: LG Energy Solution Ltd.<br>Type: cell<br>Chemistry: NMC<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $215.7M<br><i>Estimated by production-volume allocation.</i><br><u>via LG Energy Solution Ltd.:</u> $215.7M estimated <i>(parent's verified total: $1671.0M)</i><br>&middot; FY2023: $90.7M <i>(15.8% of parent's FY total)</i><br>&middot; FY2024: $125.0M <i>(11.4% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; LGES (KR)</div>`)[0];
+                popup_b1387c559148175fcc4d6b4acc39f9cf.setContent(html_ca47bbdbefdc1027f8743c11d93a1c2d);
+            
+        
+
+        circle_marker_8522a52e567e16ee038b386082be89b8.bindPopup(popup_b1387c559148175fcc4d6b4acc39f9cf)
+        ;
+
+        
+    
+    
+            circle_marker_8522a52e567e16ee038b386082be89b8.bindTooltip(
+                `<div>
+                     LG Energy Solution Holland MI (NMC EV cells)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3fb912c1ae966340e3559066cff98c9d = L.circleMarker(
+                [42.7876, -86.1089],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_e2f257d85627e7998f6f7ea1a5d22933 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_14099529ddc38c1d3f0acf34f38c81b3 = $(`<div id="html_14099529ddc38c1d3f0acf34f38c81b3" style="width: 100.0%; height: 100.0%;"><b>LG Energy Solution Holland MI — LFP ESS plant</b><br>Operator: LG Energy Solution Michigan, Inc.<br>Parent: LG Energy Solution Ltd.<br>Type: cell<br>Chemistry: LFP<br>Status: operational<br><i>Parent (LG Energy Solution Ltd.) disclosed $1671.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> clear &mdash; LGES (KR)</div>`)[0];
+                popup_e2f257d85627e7998f6f7ea1a5d22933.setContent(html_14099529ddc38c1d3f0acf34f38c81b3);
+            
+        
+
+        circle_marker_3fb912c1ae966340e3559066cff98c9d.bindPopup(popup_e2f257d85627e7998f6f7ea1a5d22933)
+        ;
+
+        
+    
+    
+            circle_marker_3fb912c1ae966340e3559066cff98c9d.bindTooltip(
+                `<div>
+                     LG Energy Solution Holland MI — LFP ESS plant
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7232d9e70a571f1a7221472afc793b3a = L.circleMarker(
+                [33.252, -111.634],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_cf1a3d4501576361600a277f5c7c49c8 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_8d678f466c620c52eee919ce1e0d47cc = $(`<div id="html_8d678f466c620c52eee919ce1e0d47cc" style="width: 100.0%; height: 100.0%;"><b>LG Energy Solution Arizona — EV cylindrical</b><br>Operator: LG Energy Solution Arizona, Inc.<br>Parent: LG Energy Solution Ltd.<br>Type: cell<br>Chemistry: NMC<br>Status: construction<br><i>Parent (LG Energy Solution Ltd.) disclosed $1671.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> clear &mdash; LGES (KR)</div>`)[0];
+                popup_cf1a3d4501576361600a277f5c7c49c8.setContent(html_8d678f466c620c52eee919ce1e0d47cc);
+            
+        
+
+        circle_marker_7232d9e70a571f1a7221472afc793b3a.bindPopup(popup_cf1a3d4501576361600a277f5c7c49c8)
+        ;
+
+        
+    
+    
+            circle_marker_7232d9e70a571f1a7221472afc793b3a.bindTooltip(
+                `<div>
+                     LG Energy Solution Arizona — EV cylindrical
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_025f2adf06e1076bf05f9c8304b5e79e = L.circleMarker(
+                [33.248, -111.638],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_2e1e971c851dd0be7f6290a1ddfe79bd = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_f92e09d1927752be9cb942c091ef3e99 = $(`<div id="html_f92e09d1927752be9cb942c091ef3e99" style="width: 100.0%; height: 100.0%;"><b>LG Energy Solution Arizona — ESS LFP</b><br>Operator: LG Energy Solution Arizona ESS, Inc.<br>Parent: LG Energy Solution Ltd.<br>Type: cell<br>Chemistry: LFP<br>Status: construction<br><i>Parent (LG Energy Solution Ltd.) disclosed $1671.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> clear &mdash; LGES (KR)</div>`)[0];
+                popup_2e1e971c851dd0be7f6290a1ddfe79bd.setContent(html_f92e09d1927752be9cb942c091ef3e99);
+            
+        
+
+        circle_marker_025f2adf06e1076bf05f9c8304b5e79e.bindPopup(popup_2e1e971c851dd0be7f6290a1ddfe79bd)
+        ;
+
+        
+    
+    
+            circle_marker_025f2adf06e1076bf05f9c8304b5e79e.bindTooltip(
+                `<div>
+                     LG Energy Solution Arizona — ESS LFP
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b77828c260ad54b908593f6e0d4e165d = L.circleMarker(
+                [40.4865, -86.1336],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.293397826880238, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_35e24470ea06e2d66e1044e0506e8f07 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_323e26795be31f96e6b263555fbe7038 = $(`<div id="html_323e26795be31f96e6b263555fbe7038" style="width: 100.0%; height: 100.0%;"><b>StarPlus Energy Kokomo IN — Plant 1</b><br>Operator: StarPlus Energy LLC (Stellantis-Samsung SDI 50/50)<br>Parent: Stellantis-Samsung SDI JV<br>Type: cell<br>Chemistry: NMC<br>Status: ramping<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $76.0M<br><i>Estimated by production-volume allocation.</i><br><u>via Samsung SDI Co., Ltd.:</u> $76.0M estimated <i>(parent's verified total: $76.0M)</i><br>&middot; FY2024: $76.0M <i>(100.0% of parent's FY total, JV equity 50%)</i><br><b>OBBBA FEOC:</b> clear &mdash; Stellantis-Samsung SDI JV</div>`)[0];
+                popup_35e24470ea06e2d66e1044e0506e8f07.setContent(html_323e26795be31f96e6b263555fbe7038);
+            
+        
+
+        circle_marker_b77828c260ad54b908593f6e0d4e165d.bindPopup(popup_35e24470ea06e2d66e1044e0506e8f07)
+        ;
+
+        
+    
+    
+            circle_marker_b77828c260ad54b908593f6e0d4e165d.bindTooltip(
+                `<div>
+                     StarPlus Energy Kokomo IN — Plant 1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6306d57b058b1dc6b028a1850eff7cab = L.circleMarker(
+                [40.47, -86.15],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_e16fac21c809467be66e5931e6db01cb = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_872ffc8649876e89822f050d7a2ce183 = $(`<div id="html_872ffc8649876e89822f050d7a2ce183" style="width: 100.0%; height: 100.0%;"><b>StarPlus Energy Kokomo IN — Plant 2</b><br>Operator: StarPlus Energy LLC<br>Parent: Stellantis-Samsung SDI JV<br>Type: cell<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Stellantis-Samsung SDI JV</div>`)[0];
+                popup_e16fac21c809467be66e5931e6db01cb.setContent(html_872ffc8649876e89822f050d7a2ce183);
+            
+        
+
+        circle_marker_6306d57b058b1dc6b028a1850eff7cab.bindPopup(popup_e16fac21c809467be66e5931e6db01cb)
+        ;
+
+        
+    
+    
+            circle_marker_6306d57b058b1dc6b028a1850eff7cab.bindTooltip(
+                `<div>
+                     StarPlus Energy Kokomo IN — Plant 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d983ef05f614c010f73fa592f033e3d7 = L.circleMarker(
+                [41.7017, -86.5134],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_3c0124251644a5e218e92aa0bf5a9d7b = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_7328cb9c290bcf4d397837f3ed502140 = $(`<div id="html_7328cb9c290bcf4d397837f3ed502140" style="width: 100.0%; height: 100.0%;"><b>GM-Samsung SDI New Carlisle IN</b><br>Operator: GM-Samsung SDI JV<br>Parent: GM-Samsung SDI JV<br>Type: cell<br>Chemistry: NCA<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; GM-Samsung SDI JV</div>`)[0];
+                popup_3c0124251644a5e218e92aa0bf5a9d7b.setContent(html_7328cb9c290bcf4d397837f3ed502140);
+            
+        
+
+        circle_marker_d983ef05f614c010f73fa592f033e3d7.bindPopup(popup_3c0124251644a5e218e92aa0bf5a9d7b)
+        ;
+
+        
+    
+    
+            circle_marker_d983ef05f614c010f73fa592f033e3d7.bindTooltip(
+                `<div>
+                     GM-Samsung SDI New Carlisle IN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ef4750b4df7967a93644d82ae2c06a2f = L.circleMarker(
+                [34.1952, -83.4577],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_782dd147a8bc8bc92b4fc87a05b1683c = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_c6213be0c329aea5f6ce45233e5e31e2 = $(`<div id="html_c6213be0c329aea5f6ce45233e5e31e2" style="width: 100.0%; height: 100.0%;"><b>SK Battery America Commerce GA — Plant 1</b><br>Operator: SK Battery America, Inc.<br>Parent: SK On / SK Innovation<br>Type: cell<br>Chemistry: NMC<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; SK On (KR)</div>`)[0];
+                popup_782dd147a8bc8bc92b4fc87a05b1683c.setContent(html_c6213be0c329aea5f6ce45233e5e31e2);
+            
+        
+
+        circle_marker_ef4750b4df7967a93644d82ae2c06a2f.bindPopup(popup_782dd147a8bc8bc92b4fc87a05b1683c)
+        ;
+
+        
+    
+    
+            circle_marker_ef4750b4df7967a93644d82ae2c06a2f.bindTooltip(
+                `<div>
+                     SK Battery America Commerce GA — Plant 1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_328ed9ed141d56c7508272c397f9b714 = L.circleMarker(
+                [34.2, -83.46],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_e3e3662d9e4a87857fbac60a9827d124 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_b6960e8b3050b3997bd08e182fa400ff = $(`<div id="html_b6960e8b3050b3997bd08e182fa400ff" style="width: 100.0%; height: 100.0%;"><b>SK Battery America Commerce GA — Plant 2</b><br>Operator: SK Battery America, Inc.<br>Parent: SK On / SK Innovation<br>Type: cell<br>Chemistry: NMC<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; SK On (KR)</div>`)[0];
+                popup_e3e3662d9e4a87857fbac60a9827d124.setContent(html_b6960e8b3050b3997bd08e182fa400ff);
+            
+        
+
+        circle_marker_328ed9ed141d56c7508272c397f9b714.bindPopup(popup_e3e3662d9e4a87857fbac60a9827d124)
+        ;
+
+        
+    
+    
+            circle_marker_328ed9ed141d56c7508272c397f9b714.bindTooltip(
+                `<div>
+                     SK Battery America Commerce GA — Plant 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7a3586424b1afffd664cc7f44f06832f = L.circleMarker(
+                [35.4636, -89.3779],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_582d9ebbe30d444d8a9561b71505ec79 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_46ea9093a78de49bd0ac2f76f614eaa8 = $(`<div id="html_46ea9093a78de49bd0ac2f76f614eaa8" style="width: 100.0%; height: 100.0%;"><b>BlueOval SK Tennessee (post-JVDA SK On)</b><br>Operator: SK On (post-JVDA H1 2026)<br>Parent: SK On / SK Innovation<br>Type: cell<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; SK On post-JVDA (KR)</div>`)[0];
+                popup_582d9ebbe30d444d8a9561b71505ec79.setContent(html_46ea9093a78de49bd0ac2f76f614eaa8);
+            
+        
+
+        circle_marker_7a3586424b1afffd664cc7f44f06832f.bindPopup(popup_582d9ebbe30d444d8a9561b71505ec79)
+        ;
+
+        
+    
+    
+            circle_marker_7a3586424b1afffd664cc7f44f06832f.bindTooltip(
+                `<div>
+                     BlueOval SK Tennessee (post-JVDA SK On)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8eda4845f81c3d58f6f67edc51aa090f = L.circleMarker(
+                [37.62, -85.93],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 13.41488840981324, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_cfed59e7791d028b8aa5bda1039e82a4 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_560c3de16876ed8fbc4a939c2d2d07a0 = $(`<div id="html_560c3de16876ed8fbc4a939c2d2d07a0" style="width: 100.0%; height: 100.0%;"><b>BlueOval SK Glendale KY — Plant 1 (post-JVDA Ford)</b><br>Operator: Ford subsidiary (post-JVDA H1 2026)<br>Parent: Ford Motor Company<br>Type: cell<br>Chemistry: NMC<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $105.5M<br><i>Estimated by production-volume allocation.</i><br><u>via Ford Motor Company:</u> $105.5M estimated <i>(parent's verified total: $158.0M)</i><br>&middot; FY2024: $52.5M <i>(50.0% of parent's FY total)</i><br>&middot; FY2025: $53.0M <i>(100.0% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; Ford post-JVDA</div>`)[0];
+                popup_cfed59e7791d028b8aa5bda1039e82a4.setContent(html_560c3de16876ed8fbc4a939c2d2d07a0);
+            
+        
+
+        circle_marker_8eda4845f81c3d58f6f67edc51aa090f.bindPopup(popup_cfed59e7791d028b8aa5bda1039e82a4)
+        ;
+
+        
+    
+    
+            circle_marker_8eda4845f81c3d58f6f67edc51aa090f.bindTooltip(
+                `<div>
+                     BlueOval SK Glendale KY — Plant 1 (post-JVDA Ford)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_70b591c41e24157085d565c53c12de45 = L.circleMarker(
+                [37.615, -85.925],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_2f4d788ad0979ea93dccbd602c335e8d = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_b8885247643e9e7ac7934e01f944b166 = $(`<div id="html_b8885247643e9e7ac7934e01f944b166" style="width: 100.0%; height: 100.0%;"><b>BlueOval SK Glendale KY — Plant 2</b><br>Operator: Ford subsidiary<br>Parent: Ford Motor Company<br>Type: cell<br>Chemistry: NMC<br>Status: announced<br><i>Parent (Ford Motor Company) disclosed $158.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> clear &mdash; Ford post-JVDA</div>`)[0];
+                popup_2f4d788ad0979ea93dccbd602c335e8d.setContent(html_b8885247643e9e7ac7934e01f944b166);
+            
+        
+
+        circle_marker_70b591c41e24157085d565c53c12de45.bindPopup(popup_2f4d788ad0979ea93dccbd602c335e8d)
+        ;
+
+        
+    
+    
+            circle_marker_70b591c41e24157085d565c53c12de45.bindTooltip(
+                `<div>
+                     BlueOval SK Glendale KY — Plant 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_169be492d28f17e8c09e5570a030ac32 = L.circleMarker(
+                [42.2728, -84.9644],
+                {"bubblingMouseEvents": true, "color": "#fd8d3c", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_373e38b11c76e05191c119eeb72baacd = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_4d2e8ab6f20a2baa638c5009a9ed30a5 = $(`<div id="html_4d2e8ab6f20a2baa638c5009a9ed30a5" style="width: 100.0%; height: 100.0%;"><b>BlueOval Battery Park Marshall MI</b><br>Operator: BlueOval Battery Park Michigan LLC (Ford-owned)<br>Parent: Ford Motor Company<br>Type: cell<br>Chemistry: LFP<br>Status: construction<br><i>Parent (Ford Motor Company) disclosed $158.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> pending_treasury_guidance &mdash; Ford-owned, CATL-licensed Feb 2023 (pre-OBBBA grandfather)</div>`)[0];
+                popup_373e38b11c76e05191c119eeb72baacd.setContent(html_4d2e8ab6f20a2baa638c5009a9ed30a5);
+            
+        
+
+        circle_marker_169be492d28f17e8c09e5570a030ac32.bindPopup(popup_373e38b11c76e05191c119eeb72baacd)
+        ;
+
+        
+    
+    
+            circle_marker_169be492d28f17e8c09e5570a030ac32.bindTooltip(
+                `<div>
+                     BlueOval Battery Park Marshall MI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_beed80f0923773cdd57bae9898215efd = L.circleMarker(
+                [34.1651, -84.7996],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_d9f00e7799df0a8164f8bd6457e58193 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_6d7745f1d2f0a7c77e4c8359c8f58d0b = $(`<div id="html_6d7745f1d2f0a7c77e4c8359c8f58d0b" style="width: 100.0%; height: 100.0%;"><b>HSAGP Energy Cartersville GA (HMG-SK On JV)</b><br>Operator: HSAGP Energy LLC<br>Parent: HMG-SK On JV<br>Type: cell<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; HMG-SK On JV (KR)</div>`)[0];
+                popup_d9f00e7799df0a8164f8bd6457e58193.setContent(html_6d7745f1d2f0a7c77e4c8359c8f58d0b);
+            
+        
+
+        circle_marker_beed80f0923773cdd57bae9898215efd.bindPopup(popup_d9f00e7799df0a8164f8bd6457e58193)
+        ;
+
+        
+    
+    
+            circle_marker_beed80f0923773cdd57bae9898215efd.bindTooltip(
+                `<div>
+                     HSAGP Energy Cartersville GA (HMG-SK On JV)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0ecc7a2b0475e5ba642610137d86986a = L.circleMarker(
+                [32.2, -81.56],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_83eef0c23abe133ba9479076df6c43ad = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_9ab55b82d052db4a933e9b8cae5f9666 = $(`<div id="html_9ab55b82d052db4a933e9b8cae5f9666" style="width: 100.0%; height: 100.0%;"><b>HL-GA Battery Company Ellabell GA (HMG-LGES JV)</b><br>Operator: HL-GA Battery Company<br>Parent: HMG-LGES JV<br>Type: cell<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; HMG-LGES JV (KR)</div>`)[0];
+                popup_83eef0c23abe133ba9479076df6c43ad.setContent(html_9ab55b82d052db4a933e9b8cae5f9666);
+            
+        
+
+        circle_marker_0ecc7a2b0475e5ba642610137d86986a.bindPopup(popup_83eef0c23abe133ba9479076df6c43ad)
+        ;
+
+        
+    
+    
+            circle_marker_0ecc7a2b0475e5ba642610137d86986a.bindTooltip(
+                `<div>
+                     HL-GA Battery Company Ellabell GA (HMG-LGES JV)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c059a069133f04f75823478f1bbf4d65 = L.circleMarker(
+                [35.857, -79.5743],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_dfb57e82f3c14c2861799cd83bcffdd3 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_4b6f5b739cd24325cef2a76b3f22abd2 = $(`<div id="html_4b6f5b739cd24325cef2a76b3f22abd2" style="width: 100.0%; height: 100.0%;"><b>Toyota Battery Manufacturing North Carolina</b><br>Operator: Toyota Battery Manufacturing North Carolina LLC<br>Parent: Toyota Motor Corporation<br>Type: cell<br>Chemistry: NMC<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Toyota wholly owned (JP)</div>`)[0];
+                popup_dfb57e82f3c14c2861799cd83bcffdd3.setContent(html_4b6f5b739cd24325cef2a76b3f22abd2);
+            
+        
+
+        circle_marker_c059a069133f04f75823478f1bbf4d65.bindPopup(popup_dfb57e82f3c14c2861799cd83bcffdd3)
+        ;
+
+        
+    
+    
+            circle_marker_c059a069133f04f75823478f1bbf4d65.bindTooltip(
+                `<div>
+                     Toyota Battery Manufacturing North Carolina
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2e872e99d718e5c340873ddbfc6d9e3a = L.circleMarker(
+                [39.6606, -83.5596],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_668377ffbd7b6c96f5c2ea85997fda60 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_80f93122088b1b957e228af46c3a5fb9 = $(`<div id="html_80f93122088b1b957e228af46c3a5fb9" style="width: 100.0%; height: 100.0%;"><b>L-H Battery Company Jeffersonville OH (Honda-LGES; transitioning to Honda sole)</b><br>Operator: L-H Battery Company (Honda-LGES JV → Honda)<br>Parent: Honda Motor Co.<br>Type: cell<br>Chemistry: NMC<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Honda-LGES (JP/KR)</div>`)[0];
+                popup_668377ffbd7b6c96f5c2ea85997fda60.setContent(html_80f93122088b1b957e228af46c3a5fb9);
+            
+        
+
+        circle_marker_2e872e99d718e5c340873ddbfc6d9e3a.bindPopup(popup_668377ffbd7b6c96f5c2ea85997fda60)
+        ;
+
+        
+    
+    
+            circle_marker_2e872e99d718e5c340873ddbfc6d9e3a.bindTooltip(
+                `<div>
+                     L-H Battery Company Jeffersonville OH (Honda-LGES; transitioning to Honda sole)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_629b4454baab99570d2a54a6310fad91 = L.circleMarker(
+                [35.9829, -86.5189],
+                {"bubblingMouseEvents": true, "color": "#d73027", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_187297607e3b85343f1e939fbfbe3c53 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_0829060730efe3946096cefc71f03658 = $(`<div id="html_0829060730efe3946096cefc71f03658" style="width: 100.0%; height: 100.0%;"><b>AESC Smyrna TN (legacy Nissan; sold to Fixx Energy 2026)</b><br>Operator: Fixx Energy (formerly AESC US LLC)<br>Parent: Fixx Energy / Envision Energy (former)<br>Type: cell<br>Chemistry: LFP<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> FIE &mdash; Envision Energy on SFE list; AESC US LLC ≥25% Envision-owned</div>`)[0];
+                popup_187297607e3b85343f1e939fbfbe3c53.setContent(html_0829060730efe3946096cefc71f03658);
+            
+        
+
+        circle_marker_629b4454baab99570d2a54a6310fad91.bindPopup(popup_187297607e3b85343f1e939fbfbe3c53)
+        ;
+
+        
+    
+    
+            circle_marker_629b4454baab99570d2a54a6310fad91.bindTooltip(
+                `<div>
+                     AESC Smyrna TN (legacy Nissan; sold to Fixx Energy 2026)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d1e6914d290b7d2a77edc73828ae52bf = L.circleMarker(
+                [36.9685, -86.4808],
+                {"bubblingMouseEvents": true, "color": "#d73027", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_c16b933796ba42f816c23869e486b997 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_dc828ee4be72f81e3422c0c027e2febf = $(`<div id="html_dc828ee4be72f81e3422c0c027e2febf" style="width: 100.0%; height: 100.0%;"><b>AESC Bowling Green KY Gigafactory</b><br>Operator: AESC US LLC<br>Parent: Envision AESC / Envision Energy<br>Type: cell<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> FIE &mdash; Envision Energy SFE → AESC US LLC FIE</div>`)[0];
+                popup_c16b933796ba42f816c23869e486b997.setContent(html_dc828ee4be72f81e3422c0c027e2febf);
+            
+        
+
+        circle_marker_d1e6914d290b7d2a77edc73828ae52bf.bindPopup(popup_c16b933796ba42f816c23869e486b997)
+        ;
+
+        
+    
+    
+            circle_marker_d1e6914d290b7d2a77edc73828ae52bf.bindTooltip(
+                `<div>
+                     AESC Bowling Green KY Gigafactory
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2ead2325f00fa6b950769a71d31f596a = L.circleMarker(
+                [34.1954, -79.7626],
+                {"bubblingMouseEvents": true, "color": "#d73027", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_91f284a23378b868fb4c052544c79a9e = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_5e527d63fd59cfb143753bbfd4a085a8 = $(`<div id="html_5e527d63fd59cfb143753bbfd4a085a8" style="width: 100.0%; height: 100.0%;"><b>AESC Florence SC Gigafactory (BMW supply, paused)</b><br>Operator: AESC US LLC<br>Parent: Envision AESC / Envision Energy<br>Type: cell<br>Chemistry: NMC<br>Status: paused<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> FIE &mdash; Envision Energy SFE; construction halted June 2025 amid policy uncertainty</div>`)[0];
+                popup_91f284a23378b868fb4c052544c79a9e.setContent(html_5e527d63fd59cfb143753bbfd4a085a8);
+            
+        
+
+        circle_marker_2ead2325f00fa6b950769a71d31f596a.bindPopup(popup_91f284a23378b868fb4c052544c79a9e)
+        ;
+
+        
+    
+    
+            circle_marker_2ead2325f00fa6b950769a71d31f596a.bindTooltip(
+                `<div>
+                     AESC Florence SC Gigafactory (BMW supply, paused)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e025799c838599da72818b971a9f59b7 = L.circleMarker(
+                [34.8726, -89.7107],
+                {"bubblingMouseEvents": true, "color": "#888888", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_43859530b212120a7143f64d69c01452 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_c0b12355d90bce6cf6b8f327c77cd575 = $(`<div id="html_c0b12355d90bce6cf6b8f327c77cd575" style="width: 100.0%; height: 100.0%;"><b>Amplify Cell Technologies Byhalia MS</b><br>Operator: Amplify Cell Technologies (Cummins/Daimler/PACCAR/EVE)<br>Parent: Amplify (Cummins 30% / Daimler 30% / PACCAR 30% / EVE 10%)<br>Type: cell<br>Chemistry: LFP<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> at_risk_FIE &mdash; EVE Energy holds 10% stake; Amplify JV may cross FIE thresholds</div>`)[0];
+                popup_43859530b212120a7143f64d69c01452.setContent(html_c0b12355d90bce6cf6b8f327c77cd575);
+            
+        
+
+        circle_marker_e025799c838599da72818b971a9f59b7.bindPopup(popup_43859530b212120a7143f64d69c01452)
+        ;
+
+        
+    
+    
+            circle_marker_e025799c838599da72818b971a9f59b7.bindTooltip(
+                `<div>
+                     Amplify Cell Technologies Byhalia MS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_59a07e41285bdfb6d88b5f76bdb83134 = L.circleMarker(
+                [42.209, -83.468],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_8aceace3d648a83125c051009238c17d = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_757c6014bc5bbf461d1ece5c1042223d = $(`<div id="html_757c6014bc5bbf461d1ece5c1042223d" style="width: 100.0%; height: 100.0%;"><b>Our Next Energy Van Buren Township MI</b><br>Operator: Our Next Energy, Inc.<br>Parent: Our Next Energy (private)<br>Type: cell<br>Chemistry: LFP<br>Status: paused<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Our Next Energy (US)</div>`)[0];
+                popup_8aceace3d648a83125c051009238c17d.setContent(html_757c6014bc5bbf461d1ece5c1042223d);
+            
+        
+
+        circle_marker_59a07e41285bdfb6d88b5f76bdb83134.bindPopup(popup_8aceace3d648a83125c051009238c17d)
+        ;
+
+        
+    
+    
+            circle_marker_59a07e41285bdfb6d88b5f76bdb83134.bindTooltip(
+                `<div>
+                     Our Next Energy Van Buren Township MI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9b780ff83ba6a55080ff8b8e3bc4dd22 = L.circleMarker(
+                [37.7249, -122.1561],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_650ab89e6b5c2cc9efeb059922a4857c = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_ad1eb3a7ced051df1e93b6d970150522 = $(`<div id="html_ad1eb3a7ced051df1e93b6d970150522" style="width: 100.0%; height: 100.0%;"><b>Lyten San Leandro CA (former Northvolt/Cuberg)</b><br>Operator: Lyten, Inc.<br>Parent: Lyten (private)<br>Type: cell<br>Chemistry: mixed<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Lyten (US)</div>`)[0];
+                popup_650ab89e6b5c2cc9efeb059922a4857c.setContent(html_ad1eb3a7ced051df1e93b6d970150522);
+            
+        
+
+        circle_marker_9b780ff83ba6a55080ff8b8e3bc4dd22.bindPopup(popup_650ab89e6b5c2cc9efeb059922a4857c)
+        ;
+
+        
+    
+    
+            circle_marker_9b780ff83ba6a55080ff8b8e3bc4dd22.bindTooltip(
+                `<div>
+                     Lyten San Leandro CA (former Northvolt/Cuberg)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dd965441df440dd5d2fe73cdb0b9ee85 = L.circleMarker(
+                [42.097, -79.2353],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_823ff37663f01d9a64691c4d7a3e85cd = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_538ea62e84d56091bc47f853f0c7fcb2 = $(`<div id="html_538ea62e84d56091bc47f853f0c7fcb2" style="width: 100.0%; height: 100.0%;"><b>Electrovaya Jamestown NY</b><br>Operator: Electrovaya Inc.<br>Parent: Electrovaya Inc.<br>Type: cell<br>Chemistry: NMC<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Electrovaya (CA)</div>`)[0];
+                popup_823ff37663f01d9a64691c4d7a3e85cd.setContent(html_538ea62e84d56091bc47f853f0c7fcb2);
+            
+        
+
+        circle_marker_dd965441df440dd5d2fe73cdb0b9ee85.bindPopup(popup_823ff37663f01d9a64691c4d7a3e85cd)
+        ;
+
+        
+    
+    
+            circle_marker_dd965441df440dd5d2fe73cdb0b9ee85.bindTooltip(
+                `<div>
+                     Electrovaya Jamestown NY
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c9b9f3dd385be154e12c550d97a9a3db = L.circleMarker(
+                [34.7382, -82.0335],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#a6cee3", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_71f7ade32a182f8c7bbca9a2723a067b = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_f5fe8fb472696d91727a5fce9f0ae72d = $(`<div id="html_f5fe8fb472696d91727a5fce9f0ae72d" style="width: 100.0%; height: 100.0%;"><b>BMW Plant Woodruff — high-voltage battery assembly</b><br>Operator: BMW Manufacturing Co. LLC<br>Parent: BMW AG<br>Type: module<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; BMW wholly owned (DE)</div>`)[0];
+                popup_71f7ade32a182f8c7bbca9a2723a067b.setContent(html_f5fe8fb472696d91727a5fce9f0ae72d);
+            
+        
+
+        circle_marker_c9b9f3dd385be154e12c550d97a9a3db.bindPopup(popup_71f7ade32a182f8c7bbca9a2723a067b)
+        ;
+
+        
+    
+    
+            circle_marker_c9b9f3dd385be154e12c550d97a9a3db.bindTooltip(
+                `<div>
+                     BMW Plant Woodruff — high-voltage battery assembly
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0080736c7123f99b208e8fdc6698ba51 = L.circleMarker(
+                [32.3668, -86.2999],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#a6cee3", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_356c63e2dffd3adce49a1a83b94c4315 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_ea06070c16bc0a1dab58dc05c0d403aa = $(`<div id="html_ea06070c16bc0a1dab58dc05c0d403aa" style="width: 100.0%; height: 100.0%;"><b>Hyundai Mobis Montgomery AL — battery system assembly</b><br>Operator: Hyundai Mobis Alabama LLC<br>Parent: Hyundai Mobis Co. Ltd.<br>Type: module<br>Chemistry: NMC<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Hyundai Mobis (KR)</div>`)[0];
+                popup_356c63e2dffd3adce49a1a83b94c4315.setContent(html_ea06070c16bc0a1dab58dc05c0d403aa);
+            
+        
+
+        circle_marker_0080736c7123f99b208e8fdc6698ba51.bindPopup(popup_356c63e2dffd3adce49a1a83b94c4315)
+        ;
+
+        
+    
+    
+            circle_marker_0080736c7123f99b208e8fdc6698ba51.bindTooltip(
+                `<div>
+                     Hyundai Mobis Montgomery AL — battery system assembly
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bfa5ab5fd5e7f58fa43fe55430390064 = L.circleMarker(
+                [42.1161, -83.2078],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#a6cee3", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 11.230678670476983, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_87b4c7c82e0acc75f4ef7bcac9cc5f3f = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_4f7210b70f2754ee1021dc6ae71fb76d = $(`<div id="html_4f7210b70f2754ee1021dc6ae71fb76d" style="width: 100.0%; height: 100.0%;"><b>Ford Brownstown Battery Engineering Center</b><br>Operator: Ford Motor Company<br>Parent: Ford Motor Company<br>Type: module<br>Chemistry: NMC<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $52.5M<br><i>Estimated by production-volume allocation.</i><br><u>via Ford Motor Company:</u> $52.5M estimated <i>(parent's verified total: $158.0M)</i><br>&middot; FY2024: $52.5M <i>(50.0% of parent's FY total)</i><br>&middot; FY2025: $0.0M <i>(0.0% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; Ford wholly owned</div>`)[0];
+                popup_87b4c7c82e0acc75f4ef7bcac9cc5f3f.setContent(html_4f7210b70f2754ee1021dc6ae71fb76d);
+            
+        
+
+        circle_marker_bfa5ab5fd5e7f58fa43fe55430390064.bindPopup(popup_87b4c7c82e0acc75f4ef7bcac9cc5f3f)
+        ;
+
+        
+    
+    
+            circle_marker_bfa5ab5fd5e7f58fa43fe55430390064.bindTooltip(
+                `<div>
+                     Ford Brownstown Battery Engineering Center
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e92f62bc29490e61b02a161f1fa0a28c = L.circleMarker(
+                [36.5298, -87.3595],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff7f0e", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_6cffb85695c23bfab5b67d4f069fd9be = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_1a25a5108a398d7e5031cece53f96aa7 = $(`<div id="html_1a25a5108a398d7e5031cece53f96aa7" style="width: 100.0%; height: 100.0%;"><b>LG Chem Clarksville TN CAM plant</b><br>Operator: LG Chem Tennessee LLC<br>Parent: LG Chem Ltd.<br>Type: cam<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; LG Chem (KR)</div>`)[0];
+                popup_6cffb85695c23bfab5b67d4f069fd9be.setContent(html_1a25a5108a398d7e5031cece53f96aa7);
+            
+        
+
+        circle_marker_e92f62bc29490e61b02a161f1fa0a28c.bindPopup(popup_6cffb85695c23bfab5b67d4f069fd9be)
+        ;
+
+        
+    
+    
+            circle_marker_e92f62bc29490e61b02a161f1fa0a28c.bindTooltip(
+                `<div>
+                     LG Chem Clarksville TN CAM plant
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c3e33b41c5729bf3f2aa30e43b95cde9 = L.circleMarker(
+                [42.3186, -85.1819],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff7f0e", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_5f95343cd29e6e767c136e8f09073d66 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_a47ee3b1e1ac95d293f24a9aacfb8c75 = $(`<div id="html_a47ee3b1e1ac95d293f24a9aacfb8c75" style="width: 100.0%; height: 100.0%;"><b>BASF CAM Battle Creek MI</b><br>Operator: BASF Corporation<br>Parent: BASF SE<br>Type: cam<br>Chemistry: NMC<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; BASF (DE)</div>`)[0];
+                popup_5f95343cd29e6e767c136e8f09073d66.setContent(html_a47ee3b1e1ac95d293f24a9aacfb8c75);
+            
+        
+
+        circle_marker_c3e33b41c5729bf3f2aa30e43b95cde9.bindPopup(popup_5f95343cd29e6e767c136e8f09073d66)
+        ;
+
+        
+    
+    
+            circle_marker_c3e33b41c5729bf3f2aa30e43b95cde9.bindTooltip(
+                `<div>
+                     BASF CAM Battle Creek MI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7fc1a9b091f90fef94b9b7412d90c798 = L.circleMarker(
+                [36.8659, -87.4886],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fdb863", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_b49b30d985ac180208efcbe9d6948a83 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_72da877ee35c7a053da98c55959aded2 = $(`<div id="html_72da877ee35c7a053da98c55959aded2" style="width: 100.0%; height: 100.0%;"><b>Ascend Elements Apex 1 Hopkinsville KY (pCAM, bankrupt)</b><br>Operator: Ascend Elements Inc. (Ch.11 April 2026)<br>Parent: Ascend Elements (private, bankrupt)<br>Type: pcam<br>Chemistry: NMC<br>Status: paused<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Ascend Elements (US, bankrupt)</div>`)[0];
+                popup_b49b30d985ac180208efcbe9d6948a83.setContent(html_72da877ee35c7a053da98c55959aded2);
+            
+        
+
+        circle_marker_7fc1a9b091f90fef94b9b7412d90c798.bindPopup(popup_b49b30d985ac180208efcbe9d6948a83)
+        ;
+
+        
+    
+    
+            circle_marker_7fc1a9b091f90fef94b9b7412d90c798.bindTooltip(
+                `<div>
+                     Ascend Elements Apex 1 Hopkinsville KY (pCAM, bankrupt)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aab9d38526a60a80218cc93f4841fb30 = L.circleMarker(
+                [31.5632, -91.4371],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_7a42f42a5a8b297441d0d5e5c5166b74 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_9e37966462c88c8d001e90e57f4952c2 = $(`<div id="html_9e37966462c88c8d001e90e57f4952c2" style="width: 100.0%; height: 100.0%;"><b>Syrah Vidalia LA — Active Anode Material</b><br>Operator: Syrah Technologies LLC<br>Parent: Syrah Resources Ltd.<br>Type: anode<br>Chemistry: n/a<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Syrah Resources (AU)</div>`)[0];
+                popup_7a42f42a5a8b297441d0d5e5c5166b74.setContent(html_9e37966462c88c8d001e90e57f4952c2);
+            
+        
+
+        circle_marker_aab9d38526a60a80218cc93f4841fb30.bindPopup(popup_7a42f42a5a8b297441d0d5e5c5166b74)
+        ;
+
+        
+    
+    
+            circle_marker_aab9d38526a60a80218cc93f4841fb30.bindTooltip(
+                `<div>
+                     Syrah Vidalia LA — Active Anode Material
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e68fd030c04469d57dbd34f38f171b9a = L.circleMarker(
+                [47.1301, -119.2781],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_8c4acce9efebcad322776004ee556596 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_0bca0ee43b96a96d52d5512fe3b8e740 = $(`<div id="html_0bca0ee43b96a96d52d5512fe3b8e740" style="width: 100.0%; height: 100.0%;"><b>Sila Nanotechnologies Moses Lake WA (Si anode)</b><br>Operator: Sila Nanotechnologies, Inc.<br>Parent: Sila Nanotechnologies (private)<br>Type: anode<br>Chemistry: Si-blended<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Sila wholly owned (US)</div>`)[0];
+                popup_8c4acce9efebcad322776004ee556596.setContent(html_0bca0ee43b96a96d52d5512fe3b8e740);
+            
+        
+
+        circle_marker_e68fd030c04469d57dbd34f38f171b9a.bindPopup(popup_8c4acce9efebcad322776004ee556596)
+        ;
+
+        
+    
+    
+            circle_marker_e68fd030c04469d57dbd34f38f171b9a.bindTooltip(
+                `<div>
+                     Sila Nanotechnologies Moses Lake WA (Si anode)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_787615255a0acf7db5d9092337cddd8e = L.circleMarker(
+                [47.12, -119.27],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_162a7be6329fd5740382182d666e1e41 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_ff9e9edb5f6d88228361921d980664cf = $(`<div id="html_ff9e9edb5f6d88228361921d980664cf" style="width: 100.0%; height: 100.0%;"><b>Group14 Technologies Moses Lake WA (Si-C anode)</b><br>Operator: Group14 Technologies, Inc.<br>Parent: Group14 Technologies (private)<br>Type: anode<br>Chemistry: Si-blended<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Group14 wholly owned (US)</div>`)[0];
+                popup_162a7be6329fd5740382182d666e1e41.setContent(html_ff9e9edb5f6d88228361921d980664cf);
+            
+        
+
+        circle_marker_787615255a0acf7db5d9092337cddd8e.bindPopup(popup_162a7be6329fd5740382182d666e1e41)
+        ;
+
+        
+    
+    
+            circle_marker_787615255a0acf7db5d9092337cddd8e.bindTooltip(
+                `<div>
+                     Group14 Technologies Moses Lake WA (Si-C anode)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c430f548369033757f67db288de22579 = L.circleMarker(
+                [35.0456, -85.3097],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_244976bf0c3ff053e400f15d7eda6b94 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_2e8715f3d6b5e1716a4f522ba9420123 = $(`<div id="html_2e8715f3d6b5e1716a4f522ba9420123" style="width: 100.0%; height: 100.0%;"><b>Novonix Chattanooga TN — Riverside Plant 1</b><br>Operator: Novonix Anode Materials LLC<br>Parent: Novonix Limited<br>Type: anode<br>Chemistry: n/a<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Novonix (AU)</div>`)[0];
+                popup_244976bf0c3ff053e400f15d7eda6b94.setContent(html_2e8715f3d6b5e1716a4f522ba9420123);
+            
+        
+
+        circle_marker_c430f548369033757f67db288de22579.bindPopup(popup_244976bf0c3ff053e400f15d7eda6b94)
+        ;
+
+        
+    
+    
+            circle_marker_c430f548369033757f67db288de22579.bindTooltip(
+                `<div>
+                     Novonix Chattanooga TN — Riverside Plant 1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aa6bfc28d196565bdcfb7a895087fa16 = L.circleMarker(
+                [35.035, -85.28],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_eb81aab010723fa9af990382f52bfd05 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_00a6564036935eec8fddb503b2949c4d = $(`<div id="html_00a6564036935eec8fddb503b2949c4d" style="width: 100.0%; height: 100.0%;"><b>Novonix Chattanooga TN — Enterprise South Plant 2</b><br>Operator: Novonix Anode Materials LLC<br>Parent: Novonix Limited<br>Type: anode<br>Chemistry: n/a<br>Status: announced<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Novonix (AU)</div>`)[0];
+                popup_eb81aab010723fa9af990382f52bfd05.setContent(html_00a6564036935eec8fddb503b2949c4d);
+            
+        
+
+        circle_marker_aa6bfc28d196565bdcfb7a895087fa16.bindPopup(popup_eb81aab010723fa9af990382f52bfd05)
+        ;
+
+        
+    
+    
+            circle_marker_aa6bfc28d196565bdcfb7a895087fa16.bindTooltip(
+                `<div>
+                     Novonix Chattanooga TN — Enterprise South Plant 2
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a5f1fdb0e7380a51e3af7ba84746d647 = L.circleMarker(
+                [30.9029, -84.5752],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_66eea1eb55e6c1f72feea172750dfa92 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_78d15ba36ac7b0a85019bcd3e1469c9f = $(`<div id="html_78d15ba36ac7b0a85019bcd3e1469c9f" style="width: 100.0%; height: 100.0%;"><b>Anovion Technologies Bainbridge GA</b><br>Operator: Anovion Technologies LLC<br>Parent: Anovion (private; Graftech spinout)<br>Type: anode<br>Chemistry: n/a<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Anovion (US)</div>`)[0];
+                popup_66eea1eb55e6c1f72feea172750dfa92.setContent(html_78d15ba36ac7b0a85019bcd3e1469c9f);
+            
+        
+
+        circle_marker_a5f1fdb0e7380a51e3af7ba84746d647.bindPopup(popup_66eea1eb55e6c1f72feea172750dfa92)
+        ;
+
+        
+    
+    
+            circle_marker_a5f1fdb0e7380a51e3af7ba84746d647.bindTooltip(
+                `<div>
+                     Anovion Technologies Bainbridge GA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_05c8e2340d969acd5680b279e901e79a = L.circleMarker(
+                [34.2137, -78.0416],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4d4d4d", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_67bf86f1e3cc7ff8176e1db10646ea3b = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_aef59ff3fe3345f422a4290546c3a32f = $(`<div id="html_aef59ff3fe3345f422a4290546c3a32f" style="width: 100.0%; height: 100.0%;"><b>Epsilon Advanced Materials Brunswick County NC</b><br>Operator: Epsilon Advanced Materials, Inc.<br>Parent: Epsilon Advanced Materials Pvt. Ltd. (India)<br>Type: anode<br>Chemistry: n/a<br>Status: announced<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Epsilon (IN)</div>`)[0];
+                popup_67bf86f1e3cc7ff8176e1db10646ea3b.setContent(html_aef59ff3fe3345f422a4290546c3a32f);
+            
+        
+
+        circle_marker_05c8e2340d969acd5680b279e901e79a.bindPopup(popup_67bf86f1e3cc7ff8176e1db10646ea3b)
+        ;
+
+        
+    
+    
+            circle_marker_05c8e2340d969acd5680b279e901e79a.bindTooltip(
+                `<div>
+                     Epsilon Advanced Materials Brunswick County NC
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d9a6770bd7f72cfb46def604afc53f1b = L.circleMarker(
+                [27.7898, -97.6687],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_dbacac7dcd2ab0a70902976f1d797c7e = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_e6f3f10f7243b5baab678d01a266f8fa = $(`<div id="html_e6f3f10f7243b5baab678d01a266f8fa" style="width: 100.0%; height: 100.0%;"><b>Tesla Lithium Refinery Robstown TX</b><br>Operator: Tesla, Inc.<br>Parent: Tesla, Inc.<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: operational<br><i>Parent (Tesla, Inc.) disclosed $871.0M cumulative 45X but this plant has no estimated production share in the modeled FY2023-FY2025 window.</i><br><b>OBBBA FEOC:</b> clear &mdash; Tesla wholly owned (US)</div>`)[0];
+                popup_dbacac7dcd2ab0a70902976f1d797c7e.setContent(html_e6f3f10f7243b5baab678d01a266f8fa);
+            
+        
+
+        circle_marker_d9a6770bd7f72cfb46def604afc53f1b.bindPopup(popup_dbacac7dcd2ab0a70902976f1d797c7e)
+        ;
+
+        
+    
+    
+            circle_marker_d9a6770bd7f72cfb46def604afc53f1b.bindTooltip(
+                `<div>
+                     Tesla Lithium Refinery Robstown TX
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dc75329a3bf3fce8af43c134c7008012 = L.circleMarker(
+                [35.2843, -81.2826],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_61bc2249666d502ce454d772ec61bcff = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_1058f9151cadc0b791acd809bae81b09 = $(`<div id="html_1058f9151cadc0b791acd809bae81b09" style="width: 100.0%; height: 100.0%;"><b>Bessemer City LiOH (Rio Tinto Lithium, formerly Arcadium/Livent)</b><br>Operator: Livent USA Corporation dba Arcadium Lithium<br>Parent: Rio Tinto plc (acquired Mar 2025)<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Rio Tinto (UK)</div>`)[0];
+                popup_61bc2249666d502ce454d772ec61bcff.setContent(html_1058f9151cadc0b791acd809bae81b09);
+            
+        
+
+        circle_marker_dc75329a3bf3fce8af43c134c7008012.bindPopup(popup_61bc2249666d502ce454d772ec61bcff)
+        ;
+
+        
+    
+    
+            circle_marker_dc75329a3bf3fce8af43c134c7008012.bindTooltip(
+                `<div>
+                     Bessemer City LiOH (Rio Tinto Lithium, formerly Arcadium/Livent)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_052a40a41ec085a58f32ae5920f22a50 = L.circleMarker(
+                [35.2454, -81.3409],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_2c72f269a3883b70b3c55a01d0c88c5d = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_3db702f7e63c560775d6f8fe89a4f754 = $(`<div id="html_3db702f7e63c560775d6f8fe89a4f754" style="width: 100.0%; height: 100.0%;"><b>Albemarle Kings Mountain NC — lithium conversion</b><br>Operator: Albemarle Corporation<br>Parent: Albemarle Corporation<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Albemarle (US)</div>`)[0];
+                popup_2c72f269a3883b70b3c55a01d0c88c5d.setContent(html_3db702f7e63c560775d6f8fe89a4f754);
+            
+        
+
+        circle_marker_052a40a41ec085a58f32ae5920f22a50.bindPopup(popup_2c72f269a3883b70b3c55a01d0c88c5d)
+        ;
+
+        
+    
+    
+            circle_marker_052a40a41ec085a58f32ae5920f22a50.bindTooltip(
+                `<div>
+                     Albemarle Kings Mountain NC — lithium conversion
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cab232ceaf3bda291c4c1db729b2bbec = L.circleMarker(
+                [37.7522, -117.6347],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_c510845e113f81cfca071daf976376be = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_28cb1d382ceffaa2aa842dfdfc48d53c = $(`<div id="html_28cb1d382ceffaa2aa842dfdfc48d53c" style="width: 100.0%; height: 100.0%;"><b>Albemarle Silver Peak NV</b><br>Operator: Albemarle Corporation<br>Parent: Albemarle Corporation<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Albemarle (US)</div>`)[0];
+                popup_c510845e113f81cfca071daf976376be.setContent(html_28cb1d382ceffaa2aa842dfdfc48d53c);
+            
+        
+
+        circle_marker_cab232ceaf3bda291c4c1db729b2bbec.bindPopup(popup_c510845e113f81cfca071daf976376be)
+        ;
+
+        
+    
+    
+            circle_marker_cab232ceaf3bda291c4c1db729b2bbec.bindTooltip(
+                `<div>
+                     Albemarle Silver Peak NV
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_73908630ad73bff515531359f8667e70 = L.circleMarker(
+                [35.324, -84.5296],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_67d9ef9a831c66026e5cc6c13ee3b1e3 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_9db4507a9027e1712acd32c9fdb2d014 = $(`<div id="html_9db4507a9027e1712acd32c9fdb2d014" style="width: 100.0%; height: 100.0%;"><b>Piedmont Lithium Etowah TN</b><br>Operator: Piedmont Lithium Inc.<br>Parent: Piedmont Lithium Inc.<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: announced<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Piedmont (US)</div>`)[0];
+                popup_67d9ef9a831c66026e5cc6c13ee3b1e3.setContent(html_9db4507a9027e1712acd32c9fdb2d014);
+            
+        
+
+        circle_marker_73908630ad73bff515531359f8667e70.bindPopup(popup_67d9ef9a831c66026e5cc6c13ee3b1e3)
+        ;
+
+        
+    
+    
+            circle_marker_73908630ad73bff515531359f8667e70.bindTooltip(
+                `<div>
+                     Piedmont Lithium Etowah TN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c3143c8a3cb6039679bbb4826569cc45 = L.circleMarker(
+                [37.633, -117.783],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_a88c148ddc3b1a78ceb0d6951fd573d4 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_41b4203333603b53841f996bd686d560 = $(`<div id="html_41b4203333603b53841f996bd686d560" style="width: 100.0%; height: 100.0%;"><b>Ioneer Rhyolite Ridge NV (Li-B)</b><br>Operator: Ioneer Rhyolite Ridge LLC<br>Parent: Ioneer Ltd.<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: announced<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Ioneer (AU)</div>`)[0];
+                popup_a88c148ddc3b1a78ceb0d6951fd573d4.setContent(html_41b4203333603b53841f996bd686d560);
+            
+        
+
+        circle_marker_c3143c8a3cb6039679bbb4826569cc45.bindPopup(popup_a88c148ddc3b1a78ceb0d6951fd573d4)
+        ;
+
+        
+    
+    
+            circle_marker_c3143c8a3cb6039679bbb4826569cc45.bindTooltip(
+                `<div>
+                     Ioneer Rhyolite Ridge NV (Li-B)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6162180b68cac6cb1a64ec618281c3a3 = L.circleMarker(
+                [41.705, -118.0581],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_87ed5eb6f910cfe064418effa9bdb702 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_6556a63a76173073b9e1fcfb8b3d0f77 = $(`<div id="html_6556a63a76173073b9e1fcfb8b3d0f77" style="width: 100.0%; height: 100.0%;"><b>Lithium Americas Thacker Pass NV</b><br>Operator: Lithium Americas Corp.<br>Parent: Lithium Americas Corp.<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Lithium Americas (CA)</div>`)[0];
+                popup_87ed5eb6f910cfe064418effa9bdb702.setContent(html_6556a63a76173073b9e1fcfb8b3d0f77);
+            
+        
+
+        circle_marker_6162180b68cac6cb1a64ec618281c3a3.bindPopup(popup_87ed5eb6f910cfe064418effa9bdb702)
+        ;
+
+        
+    
+    
+            circle_marker_6162180b68cac6cb1a64ec618281c3a3.bindTooltip(
+                `<div>
+                     Lithium Americas Thacker Pass NV
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_451d70f06cfb098c89d3f1a2872cefc8 = L.circleMarker(
+                [35.4783, -115.5331],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.058092396280932, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_a63a7e832518f36071292f06f3fd38f2 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_3b8be870ed2f94f8120a2672dcef3496 = $(`<div id="html_3b8be870ed2f94f8120a2672dcef3496" style="width: 100.0%; height: 100.0%;"><b>MP Materials Mountain Pass CA (rare-earth mine and refinery)</b><br>Operator: MP Materials Corp.<br>Parent: MP Materials Corp.<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: operational<br><b>Estimated plant-level 45X (FY2023-FY2025):</b> $31.6M<br><i>Estimated by production-volume allocation.</i><br><u>via MP Materials Corp.:</u> $31.6M estimated <i>(parent's verified total: $31.6M)</i><br>&middot; FY2023: $19.4M <i>(100.0% of parent's FY total)</i><br>&middot; FY2024: $12.2M <i>(100.0% of parent's FY total)</i><br><b>OBBBA FEOC:</b> clear &mdash; MP Materials wholly owned (US)</div>`)[0];
+                popup_a63a7e832518f36071292f06f3fd38f2.setContent(html_3b8be870ed2f94f8120a2672dcef3496);
+            
+        
+
+        circle_marker_451d70f06cfb098c89d3f1a2872cefc8.bindPopup(popup_a63a7e832518f36071292f06f3fd38f2)
+        ;
+
+        
+    
+    
+            circle_marker_451d70f06cfb098c89d3f1a2872cefc8.bindTooltip(
+                `<div>
+                     MP Materials Mountain Pass CA (rare-earth mine and refinery)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_19cd46505c11d6ddd70d822a347a3031 = L.circleMarker(
+                [37.5236, -109.5286],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_ceb1ff94ab432e37e3c577cfc8e4d800 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_68b4eccd400bcd0051f8fa37ddeb2bd4 = $(`<div id="html_68b4eccd400bcd0051f8fa37ddeb2bd4" style="width: 100.0%; height: 100.0%;"><b>Energy Fuels White Mesa Mill UT (NdPr separation)</b><br>Operator: Energy Fuels Inc.<br>Parent: Energy Fuels Inc.<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Energy Fuels (CA-listed)</div>`)[0];
+                popup_ceb1ff94ab432e37e3c577cfc8e4d800.setContent(html_68b4eccd400bcd0051f8fa37ddeb2bd4);
+            
+        
+
+        circle_marker_19cd46505c11d6ddd70d822a347a3031.bindPopup(popup_ceb1ff94ab432e37e3c577cfc8e4d800)
+        ;
+
+        
+    
+    
+            circle_marker_19cd46505c11d6ddd70d822a347a3031.bindTooltip(
+                `<div>
+                     Energy Fuels White Mesa Mill UT (NdPr separation)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3a3750d0485f24acef108ad410729c60 = L.circleMarker(
+                [39.1638, -119.7674],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff7f0e", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_328113e36f988fd9a92f632a612807b2 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_fa9a4f8c18d479dd0cf1202455771743 = $(`<div id="html_fa9a4f8c18d479dd0cf1202455771743" style="width: 100.0%; height: 100.0%;"><b>Redwood Materials Carson City NV (Tabula Rasa CAM + anode foil)</b><br>Operator: Redwood Materials, Inc.<br>Parent: Redwood Materials, Inc.<br>Type: cam<br>Chemistry: NMC<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Redwood Materials wholly owned (US private)</div>`)[0];
+                popup_328113e36f988fd9a92f632a612807b2.setContent(html_fa9a4f8c18d479dd0cf1202455771743);
+            
+        
+
+        circle_marker_3a3750d0485f24acef108ad410729c60.bindPopup(popup_328113e36f988fd9a92f632a612807b2)
+        ;
+
+        
+    
+    
+            circle_marker_3a3750d0485f24acef108ad410729c60.bindTooltip(
+                `<div>
+                     Redwood Materials Carson City NV (Tabula Rasa CAM + anode foil)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bc6a2239239ae800e443544adcbf9565 = L.circleMarker(
+                [33.0962, -80.3218],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff7f0e", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_dbcd53480689a41fdd812256d899e878 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_305e84073a5e9665a30af6dd9c9e55a2 = $(`<div id="html_305e84073a5e9665a30af6dd9c9e55a2" style="width: 100.0%; height: 100.0%;"><b>Redwood Materials Ridgeville SC</b><br>Operator: Redwood Materials, Inc.<br>Parent: Redwood Materials, Inc.<br>Type: cam<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Redwood Materials</div>`)[0];
+                popup_dbcd53480689a41fdd812256d899e878.setContent(html_305e84073a5e9665a30af6dd9c9e55a2);
+            
+        
+
+        circle_marker_bc6a2239239ae800e443544adcbf9565.bindPopup(popup_dbcd53480689a41fdd812256d899e878)
+        ;
+
+        
+    
+    
+            circle_marker_bc6a2239239ae800e443544adcbf9565.bindTooltip(
+                `<div>
+                     Redwood Materials Ridgeville SC
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_002ef0f1960bd392ba7fd943ebc2a1a4 = L.circleMarker(
+                [32.4079, -91.1862],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_ac1e7352ce7d60099f94cb215512b9d9 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_adaa24187de0392dee41e9adfa32c9d1 = $(`<div id="html_adaa24187de0392dee41e9adfa32c9d1" style="width: 100.0%; height: 100.0%;"><b>Element 25 Louisiana HPMSM (high-purity manganese sulfate)</b><br>Operator: Element 25 USA Corp.<br>Parent: Element 25 Limited<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Element 25 Limited (AU)</div>`)[0];
+                popup_ac1e7352ce7d60099f94cb215512b9d9.setContent(html_adaa24187de0392dee41e9adfa32c9d1);
+            
+        
+
+        circle_marker_002ef0f1960bd392ba7fd943ebc2a1a4.bindPopup(popup_ac1e7352ce7d60099f94cb215512b9d9)
+        ;
+
+        
+    
+    
+            circle_marker_002ef0f1960bd392ba7fd943ebc2a1a4.bindTooltip(
+                `<div>
+                     Element 25 Louisiana HPMSM (high-purity manganese sulfate)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c400f51724c4b17b15b16c1d8e71d47d = L.circleMarker(
+                [39.7137, -82.5993],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_10cd36379fe18dc188d7ef9ec7a59c76 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_1c07b7cc7d76251e77506b450e9a4ed3 = $(`<div id="html_1c07b7cc7d76251e77506b450e9a4ed3" style="width: 100.0%; height: 100.0%;"><b>Cirba Solutions Lancaster OH (black-mass refining)</b><br>Operator: Cirba Solutions, Inc.<br>Parent: Cirba Solutions (private)<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: ramping<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Cirba Solutions (US private)</div>`)[0];
+                popup_10cd36379fe18dc188d7ef9ec7a59c76.setContent(html_1c07b7cc7d76251e77506b450e9a4ed3);
+            
+        
+
+        circle_marker_c400f51724c4b17b15b16c1d8e71d47d.bindPopup(popup_10cd36379fe18dc188d7ef9ec7a59c76)
+        ;
+
+        
+    
+    
+            circle_marker_c400f51724c4b17b15b16c1d8e71d47d.bindTooltip(
+                `<div>
+                     Cirba Solutions Lancaster OH (black-mass refining)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_04c39a559445db891cbf97a775e70464 = L.circleMarker(
+                [35.6145, -88.8139],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff7f0e", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_6d63baa6e96c1786c0e6dd67365c00d6 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_0c41f55f5c869fc66ee72a3cfc481d4e = $(`<div id="html_0c41f55f5c869fc66ee72a3cfc481d4e" style="width: 100.0%; height: 100.0%;"><b>6K Energy Jackson TN (UniMelt CAM)</b><br>Operator: 6K Inc.<br>Parent: 6K Inc. (private)<br>Type: cam<br>Chemistry: NMC<br>Status: construction<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; 6K Inc. (US private)</div>`)[0];
+                popup_6d63baa6e96c1786c0e6dd67365c00d6.setContent(html_0c41f55f5c869fc66ee72a3cfc481d4e);
+            
+        
+
+        circle_marker_04c39a559445db891cbf97a775e70464.bindPopup(popup_6d63baa6e96c1786c0e6dd67365c00d6)
+        ;
+
+        
+    
+    
+            circle_marker_04c39a559445db891cbf97a775e70464.bindTooltip(
+                `<div>
+                     6K Energy Jackson TN (UniMelt CAM)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d2d98fa92f109d3ff6254c02f015041b = L.circleMarker(
+                [39.345, -84.5597],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_6f3c9c40686dd2eb84cb82d0ab7c0bf7 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_122406193ac384e4af12e9c403ddcf12 = $(`<div id="html_122406193ac384e4af12e9c403ddcf12" style="width: 100.0%; height: 100.0%;"><b>Nth Cycle Fairfield OH (Ni-Co refining)</b><br>Operator: Nth Cycle, Inc.<br>Parent: Nth Cycle (private)<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: operational<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Nth Cycle (US)</div>`)[0];
+                popup_6f3c9c40686dd2eb84cb82d0ab7c0bf7.setContent(html_122406193ac384e4af12e9c403ddcf12);
+            
+        
+
+        circle_marker_d2d98fa92f109d3ff6254c02f015041b.bindPopup(popup_6f3c9c40686dd2eb84cb82d0ab7c0bf7)
+        ;
+
+        
+    
+    
+            circle_marker_d2d98fa92f109d3ff6254c02f015041b.bindTooltip(
+                `<div>
+                     Nth Cycle Fairfield OH (Ni-Co refining)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_df7946b111e454bfb94e56aaf43a8a5f = L.circleMarker(
+                [43.1566, -77.6088],
+                {"bubblingMouseEvents": true, "color": "#1a9850", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_5e1e59f0c97d9c936786cefeaa3c35b5 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_b644b85e1549ec3f26ea0b7e1a2a7e4f = $(`<div id="html_b644b85e1549ec3f26ea0b7e1a2a7e4f" style="width: 100.0%; height: 100.0%;"><b>Li-Cycle Rochester NY (Glencore-acquired)</b><br>Operator: Glencore (acquired Aug 2025; restart pending)<br>Parent: Glencore plc<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: paused<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> clear &mdash; Glencore (CH/UK)</div>`)[0];
+                popup_5e1e59f0c97d9c936786cefeaa3c35b5.setContent(html_b644b85e1549ec3f26ea0b7e1a2a7e4f);
+            
+        
+
+        circle_marker_df7946b111e454bfb94e56aaf43a8a5f.bindPopup(popup_5e1e59f0c97d9c936786cefeaa3c35b5)
+        ;
+
+        
+    
+    
+            circle_marker_df7946b111e454bfb94e56aaf43a8a5f.bindTooltip(
+                `<div>
+                     Li-Cycle Rochester NY (Glencore-acquired)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_86d779ad891df40d802238919601dec7 = L.circleMarker(
+                [33.3703, -112.5838],
+                {"bubblingMouseEvents": true, "color": "#888888", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_50b5cdb9ba172a1f638e4458cb28d67e = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_3832e16f654e448ee8950503fbaecd24 = $(`<div id="html_3832e16f654e448ee8950503fbaecd24" style="width: 100.0%; height: 100.0%;"><b>KORE Power Buckeye AZ (CANCELLED)</b><br>Operator: KORE Power, Inc.<br>Parent: KORE Power (private)<br>Type: cell<br>Chemistry: LFP<br>Status: cancelled<br><i>No disclosed 45X recognition for parent.</i></div>`)[0];
+                popup_50b5cdb9ba172a1f638e4458cb28d67e.setContent(html_3832e16f654e448ee8950503fbaecd24);
+            
+        
+
+        circle_marker_86d779ad891df40d802238919601dec7.bindPopup(popup_50b5cdb9ba172a1f638e4458cb28d67e)
+        ;
+
+        
+    
+    
+            circle_marker_86d779ad891df40d802238919601dec7.bindTooltip(
+                `<div>
+                     KORE Power Buckeye AZ (CANCELLED)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_95a5ae448366c3be8d9b41660966cc9d = L.circleMarker(
+                [33.3807, -84.7997],
+                {"bubblingMouseEvents": true, "color": "#888888", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_0f3414147a77b4e033af5d097db95636 = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_c7522b8a3a6e6c9bfa06615f7700937d = $(`<div id="html_c7522b8a3a6e6c9bfa06615f7700937d" style="width: 100.0%; height: 100.0%;"><b>FREYR Battery Giga America Newnan GA (CANCELLED)</b><br>Operator: FREYR Battery (now Energy Services)<br>Parent: FREYR Battery<br>Type: cell<br>Chemistry: LFP<br>Status: cancelled<br><i>No disclosed 45X recognition for parent.</i></div>`)[0];
+                popup_0f3414147a77b4e033af5d097db95636.setContent(html_c7522b8a3a6e6c9bfa06615f7700937d);
+            
+        
+
+        circle_marker_95a5ae448366c3be8d9b41660966cc9d.bindPopup(popup_0f3414147a77b4e033af5d097db95636)
+        ;
+
+        
+    
+    
+            circle_marker_95a5ae448366c3be8d9b41660966cc9d.bindTooltip(
+                `<div>
+                     FREYR Battery Giga America Newnan GA (CANCELLED)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_17809f4fabaca68b713e50aa86374824 = L.circleMarker(
+                [43.6983, -85.4836],
+                {"bubblingMouseEvents": true, "color": "#a50026", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_2dcda28d90835daba5d6784945f480fa = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_060a24907fcfcc88e2f45e4e3836d2ec = $(`<div id="html_060a24907fcfcc88e2f45e4e3836d2ec" style="width: 100.0%; height: 100.0%;"><b>Gotion Big Rapids MI (CANCELLED)</b><br>Operator: Gotion, Inc.<br>Parent: Gotion High-Tech Co. Ltd. (Chinese; OBBBA SFE)<br>Type: cell<br>Chemistry: LFP<br>Status: cancelled<br><i>No disclosed 45X recognition for parent.</i><br><b>OBBBA FEOC:</b> SFE &mdash; Gotion High-Tech named SFE per OBBBA §70514</div>`)[0];
+                popup_2dcda28d90835daba5d6784945f480fa.setContent(html_060a24907fcfcc88e2f45e4e3836d2ec);
+            
+        
+
+        circle_marker_17809f4fabaca68b713e50aa86374824.bindPopup(popup_2dcda28d90835daba5d6784945f480fa)
+        ;
+
+        
+    
+    
+            circle_marker_17809f4fabaca68b713e50aa86374824.bindTooltip(
+                `<div>
+                     Gotion Big Rapids MI (CANCELLED)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a79e4999e31119233507b3c10f2b6bb0 = L.circleMarker(
+                [34.7065, -81.2106],
+                {"bubblingMouseEvents": true, "color": "#888888", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ca02c", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_5565765434792a10b1a279dd5965eb9f = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_798da81be4f57127a31daef547058611 = $(`<div id="html_798da81be4f57127a31daef547058611" style="width: 100.0%; height: 100.0%;"><b>Albemarle Mega-Flex Chester SC (PAUSED)</b><br>Operator: Albemarle Corporation<br>Parent: Albemarle Corporation<br>Type: mineral_refining<br>Chemistry: n/a<br>Status: paused<br><i>No disclosed 45X recognition for parent.</i></div>`)[0];
+                popup_5565765434792a10b1a279dd5965eb9f.setContent(html_798da81be4f57127a31daef547058611);
+            
+        
+
+        circle_marker_a79e4999e31119233507b3c10f2b6bb0.bindPopup(popup_5565765434792a10b1a279dd5965eb9f)
+        ;
+
+        
+    
+    
+            circle_marker_a79e4999e31119233507b3c10f2b6bb0.bindTooltip(
+                `<div>
+                     Albemarle Mega-Flex Chester SC (PAUSED)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_38e7293bdbc38ca1a5cc9a58832cb90d = L.circleMarker(
+                [37.7249, -122.1561],
+                {"bubblingMouseEvents": true, "color": "#888888", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.65, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 2}
+            ).addTo(map_408cc536922c38eec72aa74a9d34ee6c);
+        
+    
+        var popup_dd9aec40de897ec00266100a398d912b = L.popup({
+  "maxWidth": 420,
+});
+
+        
+            
+                var html_c07317a05c86cf6ce722a719b1b86b9d = $(`<div id="html_c07317a05c86cf6ce722a719b1b86b9d" style="width: 100.0%; height: 100.0%;"><b>Northvolt / Cuberg San Leandro CA (CANCELLED, sold to Lyten)</b><br>Operator: Northvolt AB (bankrupt; assets sold to Lyten)<br>Parent: Northvolt AB (bankrupt)<br>Type: cell<br>Chemistry: NMC<br>Status: cancelled<br><i>No disclosed 45X recognition for parent.</i></div>`)[0];
+                popup_dd9aec40de897ec00266100a398d912b.setContent(html_c07317a05c86cf6ce722a719b1b86b9d);
+            
+        
+
+        circle_marker_38e7293bdbc38ca1a5cc9a58832cb90d.bindPopup(popup_dd9aec40de897ec00266100a398d912b)
+        ;
+
+        
+    
+    
+            circle_marker_38e7293bdbc38ca1a5cc9a58832cb90d.bindTooltip(
+                `<div>
+                     Northvolt / Cuberg San Leandro CA (CANCELLED, sold to Lyten)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

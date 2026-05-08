@@ -1,13 +1,16 @@
 ---
 const links = [
   { href: '/publications', label: 'Publications' },
+  { href: '/research',     label: 'Research' },
   { href: '/teaching',     label: 'Teaching' },
   { href: '/hobbies',      label: 'Hobbies' },
   { href: '/cv',           label: 'CV' },
   { href: '/contact',      label: 'Contact' },
 ];
 
+// Treat any /research/* path as the Research nav entry.
 const current = Astro.url.pathname;
+const isResearch = current.startsWith('/research');
 ---
 
 <header class="sticky top-0 z-50 bg-[#FAFAF8]/90 backdrop-blur-sm border-b border-stone-200">
@@ -17,16 +20,21 @@ const current = Astro.url.pathname;
     </a>
 
     <ul class="hidden md:flex items-center gap-6">
-      {links.map(({ href, label }) => (
-        <li>
-          <a
-            href={href}
-            class={`nav-link ${current === href ? 'text-forest-600 font-semibold' : ''}`}
-          >
-            {label}
-          </a>
-        </li>
-      ))}
+      {links.map(({ href, label }) => {
+        const active = href === '/research'
+          ? isResearch
+          : current === href;
+        return (
+          <li>
+            <a
+              href={href}
+              class={`nav-link ${active ? 'text-forest-600 font-semibold' : ''}`}
+            >
+              {label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
 
     <button id="nav-toggle" class="md:hidden p-2 text-[#444] hover:text-forest-600" aria-label="Toggle menu">

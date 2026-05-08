@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+
+const projects = [
+  {
+    slug: '45x-map',
+    title: 'Where the IRA\'s $5.6B in battery 45X has actually gone',
+    photo: '/research/thumbs/45x_map.png',
+    alt: 'Geographic map of US battery supply chain plants colored by product type and sized by Section 45X recipient share',
+    period: 'May 2026',
+    caption:
+      'Interactive Map of cumulative ($5.6B), publicly disclosed 45X credits to cell, pack, cathode, anode, and mineral producers.',
+  },
+];
+---
+
+<Layout
+  title="Research — Cooper Minehart"
+  description="Interactive maps and Sankey diagrams of US battery supply chains, IRA Section 45X recipients, and critical mineral flows."
+>
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10">
+      <p class="section-label-light mb-3">Research</p>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">Maps &amp; Models</h1>
+      <p class="text-stone-300 max-w-2xl leading-relaxed">
+        Open data and interactive visualizations of battery supply chains, critical
+        minerals, and the policies that shape them.
+      </p>
+    </div>
+  </DarkHeader>
+
+  <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      {projects.map(({ slug, title, photo, alt, period, caption }) => (
+        <a href={`/research/${slug}`} class="group block">
+          <div class="overflow-hidden rounded-lg mb-4 aspect-[4/3] bg-stone-100 border border-stone-200">
+            <img
+              src={photo}
+              alt={alt}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          </div>
+          <p class="text-xs font-mono text-[#888] mb-1">{period}</p>
+          <h3 class="font-serif text-lg font-semibold text-[#1a1a1a] mb-2 group-hover:text-forest-600 transition-colors">
+            {title}
+          </h3>
+          <p class="text-sm text-[#666] leading-relaxed">{caption}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

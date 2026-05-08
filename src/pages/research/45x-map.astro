@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+---
+
+<Layout
+  title="45X Battery Manufacturing Credit Map — Cooper Minehart"
+  description="Interactive geographic map of US battery supply chain plants and Section 45X advanced manufacturing production credit recipients, FY2023-FY2025."
+>
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10">
+      <p class="section-label-light mb-3">Research · 45X Map</p>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">
+        US Battery 45X Recipients
+      </h1>
+      <p class="text-stone-300 max-w-2xl leading-relaxed">
+        Every announced or operational US battery cell, module, cathode, precursor,
+        anode, and critical-mineral plant, mapped to disclosed Section 45X
+        advanced manufacturing production credit recognition.
+      </p>
+    </div>
+  </DarkHeader>
+
+  <div class="max-w-6xl mx-auto px-6 pt-8 pb-6">
+    <div class="grid md:grid-cols-[2fr_1fr] gap-8 items-start">
+      <div class="space-y-3 text-sm text-[#555] leading-relaxed">
+        <p>
+          <strong class="text-[#1a1a1a]">66 plants, $5.63B verified disclosed</strong>
+          across FY2023, FY2024, and FY2025. Circles sized by per-plant estimated
+          45X recognition, colored by product type, ringed by OBBBA Foreign Entity
+          of Concern status. Hover or click a plant for the citation chain.
+        </p>
+        <p>
+          Parent totals are verified to primary SEC and home-jurisdiction filings.
+          Per-plant attribution is estimated by production-volume allocation. See git.
+        </p>
+      </div>
+      <div class="text-sm space-y-2">
+        <p class="font-mono text-xs text-[#888] uppercase tracking-wider mb-2">Sources</p>
+        <p class="text-[#555]">
+          SEC 10-Ks &amp; 20-Fs · DART, EDINET, Euronext annual reports ·
+          DOE LPO portfolio · Atlas EV Hub · OBBBA
+        </p>
+        <p class="pt-3">
+          <a
+            href="https://github.com/cminehar-coder/material-flows-sankey"
+            target="_blank"
+            rel="noopener"
+            class="text-forest-600 hover:underline font-medium"
+          >
+            Source data &amp; build scripts →
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 pb-24">
+    <div class="border border-stone-200 rounded-lg overflow-hidden bg-white shadow-sm">
+      <iframe
+        src="/research/45x-map/index.html"
+        title="US Battery Supply Chain — Section 45X Recipients map"
+        class="w-full block"
+        style="height: 80vh; min-height: 720px; border: 0;"
+        loading="lazy"
+      />
+    </div>
+    <p class="text-xs text-[#888] mt-3 text-center">
+      Interactive map. Drag to pan; scroll to zoom; click a marker for the per-plant
+      citation chain. Data is anchored to FY2023-FY2025 disclosed filings.
+    </p>
+  </div>
+</Layout>
