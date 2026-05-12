@@ -1,0 +1,118 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+---
+
+<Layout
+  title="Is all PTFE the same for dry electrode processing? — Cooper Minehart"
+  description="Battery-grade PTFE for dry electrode processing is a narrow material spec — molecular weight, emulsion polymerization, and particle size drive a ~200x price spread over bulk PTFE."
+>
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10">
+      <p class="section-label-light mb-3">Research &middot; Dry Electrode PTFE</p>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">
+        Is all PTFE the same for dry electrode processing?
+      </h1>
+      <p class="text-stone-300 max-w-2xl leading-relaxed">
+        Oh no, it&rsquo;s more chemistry.
+      </p>
+    </div>
+  </DarkHeader>
+
+  <article class="max-w-3xl mx-auto px-6 pt-10 pb-24 text-[#1a1a1a]">
+
+    <div class="prose-content space-y-5 text-[15px] leading-relaxed">
+      <p>
+        In the battery world, dry electrode manufacturing is one of the near-term
+        innovations driving down cost and carbon intensity. Tesla is reportedly
+        doing it for 4680 cells with NMC811. Incorporating PTFE and high-shear
+        mixing processes give you a dry dough-like CAM mix that can be calendared
+        in to a free standing film and then calendared on to your current
+        collector (LiCAP, Maxwell, and AM Batteries have slight variations on
+        this).
+      </p>
+      <p>
+        PTFE (Teflon, Polytetrafluoroethylene) costs is fairly cheap as a battery
+        input material (~$15 USD/kg, compared to ~$75 USD/kg for NMC811). I&rsquo;m an
+        engineer (and not the chemical kind), do we need special PTFE for
+        batteries?
+      </p>
+
+      <h2 class="font-serif text-xl font-semibold text-[#1a1a1a] pt-4">
+        What do we want in our PTFE?
+      </h2>
+      <p>
+        The PTFE fibrillates out under shear mixing (I imagine it like a web of
+        mycelium). When calendared, this creates a free standing mixture. In
+        order to polymerize, we care about three things
+      </p>
+      <ol class="list-decimal pl-6 space-y-3 text-[#333]">
+        <li>
+          <p><strong>Molecular weight</strong></p>
+          <ol class="list-[lower-alpha] pl-6 mt-2 space-y-2">
+            <li>
+              Because PTFE is a polymer, you can make chains of different lengths
+              (degree of polymerization, n, where n is the number of repeating
+              CF<sub>2</sub> units). Higher polymerization &rarr; higher molecular
+              weight &rarr; different mechanical structure. Schumme et. al shows
+              that for PTFE used in dry electrodes, we need a molecular weight of
+              about 10<sup>6</sup> g/mol (n ~10,000) to acheive the folded-ribbon
+              structure that fibrillates well. Dispersity is a measure of the
+              distribution of n (we want tight).
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p><strong>PTFE Manufacturing method</strong></p>
+          <ol class="list-[lower-alpha] pl-6 mt-2 space-y-2">
+            <li>
+              PTFE can be made through emulsion or suspension polymerization. I
+              tried to understand the difference, but got in over my chemistry
+              head quickly. The important aspect seems to be that for batteries
+              we want PTFE manufactured by emulsion rather than suspension. This
+              is adds a cost premium as most is suspension manufactured.
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p><strong>Particle Size</strong></p>
+          <ol class="list-[lower-alpha] pl-6 mt-2 space-y-2">
+            <li>
+              If you start with larger chunks of PTFE, you need to mix more,
+              smaller you need to mix less. If you overmix, you break the
+              tendrils and reduce integrity, undermixing you end up with
+              heterogeneity.
+            </li>
+          </ol>
+        </li>
+      </ol>
+
+      <h2 class="font-serif text-xl font-semibold text-[#1a1a1a] pt-4">
+        So&hellip; How much is this going to cost?
+      </h2>
+      <p>
+        We have a cost floor, bulk PTFE (not battery grade) is $15 USD/kg. We
+        have a cost ceiling, Min Kyung Kim quoted battery-grade PTFE at $2,805
+        USD/kg in 2025. A 200x price uncertainty is not wonderful, and it&rsquo;s
+        likely towards the floor (The Kim paper is likely quoting Sigma Aldrich,
+        which is often ~100x cost of bulk orders).
+      </p>
+      <p>
+        I&rsquo;m working on implementing a dry-cathode manufacturing model in BatPaC
+        right now, we&rsquo;ll know soon how sensitive the cost savings of moving to
+        NMP-free manufacturing are to PTFE prices.
+      </p>
+
+      <p class="pt-2">
+        <a
+          href="https://cooperminehart.substack.com/p/is-all-ptfe-the-same-for-dry-electrode"
+          target="_blank"
+          rel="noopener"
+          class="text-forest-600 hover:underline font-medium"
+        >
+          Read the original on Substack &rarr;
+        </a>
+      </p>
+    </div>
+  </article>
+</Layout>
