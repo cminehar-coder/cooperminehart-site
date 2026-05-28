@@ -1,6 +1,5 @@
 ---
 const links = [
-  { href: '/research',     label: 'Research' },
   { href: '/hobbies',      label: 'Hobbies' },
   { href: '/teaching',     label: 'Teaching' },
   { href: '/cv',           label: 'CV' },
@@ -8,9 +7,7 @@ const links = [
   { href: '/publications', label: 'Publications' },
 ];
 
-// Treat any /research/* path as the Research nav entry.
 const current = Astro.url.pathname;
-const isResearch = current.startsWith('/research');
 ---
 
 <header class="sticky top-0 z-50 bg-[#FAFAF8]/90 backdrop-blur-sm border-b border-stone-200">
@@ -21,9 +18,7 @@ const isResearch = current.startsWith('/research');
 
     <ul class="hidden md:flex items-center gap-6">
       {links.map(({ href, label }) => {
-        const active = href === '/research'
-          ? isResearch
-          : current === href;
+        const active = current === href;
         return (
           <li>
             <a
