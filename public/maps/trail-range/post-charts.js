@@ -20,13 +20,13 @@
   };
   const FIGS = {
     field: {
-      metric: 'mpg', chips: { drive: [['all', 'Any drivetrain'], ['low', 'Low range only'], ['rear', 'Rear locker only']] },
-      state: { drive: 'all' },
-      filters: s => ({ combustion: true, drive: s.drive }), weights: () => M.DEFAULTS, city: () => 'pgh',
+      metric: 'mpg', chips: {},
+      state: {},
+      filters: () => ({ combustion: true }), weights: () => M.DEFAULTS, city: () => 'pgh',
       refs: ['4runner-trail', 'landcruiser', 'wrangler-rubicon-4', 'wrangler-sport-2', 'outback-wilderness']
     },
     ev: {
-      metric: 'cost', chips: { city: Object.entries(PRICES).map(([k, v]) => [k, v[0]]) },
+      metric: 'mpd', chips: { city: Object.entries(PRICES).map(([k, v]) => [k, v[0]]) },
       state: { city: 'pgh' },
       filters: () => ({}), weights: () => M.DEFAULTS, city: s => s.city,
       refs: ['tacoma-pro', 'rav4-hybrid', 'r1t', 'lightning-er']
@@ -46,7 +46,7 @@
   function rows(cfg) {
     const s = cfg.state, [, g, e] = PRICES[cfg.city(s)];
     const r = D.filter(v => M.eligible(v, { yearMin: 2010, yearMax: 2027, ...cfg.filters(s) }))
-      .map(v => ({ ...v, cost: M.energyCost(v, g, e), ...M.evaluate(v, cfg.weights(s), true) }))
+      .map(v => ({ ...v, cost: M.energyCost(v, g, e), mpd: 100 / M.energyCost(v, g, e), ...M.evaluate(v, cfg.weights(s), true) }))
       .filter(v => v.score != null);
     return { r, f: M.frontier(r, cfg.metric) };
   }
@@ -57,18 +57,18 @@
     const m = { l: 44, r: narrow ? 10 : 24, t: 14, b: 42 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('height', H); svg.replaceChildren();
     const { r, f } = rows(cfg), fid = new Set(f.map(v => v.id));
-    const cost = cfg.metric === 'cost';
+    const cost = cfg.metric === 'mpd';
     const xs = r.map(v => v[cfg.metric]);
     let x0 = Math.floor(Math.min(...xs)), x1 = Math.ceil(Math.max(...xs));
-    if (!cost) { x0 = 12; x1 = 42; } else { x0 = 0; x1 = Math.ceil(x1 / 5) * 5; }
+    if (!cost) { x0 = 12; x1 = 42; } else { x0 = 0; x1 = Math.ceil(x1 / 2) * 2 + 2; }
     // cost axis is reversed: cheaper to the right
-    const X = v => cost ? m.l + (x1 - v) / (x1 - x0) * (W - m.l - m.r) : m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r);
+    const X = v => m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r);
     const Y = s => H - m.b - s / 100 * (H - m.t - m.b);
     // grid
     for (let s = 0; s <= 100; s += 20) { el('line', { x1: m.l, x2: W - m.r, y1: Y(s), y2: Y(s), stroke: C.line }, svg); el('text', { x: m.l - 8, y: Y(s) + 4, 'text-anchor': 'end', class: 'tr-ax' }, svg, s); }
-    const step = cost ? 10 : 5;
-    for (let t = Math.ceil(x0 / step) * step; t <= x1; t += step) el('text', { x: X(t), y: H - m.b + 18, 'text-anchor': 'middle', class: 'tr-ax' }, svg, cost ? '$' + t : t);
-    el('text', { x: (m.l + W - m.r) / 2, y: H - 6, 'text-anchor': 'middle', class: 'tr-ax tr-axt' }, svg, cost ? 'Energy cost per 100 miles (cheaper →)' : 'EPA combined MPG →');
+    const step = cost ? 2 : 5;
+    for (let t = Math.ceil(x0 / step) * step; t <= x1; t += step) el('text', { x: X(t), y: H - m.b + 18, 'text-anchor': 'middle', class: 'tr-ax' }, svg, t);
+    el('text', { x: (m.l + W - m.r) / 2, y: H - 6, 'text-anchor': 'middle', class: 'tr-ax tr-axt' }, svg, cost ? 'Miles per dollar of energy →' : 'EPA combined MPG →');
     el('text', { x: 12, y: (m.t + H - m.b) / 2, 'text-anchor': 'middle', class: 'tr-ax tr-axt', transform: `rotate(-90 12 ${(m.t + H - m.b) / 2})` }, svg, 'Off-road geometry score →');
     // frontier
     el('polyline', { points: f.map(v => `${X(v[cfg.metric])},${Y(v.score)}`).join(' '), fill: 'none', stroke: C.front, 'stroke-width': 2, 'stroke-linejoin': 'round' }, svg);
@@ -78,7 +78,7 @@
     for (const v of sorted) {
       const on = fid.has(v.id), lab = labelled.has(v.id), c = on || lab ? color(v) : C.grey;
       const p = el('circle', { cx: X(v[cfg.metric]), cy: Y(v.score), r: on ? 6 : lab ? 5 : 4, fill: v.estimated ? '#fff' : c, stroke: on ? C.front : c, 'stroke-width': on ? 2.2 : 1.6, class: 'tr-pt' }, svg);
-      const val = cost ? `$${v.cost.toFixed(2)} per 100 mi` : `${v.mpg} mpg`;
+      const val = cost ? `${v.mpd.toFixed(1)} miles per $ ($${v.cost.toFixed(2)} per 100 mi)` : `${v.mpg} mpg`;
       const show = ev => { const b = root.getBoundingClientRect(); tip.hidden = false; tip.innerHTML = `<b>${v.year} ${v.make} ${v.model}</b><br>${v.trim}<br>${val} · score ${v.score.toFixed(1)}${v.estimated ? ' (est. breakover)' : ''}${on ? '<br><span style="color:' + C.front + '">on the frontier</span>' : ''}`; const px = (ev.clientX ?? b.left) - b.left, py = (ev.clientY ?? b.top) - b.top; tip.style.left = Math.min(px + 12, W - 220) + 'px'; tip.style.top = (py + 12) + 'px'; };
       p.addEventListener('mousemove', show); p.addEventListener('click', show); p.addEventListener('mouseleave', () => tip.hidden = true);
     }

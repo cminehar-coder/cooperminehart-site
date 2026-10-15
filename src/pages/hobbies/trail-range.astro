@@ -4,16 +4,16 @@ import DarkHeader from '../../components/DarkHeader.astro';
 ---
 
 <Layout
-  title="Trail / Range: what MPG costs you off-road — Cooper Minehart"
+  title="Trading mpg for clearance — Cooper Minehart"
   description="40 stock vehicles scored on off-road geometry and plotted against EPA fuel economy. Which ones nobody beats on both."
 >
   <DarkHeader>
     <div class="max-w-3xl mx-auto px-6 pt-12 pb-10">
       <a href="/hobbies" class="text-sm text-forest-400 hover:text-forest-300 mb-6 inline-block">← Hobbies</a>
       <p class="section-label-light mb-3">Hobbies · Trail / Range</p>
-      <h1 class="font-serif text-4xl font-bold text-white mb-3">What MPG costs you off-road</h1>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">Trading mpg for clearance</h1>
       <p class="text-stone-300 max-w-2xl leading-relaxed">
-        40 stock vehicles, scored on geometry and plotted against fuel economy.
+        How much of a mileage hit am I willing to take to feel like I can go off-road
       </p>
     </div>
   </DarkHeader>
@@ -21,95 +21,56 @@ import DarkHeader from '../../components/DarkHeader.astro';
   <article class="max-w-3xl mx-auto px-6 pt-10 pb-24 text-[#1a1a1a]">
     <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
       <p>
-        TLDR; I wanted to know how much fuel economy you give up to get something that can actually
-        go off road. Of 31 gas and hybrid vehicles, 9 aren't beaten on both capability and MPG. The
-        2024 Tacoma TRD Pro hybrid is where the curve bends (23 mpg, score 62). Add EVs and only the
-        two Broncos stay on the frontier, an R1S scores within 2 points of the Sasquatch at $9.64 per
-        100 miles (Sasquatch $26.05, Pittsburgh prices).
+        I've got car-brain lately. I see a Tacoma parked in my neighborhood and I think 'that would move my friends and skis and bikes pretty well'. I hate car-brain. The lust takes over and distract me from enjoying my every day. This month though I'm weak and I've submitted to car-brain. Claude and I made a little tool to compare off-road and efficiency tradeoffs.
       </p>
       <p>
-        The score is 0-100 and only looks at static geometry: ground clearance (30%), approach,
-        departure and breakover angles (20% each) and tire diameter (10%), each scaled between fixed
-        endpoints (clearance 6 to 13 in, etc). Lockers and low range are filters, not points. MPG is
-        EPA combined. Every chart below is live, hover a point or click the buttons.
+        Now... no one is going to like how I've quantified off-road here. It's a combo of ground clearance, approach/departure/breakover angles, and tire diameter (each normalized and you can modify the weight of each). You can toggle on low range, lockers, and EVs. If you really hate it, the code is <a href="/maps/trail-range/model.js" class="text-forest-600 hover:underline">here</a> and you can rebuild it with your own value-judgements. MPG is just EPA combined.
       </p>
-
-      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
-        9 vehicles nobody beats on both, the top end is steep
-      </h2>
     </div>
 
     <figure class="tr-fig" data-tr-fig="field">
-      <div class="tr-chips" aria-label="Required hardware"></div>
+      <div class="tr-chips"></div>
       <div class="tr-wrap"><svg role="img" aria-label="Off-road score vs EPA combined MPG, gas and hybrid vehicles"></svg><div class="tr-tip" hidden></div></div>
-      <figcaption class="tr-live"></figcaption>
+
     </figure>
 
     <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
       <p>
-        On the frontier means nothing else scores as well on both axes and better on one. Going from
-        the Bronco Raptor (15 mpg, 92) to a 2-door Sasquatch (18 mpg, 78) costs 14 points for 3 mpg.
-        Below the Tacoma it flips, the next 16 mpg (RAV4 hybrid, 39) costs 39 points. The RAV4
-        Woodland scores 0.1 better than the LE for 2 mpg less (couldn't find Toyota's breakover so
-        both are estimated).
+        At the extremes we have the Bronco Raptor (15mpg, though Walt's gonna be mad cause it's so wide) and the RAV4 Hybrid (39 mpg). Based on our inarguably correct off-road score, the frontier is linear at lower MPG and progressively concave at higher efficiency. Hmmm... I want to say -- this suggests you can buy the Raptor, Sasquatch, Rubicon, or Tacoma with indifference if your utility between off-road-score and mpg is linear, though if you're willing to drive a RAV4 then it or the Bronco Raptor become the only options -- but that's putting more trust in the off-road-score than I think we should.
       </p>
-      <p>
-        Click "Low range only" and the frontier is 4: Raptor, Sasquatch, Rubicon 2-door, Tacoma.
-        Nothing with a low range transfer case here gets more than 23 mpg.
-      </p>
-
       <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
-        2-doors beat 4-doors, the 4Runner and Land Cruiser aren't close
+        Add EVs and switch to miles-per-dollar
       </h2>
       <p>
-        Wheelbase shows up through breakover. The 4-door Rubicon loses 5° of breakover to the 2-door
-        (22.6° vs 27.8°) and gets 1 mpg worse. The 2015 4Runner Trail scores 46 at 18 mpg, the
-        Sasquatch scores 78 at the same 18. The 2024 Land Cruiser scores 43 at 23 mpg with the same
-        2.4L hybrid as the Tacoma TRD Pro, which scores 62. Closest miss is a 2-door Wrangler Sport,
-        0.4 points behind the Tacoma at the same 23 mpg.
-      </p>
-
-      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
-        Add EVs and only the Broncos survive
-      </h2>
-      <p>
-        MPGe doesn't compare at the pump, so this axis is energy cost per 100 miles (gas: 100 ÷ mpg ×
-        $/gal, EV: EPA kWh/100 mi × $/kWh). The order holds at all 5 city prices, even Honolulu at
-        $0.48/kWh. The R1S breakover is estimated.
+        Electricity and gas costs are here.
       </p>
     </div>
 
     <figure class="tr-fig" data-tr-fig="ev">
-      <div class="tr-chips" aria-label="Energy prices"></div>
-      <div class="tr-wrap"><svg role="img" aria-label="Off-road score vs energy cost per 100 miles, all 40 vehicles"></svg><div class="tr-tip" hidden></div></div>
+      <div class="tr-chips"></div>
+      <div class="tr-wrap"><svg role="img" aria-label="Off-road score vs miles per dollar of energy, all 40 vehicles"></svg><div class="tr-tip" hidden></div></div>
       <figcaption class="tr-live"></figcaption>
     </figure>
 
     <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
       <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
-        Weights move the Tacoma, not the Crosstrek
+        Move the weights, whatever, idk I don't really go offroad
       </h2>
       <p>
-        7 vehicles make the frontier under all 4 presets: Sasquatch 2-door, Rubicon 2-door, Renegade
-        Trailhawk, both Crosstreks and both RAV4 hybrids. The Tacoma only makes it when clearance
-        counts most, weight the angles or a short wheelbase and the 2-door Wrangler Sport takes its
-        spot. Short wheelbase drops the Raptor (116.5 in).
+        If you think Claude didn't approximate your off-road-utlity-function very well, change how we weight the different features here. I don't know, I don't really go off road. I just want to be able to drive up a dirt road and not have my Prius swallowed by Pittsburghs potholes again.
       </p>
     </div>
 
     <figure class="tr-fig" data-tr-fig="weights">
-      <div class="tr-chips" aria-label="Weight preset"></div>
+      <div class="tr-chips"></div>
       <div class="tr-wrap"><svg role="img" aria-label="Frontier under different score weights"></svg><div class="tr-tip" hidden></div></div>
-      <figcaption class="tr-live"></figcaption>
+
     </figure>
 
     <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
       <p>
-        What it doesn't capture: traction, articulation, gearing, armor, reliability, price. EPA
-        combined is a lab number and manufacturers measure clearance differently. 40 configurations
-        (2010-2027) is a curated list, not every trim. Tell me what's missing.
+        We're not looking at traction, sexiness, articulation, gearing, reliability, MSRP, or lots of other stuff. EPA combined is a lab number and manufacturers measure clearance differently. 40 configurations (2010-2027) is a curated list, not every trim.
       </p>
-      <p>Set your own weights, filters and gas prices below.</p>
     </div>
 
     <figure class="mt-8">
@@ -122,13 +83,10 @@ import DarkHeader from '../../components/DarkHeader.astro';
           loading="lazy"
         />
       </div>
-      <figcaption class="text-xs text-[#888] mt-3 text-center">
-        Trail / Range. Sources and EPA records for every point are in the tool. Specs reviewed Oct 2, 2026.
-      </figcaption>
     </figure>
 
     <div class="mt-16 pt-8 border-t border-stone-200 text-sm text-[#555] leading-relaxed">
-      <p>Cooper Minehart</p>
+      <p>Coop</p>
     </div>
   </article>
 

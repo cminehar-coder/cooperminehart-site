@@ -23,8 +23,8 @@
   return {score:components.reduce((sum,c)=>sum+(c.weight>0?c.contribution:0),0),components,estimated,reason:null};
  }
  function energyCost(v,gas,electricity){return v.fuel==='Electric'?v.kwhPer100Miles*electricity:100/v.mpg*gas;}
- function dominates(a,b,metric='mpg'){const e=1e-9, av=metric==='cost'?-a.cost:a.mpg,bv=metric==='cost'?-b.cost:b.mpg;return a.score>=b.score-e&&av>=bv-e&&(a.score>b.score+e||av>bv+e);}
- function frontier(rows,metric='mpg'){const valid=rows.filter(r=>Number.isFinite(r.score)&&Number.isFinite(r[metric]));return valid.filter(a=>!valid.some(b=>a.id!==b.id&&dominates(b,a,metric))).sort((a,b)=>a[metric]-b[metric]||b.score-a.score);}
+ function dominates(a,b,metric='mpg'){const e=1e-9, av=metric==='cost'?-a.cost:a[metric],bv=metric==='cost'?-b.cost:b[metric];return a.score>=b.score-e&&av>=bv-e&&(a.score>b.score+e||av>bv+e);}
+ function frontier(rows,metric='mpg'){const valid=rows.filter(r=>Number.isFinite(r.score)&&Number.isFinite(r[metric]));return valid.filter(a=>!valid.some(b=>a.id!==b.id&&dominates(b,a,metric))).sort((a,b)=>(metric==='cost'?b[metric]-a[metric]:a[metric]-b[metric])||b.score-a.score);}
  function eligible(v,filters){return (!filters.electric||v.fuel==='Electric')&&(!filters.combustion||v.fuel!=='Electric')&&(!filters.hybrid||v.fuel==='Hybrid')&&(!filters.gas||v.fuel==='Gasoline')&&(!filters.drive||filters.drive==='all'||(filters.drive==='awd'&&v.drivetrain!=='Front-Wheel Drive'&&v.drivetrain!=='Rear-Wheel Drive')||(filters.drive==='low'&&v.lowRange)||(filters.drive==='rear'&&v.rearLocker)||(filters.drive==='both'&&v.frontLocker&&v.rearLocker))&&v.year>=filters.yearMin&&v.year<=filters.yearMax;}
  return {PARAMETERS,DEFAULTS,normalizedWeights,tireDiameter,estimatedBreakover,component,evaluate,energyCost,dominates,frontier,eligible};
 });
