@@ -1,0 +1,154 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+---
+
+<Layout
+  title="Trail / Range: what MPG costs you off-road — Cooper Minehart"
+  description="40 stock vehicles scored on off-road geometry and plotted against EPA fuel economy. Which ones nobody beats on both."
+>
+  <DarkHeader>
+    <div class="max-w-3xl mx-auto px-6 pt-12 pb-10">
+      <a href="/hobbies" class="text-sm text-forest-400 hover:text-forest-300 mb-6 inline-block">← Hobbies</a>
+      <p class="section-label-light mb-3">Hobbies · Trail / Range</p>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">What MPG costs you off-road</h1>
+      <p class="text-stone-300 max-w-2xl leading-relaxed">
+        40 stock vehicles, scored on geometry and plotted against fuel economy.
+      </p>
+    </div>
+  </DarkHeader>
+
+  <article class="max-w-3xl mx-auto px-6 pt-10 pb-24 text-[#1a1a1a]">
+    <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
+      <p>
+        TLDR; I wanted to know how much fuel economy you give up to get something that can actually
+        go off road. Of 31 gas and hybrid vehicles, 9 aren't beaten on both capability and MPG. The
+        2024 Tacoma TRD Pro hybrid is where the curve bends (23 mpg, score 62). Add EVs and only the
+        two Broncos stay on the frontier, an R1S scores within 2 points of the Sasquatch at $9.64 per
+        100 miles (Sasquatch $26.05, Pittsburgh prices).
+      </p>
+      <p>
+        The score is 0-100 and only looks at static geometry: ground clearance (30%), approach,
+        departure and breakover angles (20% each) and tire diameter (10%), each scaled between fixed
+        endpoints (clearance 6 to 13 in, etc). Lockers and low range are filters, not points. MPG is
+        EPA combined. Every chart below is live, hover a point or click the buttons.
+      </p>
+
+      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
+        9 vehicles nobody beats on both, the top end is steep
+      </h2>
+    </div>
+
+    <figure class="tr-fig" data-tr-fig="field">
+      <div class="tr-chips" aria-label="Required hardware"></div>
+      <div class="tr-wrap"><svg role="img" aria-label="Off-road score vs EPA combined MPG, gas and hybrid vehicles"></svg><div class="tr-tip" hidden></div></div>
+      <figcaption class="tr-live"></figcaption>
+    </figure>
+
+    <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
+      <p>
+        On the frontier means nothing else scores as well on both axes and better on one. Going from
+        the Bronco Raptor (15 mpg, 92) to a 2-door Sasquatch (18 mpg, 78) costs 14 points for 3 mpg.
+        Below the Tacoma it flips, the next 16 mpg (RAV4 hybrid, 39) costs 39 points. The RAV4
+        Woodland scores 0.1 better than the LE for 2 mpg less (couldn't find Toyota's breakover so
+        both are estimated).
+      </p>
+      <p>
+        Click "Low range only" and the frontier is 4: Raptor, Sasquatch, Rubicon 2-door, Tacoma.
+        Nothing with a low range transfer case here gets more than 23 mpg.
+      </p>
+
+      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
+        2-doors beat 4-doors, the 4Runner and Land Cruiser aren't close
+      </h2>
+      <p>
+        Wheelbase shows up through breakover. The 4-door Rubicon loses 5° of breakover to the 2-door
+        (22.6° vs 27.8°) and gets 1 mpg worse. The 2015 4Runner Trail scores 46 at 18 mpg, the
+        Sasquatch scores 78 at the same 18. The 2024 Land Cruiser scores 43 at 23 mpg with the same
+        2.4L hybrid as the Tacoma TRD Pro, which scores 62. Closest miss is a 2-door Wrangler Sport,
+        0.4 points behind the Tacoma at the same 23 mpg.
+      </p>
+
+      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
+        Add EVs and only the Broncos survive
+      </h2>
+      <p>
+        MPGe doesn't compare at the pump, so this axis is energy cost per 100 miles (gas: 100 ÷ mpg ×
+        $/gal, EV: EPA kWh/100 mi × $/kWh). The order holds at all 5 city prices, even Honolulu at
+        $0.48/kWh. The R1S breakover is estimated.
+      </p>
+    </div>
+
+    <figure class="tr-fig" data-tr-fig="ev">
+      <div class="tr-chips" aria-label="Energy prices"></div>
+      <div class="tr-wrap"><svg role="img" aria-label="Off-road score vs energy cost per 100 miles, all 40 vehicles"></svg><div class="tr-tip" hidden></div></div>
+      <figcaption class="tr-live"></figcaption>
+    </figure>
+
+    <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
+      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
+        Weights move the Tacoma, not the Crosstrek
+      </h2>
+      <p>
+        7 vehicles make the frontier under all 4 presets: Sasquatch 2-door, Rubicon 2-door, Renegade
+        Trailhawk, both Crosstreks and both RAV4 hybrids. The Tacoma only makes it when clearance
+        counts most, weight the angles or a short wheelbase and the 2-door Wrangler Sport takes its
+        spot. Short wheelbase drops the Raptor (116.5 in).
+      </p>
+    </div>
+
+    <figure class="tr-fig" data-tr-fig="weights">
+      <div class="tr-chips" aria-label="Weight preset"></div>
+      <div class="tr-wrap"><svg role="img" aria-label="Frontier under different score weights"></svg><div class="tr-tip" hidden></div></div>
+      <figcaption class="tr-live"></figcaption>
+    </figure>
+
+    <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
+      <p>
+        What it doesn't capture: traction, articulation, gearing, armor, reliability, price. EPA
+        combined is a lab number and manufacturers measure clearance differently. 40 configurations
+        (2010-2027) is a curated list, not every trim. Tell me what's missing.
+      </p>
+      <p>Set your own weights, filters and gas prices below.</p>
+    </div>
+
+    <figure class="mt-8">
+      <div class="border border-stone-200 rounded-lg overflow-hidden bg-white shadow-sm">
+        <iframe
+          src="/maps/trail-range/index.html"
+          title="Trail / Range off-road vs fuel economy explorer"
+          class="w-full block"
+          style="height: 90vh; min-height: 760px; border: 0;"
+          loading="lazy"
+        />
+      </div>
+      <figcaption class="text-xs text-[#888] mt-3 text-center">
+        Trail / Range. Sources and EPA records for every point are in the tool. Specs reviewed Oct 2, 2026.
+      </figcaption>
+    </figure>
+
+    <div class="mt-16 pt-8 border-t border-stone-200 text-sm text-[#555] leading-relaxed">
+      <p>Cooper Minehart</p>
+    </div>
+  </article>
+
+  <script is:inline src="/maps/trail-range/model.js"></script>
+  <script is:inline src="/maps/trail-range/data.js"></script>
+  <script is:inline src="/maps/trail-range/post-charts.js"></script>
+</Layout>
+
+<style is:global>
+  .tr-fig { margin: 1.75rem 0 2rem; }
+  .tr-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
+  .tr-chip { font-size: 12.5px; padding: .3rem .7rem; border: 1px solid #d6d3cc; border-radius: 999px; background: #fff; color: #444; cursor: pointer; }
+  .tr-chip[aria-pressed="true"] { background: #172d30; border-color: #172d30; color: #fff; }
+  .tr-wrap { position: relative; border: 1px solid #e7e5e0; border-radius: 8px; background: #fffefa; }
+  .tr-wrap svg { display: block; width: 100%; }
+  .tr-ax { font-size: 11px; fill: #626e6c; }
+  .tr-axt { font-size: 11.5px; fill: #172d30; }
+  .tr-lab { fill: #626e6c; }
+  .tr-on { fill: #172d30; font-weight: 600; }
+  .tr-pt { cursor: pointer; }
+  .tr-tip { position: absolute; pointer-events: none; background: #172d30; color: #fff; font-size: 12px; line-height: 1.4; padding: .45rem .6rem; border-radius: 6px; max-width: 220px; z-index: 5; }
+  .tr-live { font-size: 12px; color: #888; margin-top: .5rem; line-height: 1.5; }
+</style>
