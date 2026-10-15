@@ -44,7 +44,7 @@ export const posts: Post[] = [
   },
   {
     slug: 'mountain-biking',
-    title: 'Bikes Bikes Bikes',
+    title: 'Bikepacking',
     date: '2026-04',
     photo: '/photos/homies-on-bikes.jpeg',
     alt: 'Homies on bikes',
@@ -52,7 +52,7 @@ export const posts: Post[] = [
   },
   {
     slug: 'sewing',
-    title: 'Sewing & Making',
+    title: 'You can sew leather',
     date: '2026-04',
     photo: '/photos/wallet.jpeg',
     alt: 'Handmade wallet',
@@ -60,7 +60,7 @@ export const posts: Post[] = [
   },
   {
     slug: 'van',
-    title: 'The Big Brown Van',
+    title: 'My Vanagon has a Subaru problem',
     date: '2026-04',
     photo: '/photos/van.jpg',
     alt: '1985 Volkswagen Vanagon Westfalia',
