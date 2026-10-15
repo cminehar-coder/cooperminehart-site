@@ -84,6 +84,7 @@
     }
     // labels with greedy collision avoidance
     const placed = [], fs = narrow ? 10.5 : 12;
+    for (const v of r) if (labelled.has(v.id)) placed.push({ x: X(v[cfg.metric]) - 7, y: Y(v.score) - 7, w: 14, h: 14 });
     const boxes = [...labelled].map(id => r.find(v => v.id === id)).sort((a, b) => b.score - a.score);
     for (const v of boxes) {
       const px = X(v[cfg.metric]), py = Y(v.score), t = name(v), w = t.length * fs * 0.56, h = fs + 2;
