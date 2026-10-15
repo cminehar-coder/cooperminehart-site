@@ -12,7 +12,7 @@ export interface Post {
 const allPosts: Post[] = [
   {
     slug: 'trail-range',
-    title: 'Trading mpg for clearance',
+    title: 'The mpg cost of off-road-ability',
     date: '2026-10',
     photo: '/photos/trail-range.jpg',
     alt: 'Off-road geometry score vs EPA combined MPG, Pareto frontier',
