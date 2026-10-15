@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BatteryHero from '../components/BatteryHero.astro';
-import { posts, fmtDate } from '../data/posts';
+import { posts, fmtDate, postHref } from '../data/posts';
 ---
 
 <Layout title="Cooper Minehart">
@@ -42,9 +42,9 @@ import { posts, fmtDate } from '../data/posts';
             <a href="/blog" class="text-xs text-forest-600 hover:underline">All posts →</a>
           </div>
           <ul class="divide-y divide-stone-200">
-            {posts.map(({ slug, title, photo, alt, date }) => (
+            {posts.map((post) => { const { title, photo, alt, date } = post; return (
               <li>
-                <a href={`/blog/${slug}`} class="group flex gap-3 py-3 items-center">
+                <a href={postHref(post)} target={post.url ? '_blank' : undefined} rel={post.url ? 'noopener' : undefined} class="group flex gap-3 py-3 items-center">
                   <img src={photo} alt={alt} loading="lazy"
                        class="w-14 h-14 flex-none rounded object-cover border border-stone-200" />
                   <div class="min-w-0">
@@ -55,7 +55,7 @@ import { posts, fmtDate } from '../data/posts';
                   </div>
                 </a>
               </li>
-            ))}
+            ); })}
           </ul>
         </aside>
       </div>

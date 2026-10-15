@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import DarkHeader from '../../components/DarkHeader.astro';
-import { posts, fmtDate } from '../../data/posts';
+import { posts, fmtDate, postHref } from '../../data/posts';
 ---
 
 <Layout
@@ -17,8 +17,8 @@ import { posts, fmtDate } from '../../data/posts';
 
   <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-      {posts.map(({ slug, title, photo, alt, date, caption }) => (
-        <a href={`/blog/${slug}`} class="group block">
+      {posts.map((post) => { const { title, photo, alt, date, caption } = post; return (
+        <a href={postHref(post)} target={post.url ? '_blank' : undefined} rel={post.url ? 'noopener' : undefined} class="group block">
           <div class="overflow-hidden rounded-lg mb-4 aspect-[4/3] bg-stone-100 border border-stone-200">
             <img
               src={photo}
@@ -33,7 +33,7 @@ import { posts, fmtDate } from '../../data/posts';
           </h3>
           <p class="text-sm text-[#666] leading-relaxed">{caption}</p>
         </a>
-      ))}
+      ); })}
     </div>
   </div>
 </Layout>

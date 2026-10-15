@@ -7,9 +7,19 @@ export interface Post {
   photo: string;
   alt: string;
   caption: string;
+  url?: string; // external link (e.g. Substack); otherwise /blog/<slug>
 }
 
 const allPosts: Post[] = [
+  {
+    slug: 'invisible-infrastructure',
+    title: 'Invisible infrastructure in plain sight',
+    date: '2026-05',
+    photo: '/photos/blister-pads.jpg',
+    alt: 'Yellow truncated-dome pads at a Pittsburgh curb cut',
+    caption: 'A kid on a balance bike, a curb cut, and benefits of the ADA nobody planned for.',
+    url: 'https://cooperminehart.substack.com/p/invisible-infrastructure-in-plain',
+  },
   {
     slug: 'trail-range',
     title: 'The mpg cost of off-road-ability',
@@ -28,7 +38,7 @@ const allPosts: Post[] = [
   },
   {
     slug: '45x-map',
-    title: "Where the IRA's $5.6B in battery 45X has actually gone",
+    title: "Where the OBBA's $6B in battery credits have gone",
     date: '2026-05',
     photo: '/research/thumbs/45x_map.png',
     alt: 'Geographic map of US battery supply chain plants colored by product type and sized by Section 45X recipient share',
@@ -69,6 +79,8 @@ const allPosts: Post[] = [
 ];
 
 export const posts = [...allPosts].sort((a, b) => b.date.localeCompare(a.date));
+
+export const postHref = (p: Post) => p.url ?? `/blog/${p.slug}`;
 
 export function fmtDate(d: string): string {
   const [y, m] = d.split('-').map(Number);
