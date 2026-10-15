@@ -9,7 +9,7 @@ export interface Post {
   caption: string;
 }
 
-export const posts: Post[] = [
+const allPosts: Post[] = [
   {
     slug: 'trail-range',
     title: 'Trading mpg for clearance',
@@ -45,7 +45,7 @@ export const posts: Post[] = [
   {
     slug: 'mountain-biking',
     title: 'Bikepacking',
-    date: '2026-04',
+    date: '2025-01',
     photo: '/photos/homies-on-bikes.jpeg',
     alt: 'Homies on bikes',
     caption: 'commuting, bikepacking, road riding, mountain biking, cargo bikes, bike bags, friends on bikes...',
@@ -53,7 +53,7 @@ export const posts: Post[] = [
   {
     slug: 'sewing',
     title: 'You can sew leather',
-    date: '2026-04',
+    date: '2026-02',
     photo: '/photos/wallet.jpeg',
     alt: 'Handmade wallet',
     caption: 'Bike bags, wallets, jackets, shirts, shackets (jirts?), laser-patterns, zippers, velcro (love).',
@@ -61,12 +61,14 @@ export const posts: Post[] = [
   {
     slug: 'van',
     title: 'My Vanagon has a Subaru problem',
-    date: '2026-04',
+    date: '2025-06',
     photo: '/photos/van.jpg',
     alt: '1985 Volkswagen Vanagon Westfalia',
     caption: 'I bought a Westy in high school and swapped in a Subaru engine while I was in college. Lived in it through a Michigan winter and my brother drove it to California.',
   },
 ];
+
+export const posts = [...allPosts].sort((a, b) => b.date.localeCompare(a.date));
 
 export function fmtDate(d: string): string {
   const [y, m] = d.split('-').map(Number);
