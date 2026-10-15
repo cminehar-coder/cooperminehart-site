@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+import { posts, fmtDate } from '../../data/posts';
+---
+
+<Layout
+  title="Blog — Cooper Minehart"
+  description="Battery supply chain maps and models, plus bikes, sewing, and a 1985 VW Vanagon."
+>
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10">
+      <p class="section-label-light mb-3">Blog</p>
+      <h1 class="font-serif text-4xl font-bold text-white">Posts</h1>
+    </div>
+  </DarkHeader>
+
+  <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      {posts.map(({ slug, title, photo, alt, date, caption }) => (
+        <a href={`/blog/${slug}`} class="group block">
+          <div class="overflow-hidden rounded-lg mb-4 aspect-[4/3] bg-stone-100 border border-stone-200">
+            <img
+              src={photo}
+              alt={alt}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          </div>
+          <p class="text-xs font-mono text-[#888] mb-1">{fmtDate(date)}</p>
+          <h3 class="font-serif text-lg font-semibold text-[#1a1a1a] mb-2 group-hover:text-forest-600 transition-colors">
+            {title}
+          </h3>
+          <p class="text-sm text-[#666] leading-relaxed">{caption}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

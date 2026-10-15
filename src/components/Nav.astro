@@ -1,13 +1,12 @@
 ---
 const links = [
-  { href: '/hobbies',      label: 'Hobbies' },
-  { href: '/teaching',     label: 'Teaching' },
-  { href: '/cv',           label: 'CV' },
-  { href: '/contact',      label: 'Contact' },
+  { href: '/about',        label: 'About' },
+  { href: '/blog',         label: 'Blog' },
   { href: '/publications', label: 'Publications' },
+  { href: '/teaching',     label: 'Teaching' },
 ];
 
-const current = Astro.url.pathname;
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <header class="sticky top-0 z-50 bg-[#FAFAF8]/90 backdrop-blur-sm border-b border-stone-200">
@@ -18,7 +17,7 @@ const current = Astro.url.pathname;
 
     <ul class="hidden md:flex items-center gap-6">
       {links.map(({ href, label }) => {
-        const active = current === href;
+        const active = current === href || current.startsWith(href + '/');
         return (
           <li>
             <a

@@ -1,0 +1,161 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DarkHeader from '../components/DarkHeader.astro';
+---
+
+<Layout title="About — Cooper Minehart" description="Cooper Minehart: background, CV, and contact. PhD student in Engineering & Public Policy at Carnegie Mellon.">
+
+  <DarkHeader>
+    <div class="max-w-5xl mx-auto px-6 pt-12 pb-10 flex items-end justify-between gap-6">
+      <div>
+        <p class="section-label-light mb-3">About</p>
+        <h1 class="font-serif text-4xl font-bold text-white">Cooper Minehart</h1>
+      </div>
+      <img src="/photos/headshot.jpeg" alt="Cooper Minehart"
+           class="hidden sm:block w-24 h-24 rounded-full object-cover object-top ring-2 ring-forest-400/30" />
+    </div>
+  </DarkHeader>
+
+  <!-- ── About ── -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+        <div class="grid md:grid-cols-[2fr_1fr] gap-12 items-start">
+      <div class="space-y-5 text-[#333] leading-relaxed">
+        <p>
+          I'm a PhD student in Engineering and Public Policy at Carnegie Mellon University,
+          where I work with <strong>Prof. Kate Whitefoot</strong> (EPP &amp; Mechanical Engineering)
+          on battery production cost modeling. My work focuses on understanding where battery
+          technology is heading, looking at cell-to-pack designs, dry electrode processing,
+          LMFP cathodes, sodium-ion chemistries, and other tech with the potential to reduce costs.
+        </p>
+        <p>
+          Before CMU, I was a full-time lecturer in Mechanical Engineering at
+          <strong>Cal Poly San Luis Obispo</strong>, where I taught statics, design
+          communication, philosophy of design, and introductory ME. Prior to that I managed
+          the propulsion team at Empirical Systems Aerospace through an OEM eVTOL test
+          campaign, and spent a year at <strong>KU Leuven</strong> as a researcher in the
+          Mechatronic System Dynamics group, working on flexible multibody contact models of
+          wind-turbine gearboxes.
+        </p>
+        <p>
+          My graduate work at Michigan Tech focused on machine learning applications for
+          sensor fusion, and my thesis covered data-driven cycle-to-cycle IMEP estimation
+          for internal combustion engines. The through-line across all of it is using models
+          to understand systems that are hard to measure directly.
+        </p>
+        <p>
+          I'm currently based in Pittsburgh.
+        </p>
+      </div>
+
+      <div class="text-sm text-[#666] space-y-4">
+        <div>
+          <p class="text-xs font-mono tracking-wider uppercase text-[#aaa] mb-1">Institution</p>
+          <p>Carnegie Mellon University<br/>Pittsburgh, PA</p>
+        </div>
+        <div>
+          <p class="text-xs font-mono tracking-wider uppercase text-[#aaa] mb-1">Email</p>
+          <a href="mailto:cminehar@andrew.cmu.edu" class="text-forest-600 hover:underline">
+            cminehar@andrew.cmu.edu
+          </a>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <a href="https://scholar.google.com/citations?user=LXd0QBUAAAAJ&hl=en" target="_blank" rel="noopener" class="text-forest-600 hover:underline text-sm">Google Scholar</a>
+          <a href="https://linkedin.com/in/cooper-minehart/" target="_blank" rel="noopener" class="text-forest-600 hover:underline text-sm">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What I work on (by theme, not timeline; full history is in the CV below) ── -->
+  <section class="max-w-5xl mx-auto px-6 pb-20">
+    <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] mb-8">What I work on</h2>
+    <div class="grid md:grid-cols-2 gap-x-12 gap-y-10 text-[#333] leading-relaxed">
+      <div>
+        <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2">Battery cost and supply chains</h3>
+        <p>
+          Process-based cost models of battery cell and pack production, used to ask which
+          technologies (dry electrodes, cell-to-pack, LMFP, sodium-ion) actually lower cost,
+          and how policy like the IRA's 45X credit shifts where things get made. I also build
+          supply chain maps from public filings; a few are on the <a href="/blog" class="text-forest-600 hover:underline">blog</a>.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2">Estimating what's hard to measure</h3>
+        <p>
+          Combining physics with data to infer quantities nobody logs directly: cycle-to-cycle
+          IMEP in engines from sensor fusion and machine learning (Michigan Tech, two
+          publications), vehicle emissions at NREL, and passenger loads on city buses from
+          air-suspension pressure (University of Minnesota).
+        </p>
+      </div>
+      <div>
+        <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2">Dynamics and simulation</h3>
+        <p>
+          Flexible multibody contact models of wind-turbine gearboxes at KU Leuven, with
+          model order reduction to keep them fast enough to use.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2">Hardware and testing</h3>
+        <p>
+          Ran the propulsion team through an OEM eVTOL test campaign at Empirical Systems
+          Aerospace. Before that: dynamometer and vehicle instrumentation, Raspberry Pi data
+          loggers on CAN and GPS, and an EV door actuator housing redesign at Inteva that
+          went to production.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2">Teaching</h3>
+        <p>
+          Two years as a full-time lecturer at Cal Poly (statics, design communication,
+          philosophy of design, intro to ME) and a summer renewable energy course in Munich.
+          <a href="/teaching" class="text-forest-600 hover:underline">Courses →</a>
+        </p>
+      </div>
+    </div>
+    <p class="mt-10 text-sm text-[#888]">Dates and the full history are in the <a href="#cv" class="text-forest-600 hover:underline">CV</a>.</p>
+  </section>
+
+  <!-- ── CV ── -->
+  <section id="cv" class="max-w-5xl mx-auto px-6 pb-20 scroll-mt-20">
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a]">CV</h2>
+      <a href="/cv_cooper_minehart.pdf" download class="btn-primary flex items-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" />
+        </svg>
+        Download PDF
+      </a>
+    </div>
+    <div class="w-full rounded-lg overflow-hidden border border-stone-200 shadow-sm">
+      <iframe src="/cv_cooper_minehart.pdf" class="w-full" style="height: 80vh; min-height: 560px;" title="Cooper Minehart CV"></iframe>
+    </div>
+    <p class="mt-3 text-sm text-[#888]">
+      Can't see the PDF? <a href="/cv_cooper_minehart.pdf" target="_blank" class="text-forest-600 hover:underline">Open in a new tab →</a>
+    </p>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section id="contact" class="max-w-5xl mx-auto px-6 pb-8 scroll-mt-20">
+    <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] mb-6">Contact</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
+      {[
+        { label: 'Email', href: 'mailto:cminehar@andrew.cmu.edu', text: 'cminehar@andrew.cmu.edu' },
+        { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=LXd0QBUAAAAJ&hl=en', text: 'scholar.google.com' },
+        { label: 'LinkedIn', href: 'https://linkedin.com/in/cooper-minehart/', text: 'linkedin.com/in/cooper-minehart' },
+        { label: 'Substack', href: 'https://cooperminehart.substack.com/', text: 'cooperminehart.substack.com' },
+        { label: 'Bluesky', href: 'https://bsky.app/profile/cooperminehart.bsky.social', text: '@cooperminehart.bsky.social' },
+      ].map(({ label, href, text }) => (
+        <div>
+          <p class="text-xs font-mono text-[#888] uppercase tracking-wider mb-1">{label}</p>
+          <a href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noopener" class="text-forest-600 hover:underline font-medium">{text}</a>
+        </div>
+      ))}
+      <div>
+        <p class="text-xs font-mono text-[#888] uppercase tracking-wider mb-1">Institution</p>
+        <p class="text-[#555]">Department of Engineering &amp; Public Policy<br />Carnegie Mellon University<br />Pittsburgh, PA</p>
+      </div>
+    </div>
+  </section>
+
+</Layout>
