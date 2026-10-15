@@ -30,3 +30,9 @@ button.secondary,.secondary{border-color:var(--forest);color:var(--forest)}
 .method-section h2{font-size:24px;margin-bottom:8px}
 .formula{font-family:'JetBrains Mono',Menlo,monospace}
 :focus-visible{outline-color:#40916C}
+details.table-panel>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+details.table-panel>summary::-webkit-details-marker{display:none}
+details.table-panel>summary span{font-size:12px;color:var(--forest);text-decoration:underline;text-underline-offset:3px}
+details.table-panel>summary span::after{content:' ▾'}
+details.table-panel[open]>summary span{font-size:0}details.table-panel[open]>summary span::after{content:'hide ▴';font-size:12px}
+details.table-panel[open]>summary{margin-bottom:16px}

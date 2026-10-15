@@ -28,7 +28,7 @@
     ev: {
       metric: 'mpd', chips: { city: Object.entries(PRICES).map(([k, v]) => [k, v[0]]) },
       state: { city: 'pgh' },
-      filters: () => ({}), weights: () => M.DEFAULTS, city: s => s.city,
+      filters: () => ({}), weights: () => M.DEFAULTS, city: s => s.city, prices: s => s.custom || PRICES[s.city], pricePanel: true,
       refs: ['tacoma-pro', 'rav4-hybrid', 'r1t', 'lightning-er']
     },
     weights: {
@@ -44,7 +44,7 @@
   const name = v => SHORT[v.id] || `${v.model} '${String(v.year).slice(2)}`;
 
   function rows(cfg) {
-    const s = cfg.state, [, g, e] = PRICES[cfg.city(s)];
+    const s = cfg.state, [, g, e] = cfg.prices ? cfg.prices(s) : PRICES[cfg.city(s)];
     const r = D.filter(v => M.eligible(v, { yearMin: 2010, yearMax: 2027, ...cfg.filters(s) }))
       .map(v => ({ ...v, cost: M.energyCost(v, g, e), mpd: 100 / M.energyCost(v, g, e), ...M.evaluate(v, cfg.weights(s), true) }))
       .filter(v => v.score != null);
@@ -101,11 +101,57 @@
       if (Math.abs(best[1] - (py + 4)) > 1) el('line', { x1: px, y1: py, x2: best[2] === 'start' ? best[0] - 2 : best[0] + 2, y2: best[1] - 4, stroke: C.muted, 'stroke-width': .7 }, svg);
       el('text', { x: best[0], y: best[1], 'text-anchor': best[2], class: fid.has(v.id) ? 'tr-lab tr-on' : 'tr-lab', 'font-size': fs }, svg, t);
     }
+    const pl = root.querySelector('.tr-prices-now');
+    if (pl && cfg.prices) { const p = cfg.prices(cfg.state); pl.innerHTML = `<b>${p[0]}</b>: gas $${p[1].toFixed(2)}/gal, electricity $${p[2].toFixed(3)}/kWh <span>(${p[3] || SRC})</span>`; }
     if (cap) {
       const s = cfg.state;
       const ctx = s.city ? ` at ${PRICES[s.city][0]} prices ($${PRICES[s.city][1].toFixed(2)}/gal, $${PRICES[s.city][2].toFixed(3)}/kWh)` : '';
       cap.textContent = `${r.length} vehicles, ${f.length} on the frontier${ctx}: ${f.slice().sort((a, b) => b.score - a.score).map(name).join(' · ')}.`;
     }
+  }
+
+  const SRC = 'AAA metro regular gas Oct 2, 2026 · EIA state residential electricity July 2026';
+  const ST = window.TR_STATE_PRICES || {};
+  const byName = Object.fromEntries(Object.entries(ST).map(([k, v]) => [v[0].toLowerCase(), k]));
+  function statePrices(code, label) { const v = ST[code]; return v && [label || v[0], v[1], v[2], `AAA ${v[0]} average gas Oct 15, 2026 · EIA ${v[0]} residential electricity July 2026`]; }
+  function localState(q) {
+    const t = q.trim().toLowerCase().replace(/\.$/, '');
+    const m = t.match(/,\s*([a-z]{2})$/); if (m && ST[m[1].toUpperCase()]) return m[1].toUpperCase();
+    if (byName[t]) return byName[t]; if (t.length === 2 && ST[t.toUpperCase()]) return t.toUpperCase();
+    for (const n in byName) if (t.endsWith(', ' + n) || t.endsWith(' ' + n)) return byName[n];
+    return null;
+  }
+  async function findState(q) {
+    const local = localState(q); if (local) return local;
+    const u = 'https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=us&q=' + encodeURIComponent(q);
+    const r = await fetch(u, { headers: { Accept: 'application/json' } }); const j = await r.json();
+    const iso = j[0] && j[0].address && j[0].address['ISO3166-2-lvl4']; return iso ? iso.replace('US-', '') : null;
+  }
+  function pricePanel(root, cfg, bar) {
+    const box = document.createElement('div'); box.className = 'tr-prices';
+    box.innerHTML = `<p class="tr-prices-now"></p>
+      <div class="tr-price-row"><form class="tr-search"><input type="search" placeholder="Search your city (e.g. Boise, ID)" aria-label="Search your city"><button type="submit">Go</button></form>
+      <span class="tr-or">or your own:</span>
+      <label>$<input type="number" step="0.01" min="0" class="tr-gas" aria-label="Gas $ per gallon">/gal</label>
+      <label>$<input type="number" step="0.01" min="0" class="tr-elec" aria-label="Electricity $ per kWh">/kWh</label></div>
+      <p class="tr-msg" hidden></p>`;
+    bar.after(box);
+    const msg = box.querySelector('.tr-msg'), gasI = box.querySelector('.tr-gas'), elI = box.querySelector('.tr-elec');
+    const unpress = () => bar.querySelectorAll('.tr-chip').forEach(x => x.setAttribute('aria-pressed', false));
+    const sync = () => { const p = cfg.prices(cfg.state); gasI.value = p[1].toFixed(2); elI.value = p[2].toFixed(3); };
+    bar.addEventListener('click', () => { msg.hidden = true; box.querySelector('input[type=search]').value = ''; sync(); });
+    box.querySelector('form').onsubmit = async ev => {
+      ev.preventDefault(); const q = box.querySelector('input[type=search]').value; if (!q.trim()) return;
+      msg.hidden = false; msg.textContent = 'Looking...';
+      try {
+        const code = await findState(q), p = code && statePrices(code, q.split(',')[0].trim().replace(/^./, c => c.toUpperCase()) + ', ' + code);
+        if (!p) { msg.textContent = "Couldn't find that one, try 'City, ST'."; return; }
+        msg.hidden = true; cfg.state.custom = p; unpress(); sync(); draw(root, cfg);
+      } catch (e) { const code = localState(q); msg.textContent = code ? '' : "Search didn't work, try 'City, ST' or a state."; if (code) { msg.hidden = true; cfg.state.custom = statePrices(code); unpress(); sync(); draw(root, cfg); } }
+    };
+    const own = () => { const g = +gasI.value, e = +elI.value; if (g > 0 && e > 0) { cfg.state.custom = ['Your prices', g, e, 'you typed these']; unpress(); msg.hidden = true; draw(root, cfg); } };
+    gasI.addEventListener('change', own); elI.addEventListener('change', own);
+    sync();
   }
 
   document.querySelectorAll('[data-tr-fig]').forEach(root => {
@@ -114,9 +160,10 @@
     for (const [key, opts] of Object.entries(cfg.chips)) for (const [val, label] of opts) {
       const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.className = 'tr-chip';
       b.setAttribute('aria-pressed', cfg.state[key] === val);
-      b.onclick = () => { cfg.state[key] = val; bar.querySelectorAll('.tr-chip').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(root, cfg); };
+      b.onclick = () => { cfg.state[key] = val; cfg.state.custom = null; bar.querySelectorAll('.tr-chip').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(root, cfg); };
       bar.appendChild(b);
     }
+    if (cfg.pricePanel) pricePanel(root, cfg, bar);
     draw(root, cfg);
     let lastW = root.clientWidth, t;
     window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { if (root.clientWidth !== lastW) { lastW = root.clientWidth; draw(root, cfg); } }, 120); });

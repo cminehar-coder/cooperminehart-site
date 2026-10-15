@@ -41,15 +41,11 @@ import DarkHeader from '../../components/DarkHeader.astro';
       <h2 class="font-serif text-2xl font-semibold text-[#1a1a1a] pt-4">
         Add EVs and switch to miles-per-dollar
       </h2>
-      <p>
-        Electricity and gas costs are here.
-      </p>
     </div>
 
     <figure class="tr-fig" data-tr-fig="ev">
       <div class="tr-chips"></div>
       <div class="tr-wrap"><svg role="img" aria-label="Off-road score vs miles per dollar of energy, all 40 vehicles"></svg><div class="tr-tip" hidden></div></div>
-      <figcaption class="tr-live"></figcaption>
     </figure>
 
     <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
@@ -88,6 +84,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
 
   <script is:inline src="/maps/trail-range/model.js"></script>
   <script is:inline src="/maps/trail-range/data.js"></script>
+  <script is:inline src="/maps/trail-range/state-prices.js"></script>
   <script is:inline src="/maps/trail-range/post-charts.js"></script>
 </Layout>
 
@@ -105,5 +102,13 @@ import DarkHeader from '../../components/DarkHeader.astro';
   .tr-on { fill: #172d30; font-weight: 600; }
   .tr-pt { cursor: pointer; }
   .tr-tip { position: absolute; pointer-events: none; background: #172d30; color: #fff; font-size: 12px; line-height: 1.4; padding: .45rem .6rem; border-radius: 6px; max-width: 220px; z-index: 5; }
+  .tr-prices { font-size: 13px; color: #555; margin: 0 0 .7rem; }
+  .tr-prices-now { margin: 0 0 .5rem; } .tr-prices-now span { color: #999; font-size: 11.5px; }
+  .tr-price-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; }
+  .tr-search { display: flex; gap: .3rem; }
+  .tr-prices input { border: 1px solid #d6d3cc; border-radius: 6px; padding: .3rem .5rem; font-size: 13px; background: #fff; }
+  .tr-prices input[type=search] { width: 15rem; } .tr-prices input[type=number] { width: 4.6rem; margin: 0 .2rem; }
+  .tr-search button { border: 1px solid #1B4332; color: #1B4332; background: #fff; border-radius: 6px; padding: .3rem .7rem; cursor: pointer; }
+  .tr-or { color: #999; } .tr-msg { color: #b45309; font-size: 12px; margin: .4rem 0 0; }
   .tr-live { font-size: 12px; color: #888; margin-top: .5rem; line-height: 1.5; }
 </style>

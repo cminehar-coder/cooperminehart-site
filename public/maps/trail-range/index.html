@@ -38,11 +38,11 @@
     <article id="vehicle-detail" class="detail-panel panel" aria-label="Selected vehicle details"></article>
    </section>
   </div>
-  <section class="table-panel panel" aria-labelledby="table-title"><div class="section-top"><div><h2 id="table-title">All the numbers</h2></div><div class="table-actions"><button class="secondary" id="share">Copy link</button><button class="secondary" id="export">Download CSV</button></div></div>
+  <details class="table-panel panel"><summary class="table-summary"><h2 id="table-title">All the numbers</h2><span>show</span></summary><div class="section-top"><div></div><div class="table-actions"><button class="secondary" id="share">Copy link</button><button class="secondary" id="export">Download CSV</button></div></div>
    <div class="table-tools"><label class="check"><input type="checkbox" id="frontier-only"><span>Frontier only</span></label><label class="sort-label" for="sort">Sort by <select id="sort"><option value="score">Highest score</option><option value="mpg">Highest MPG</option><option value="name">Vehicle name</option></select></label></div>
    <div class="table-scroll"><table><thead><tr><th>Vehicle / configuration</th><th>Score</th><th id="axis-heading">$/100 mi</th><th>Clearance</th><th>Approach</th><th>Departure</th><th>Breakover</th><th>Tire Ø</th><th>Wheelbase</th><th>Frontier</th></tr></thead><tbody id="vehicle-table"></tbody></table></div>
    <p id="table-note" class="table-note"></p>
-  </section>
+  </details>
   <section id="method" class="method-section"><h2>How it works</h2><div class="method-grid">
    <div><h3>The score</h3><p>Each dimension gets scaled 0-100 between fixed endpoints (below), capped at the ends, then weighted. The endpoints are my picks, not standards. Filtering never rescales a score.</p><div class="formula">Score = Σ (weight × dimension score)</div><table class="bounds-table"><thead><tr><th>Dimension</th><th>0 points</th><th>100 points</th></tr></thead><tbody id="bounds"></tbody></table><p>Default weights: clearance 30%, approach 20%, departure 20%, breakover 20%, tire 10%, wheelbase 0% (it's already in breakover).</p></div>
    <div><h3>What it misses</h3><p>It's static geometry only. No traction, articulation, tread, gearing, armor, payload, reliability, price, or desert-running. Use the hardware filter for low range and lockers.</p><p>Tire diameter = rim + 2 × width × aspect ratio (flotation sizes like 37x12.50R17 are just 37 in).</p><p>Missing breakover gets estimated as 2 × atan(2 × clearance ÷ wheelbase). That assumes the low point is centered, so it's rough. Turn it off to only use published angles. Vehicles without published approach/departure angles aren't included.</p></div>
