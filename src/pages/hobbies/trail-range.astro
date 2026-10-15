@@ -61,10 +61,16 @@ import DarkHeader from '../../components/DarkHeader.astro';
       </p>
     </div>
 
-    <figure class="tr-fig" data-tr-fig="weights">
-      <div class="tr-chips"></div>
-      <div class="tr-wrap"><svg role="img" aria-label="Frontier under different score weights"></svg><div class="tr-tip" hidden></div></div>
-
+    <figure class="mt-6 mb-8 tr-bleed">
+      <div class="border border-stone-200 rounded-lg overflow-hidden bg-white shadow-sm">
+        <iframe
+          src="/maps/trail-range/index.html"
+          title="Off-road score vs efficiency, full tool"
+          class="w-full block"
+          style="height: 1150px; border: 0;"
+          id="tr-tool"
+        />
+      </div>
     </figure>
 
     <div class="space-y-5 text-[15px] leading-relaxed text-[#333]">
@@ -73,20 +79,10 @@ import DarkHeader from '../../components/DarkHeader.astro';
       </p>
     </div>
 
-    <figure class="mt-8">
-      <div class="border border-stone-200 rounded-lg overflow-hidden bg-white shadow-sm">
-        <iframe
-          src="/maps/trail-range/index.html"
-          title="Trail / Range off-road vs fuel economy explorer"
-          class="w-full block"
-          style="height: 90vh; min-height: 760px; border: 0;"
-          loading="lazy"
-        />
-      </div>
-    </figure>
+
 
     <div class="mt-16 pt-8 border-t border-stone-200 text-sm text-[#555] leading-relaxed">
-      <p>Coop</p>
+      <p>Coop (and Claude)</p>
     </div>
   </article>
 
@@ -97,9 +93,10 @@ import DarkHeader from '../../components/DarkHeader.astro';
 
 <style is:global>
   .tr-fig { margin: 1.75rem 0 2rem; }
+  .tr-bleed { width: min(1240px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%); }
   .tr-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
   .tr-chip { font-size: 12.5px; padding: .3rem .7rem; border: 1px solid #d6d3cc; border-radius: 999px; background: #fff; color: #444; cursor: pointer; }
-  .tr-chip[aria-pressed="true"] { background: #172d30; border-color: #172d30; color: #fff; }
+  .tr-chip[aria-pressed="true"] { background: #1B4332; border-color: #1B4332; color: #fff; }
   .tr-wrap { position: relative; border: 1px solid #e7e5e0; border-radius: 8px; background: #fffefa; }
   .tr-wrap svg { display: block; width: 100%; }
   .tr-ax { font-size: 11px; fill: #626e6c; }
