@@ -12,7 +12,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
       <a href="/blog" class="text-sm text-forest-400 hover:text-forest-300 mb-6 inline-block">← Blog</a>
       <h1 class="font-serif text-4xl font-bold text-white mb-3">What a dollar buys in an EV right now</h1>
       <p class="text-stone-300 max-w-2xl leading-relaxed">
-        Usable battery kWh and range plotted against retail MSRP across nine markets and five cell chemistries.
+        EV kWh and range plotted against MSRP.
       </p>
     </div>
   </DarkHeader>
@@ -20,10 +20,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
   <article class="max-w-[864px] mx-auto px-6 pt-10 pb-24 text-[#1E2A33]">
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
       <p>
-        Last month I gave in to car-brain and plotted <a href="/blog/trail-range" class="text-[#2C4FA3] underline">off-road geometry against MPG</a> across forty trucks and crossovers. Back at my day job we spend all week arguing about $5 or $10 per kWh in battery pack cost models, and then you go look at actual EV window stickers and the relationship between pack size and MSRP is all over the place. So I built the sibling chart: usable battery capacity on the vertical axis, retail MSRP on the horizontal axis, and a red Pareto line connecting the cars that nothing else on the lot beats on both price and battery size.
-      </p>
-      <p>
-        Starting in the US market (excluding destination fees, since automakers pad delivery charges anywhere from $1,395 to $2,295), 102 distinct battery-and-drivetrain configurations span from the returning 2027 Chevy Bolt LT at the floor ($27,600 for 65 kWh usable LFP) up to the 24-module GMC Hummer EV 3X at the ceiling ($114,800 for 212 kWh usable NCMA). Only one LFP pack makes the US frontier right now (that base Bolt), and high-nickel cells carry every step above $30,000.
+        I spend a lot of time thinking about how much it costs to buy a kWh of battery storage, and got curious what it looks like at the vehicle level.
       </p>
     </div>
 
@@ -38,14 +35,13 @@ import DarkHeader from '../../components/DarkHeader.astro';
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
       <p>
-        A couple of weird neighbors jump out right away. Kia's new EV3 Long Range gives you 78 kWh usable NMC for $34,990, and five dollars further right the Chevy Equinox EV LT gives you 85 kWh usable on a 10-module Ultium NCMA pack for $34,995. Above $50,000, GM's Silverado EV Work Truck trims take three frontier steps in a row (119, 170, and 205 kWh usable), before the Hummer EV 3X charges an extra $40,600 for the last 7 kWh. Those Work Truck pickups are GM Envolve commercial fleet trims that occasionally show up on retail dealer lots; if you click "Drop fleet WT pickups" above, the VinFast VF 9 (123 kWh at $69,800) and Rivian R1T Dual Max (141.5 kWh at $83,900) step onto the line instead.
+        The returning 2027 Chevy Bolt LT is $27,600 for 65 kWh of usable LFP, or GM will also sell you a 212 kWh usable NCMA Hummer EV for $114,800.
       </p>
-
-      <h2 class="font-serif text-2xl font-semibold text-[#1E2A33] pt-4">
-        Open the border and post-LFP chemistries eat the left half
-      </h2>
       <p>
-        Tariffs keep almost all Chinese packs out of US showrooms, so the US plot looks like an NMC story with a couple of domestic LFP exceptions. When you turn on all nine markets (US, Canada, Germany/EU, UK, Norway, China, South Korea, Japan, and Australia), China takes every single Pareto step below $50,000 -- 18 steps in a row -- before handing the frontier straight back to North American full-size pickups above 125 kWh because nobody else bolts a 200 kWh pack into a passenger vehicle.
+        Kia's new EV3 Long Range gives you 78 kWh for $34,990, and five dollars further right the Chevy Equinox EV LT gives you 85 kWh for $34,995. Above $50,000, GM's Silverado EV Work Truck trims take three frontier steps in a row (119, 170, and 205 kWh usable), and the Hummer charges an extra $40,600 for the last 7 kWh. The VinFast VF 9 (123 kWh at $69,800) and Rivian R1T Dual Max (141.5 kWh at $83,900) are other massive-capacity-contenders.
+      </p>
+      <p>
+        When you turn on the global markets, China takes every single Pareto step below $50k before handing the frontier straight back to good old full-size pickups (the ex-american brain cannot comprehend a 200+kWh brick). I really wanted the US to be cost-competitive, or for us to be competing for entirely different markets, but we're still a little behind on this metric (and we're subsidizing and they're subsidizing so who knows what actual cost to build is).
       </p>
     </div>
 
@@ -59,15 +55,11 @@ import DarkHeader from '../../components/DarkHeader.astro';
     </figure>
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
-      <p>
-        That sub-$50k Chinese staircase is also where the post-LFP chemistries show up in retail showrooms rather than conference slides. Three sodium-ion cars are on sale with zero lithium, cobalt, or nickel, led by JAC's Yiwei 3 ($8,122 for 21.4 kWh) and Changan's Nevo A06 running CATL's 175 Wh/kg Naxtra pack ($15,180 for 45 kWh, rated down to -40°C). Four Chery and Huawei-Chery models run manganese-doped phosphate (LMFP and CATL M3P, pushing the discharge plateau toward ~4.1 V), and two SAIC cars ship with QingTao oxide-polymer semi-solid cells: the MG4 Anxin Semi-Solid at $14,199 (53.95 kWh) and the IM L6 Max Lightyear at $47,776 (123.7 kWh usable, 133 kWh gross). I left NIO's 150 kWh WeLion semi-solid pack out of the scatter because NIO only rents it through BaaS swap stations rather than selling the pack outright.
-      </p>
-
       <h2 class="font-serif text-2xl font-semibold text-[#1E2A33] pt-4">
-        Switch from kWh to miles and drag punishes the bricks
+        equal-range basis
       </h2>
       <p>
-        Kilowatt-hours measure how much electrochemical hardware you bought; range measures what survives aerodynamic drag, tire rolling resistance, and curb weight. Flipping the US vertical axis from usable kWh to official EPA combined miles knocks the Equinox EV, Mustang Mach-E, standard-pack Silverado, and 9,000-pound Hummer off the curve. Slippery sedans and 800V drivetrains take their spots: the Model 3 Long Range RWD ($42,490, 363 miles), the two-speed 800V Mercedes CLA 250+ ($47,950, 374 miles from 85 kWh), BMW's Neue Klasse iX3 ($61,500, 399 miles), and at the top the Lucid Air Grand Touring ($114,900, 512 miles from 112 kWh, beating the 212 kWh Hummer by 145 miles on roughly half the battery).
+        Changing the vertical axis from usable kWh to EPA combined miles knocks the Equinox EV, Mustang Mach-E, standard-pack Silverado, and Hummer off the curve. The Model 3 Long Range RWD ($42,490, 363 miles), the two-speed 800V Mercedes CLA 250+ ($47,950, 374 miles from 85 kWh), BMW's iX3 ($61,500, 399 miles), and the Lucid Air Grand Touring ($114,900, 512 miles from 112 kWh, beating the 212 kWh Hummer by 145 miles on roughly half the battery) take their spots.
       </p>
     </div>
 
@@ -82,14 +74,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
       <p>
-        Comparing range across borders gets messy fast because aerodynamic drag power scales with the cube of speed. China's CLTC-P lab cycle averages just 28.96 km/h with 22.1% idle time and cabin HVAC turned off, Europe's 4-phase WLTP peaks at 131.3 km/h without applying a label derate, and the US EPA applies a statutory 0.70x multiplier (or a 5-cycle test with 80 mph highway, A/C, and 20°F cold runs). Click between "Global (harmonized EPA-eq.)" and "Global (raw WLTP / CLTC)" above to watch what that cycle gap does to the curve; I put the exact multipliers, dual-homologated benchmark cars, and regulatory citations in Section 4 of <strong>How it works</strong> at the bottom of the tool.
-      </p>
-
-      <h2 class="font-serif text-2xl font-semibold text-[#1E2A33] pt-4">
-        Filter the full dataset
-      </h2>
-      <p>
-        Below is the full explorer with country checkboxes, chemistry toggles, pre-tax VAT/GST stripping (since European, Chinese, and Asia-Pacific stickers include consumption tax while US and Canadian MSRPs do not), $/kWh reference rays, and CSV export. Click any mark or frontier step card to inspect its cell supplier, gross-to-usable buffer, and local stickers, or scroll to the bottom of the tool for the full methods and test-cycle equivalency table.
+        What I really want to know (and conveniently, what I get paid to do) is how much each of these cost to build, how much each part costs to build, and how much/where incentives are applied to each. Unfortunately this alone doesn't tell us.
       </p>
     </div>
 
@@ -107,7 +92,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
       <p>
-        A few caveats on the numbers. MSRPs exclude destination fees, dealer markups, and purchase incentives, and non-USD prices convert at fixed November 2026 spot FX rates. Where an automaker only publishes gross pack kWh, usable capacity is estimated from teardown or EV Database discharge data. Finally, 171 configurations across 139 nameplates covers the distinct battery packs on sale across these nine markets, not every wheel size or trim package. You can grab the raw audited dataset <a href="/maps/ev-pareto/vehicles.json" download class="text-[#2C4FA3] underline">here (JSON)</a>.
+        A few caveats on the numbers. I didn't want to dig too hard so MSRPs exclude destination fees, dealer markups, and purchase incentives, and non-USD prices convert at fixed November 2026 rates. Where an automaker only publishes gross pack kWh, usable capacity is estimated from teardown or EV Database discharge data. You can grab the raw audited dataset <a href="/maps/ev-pareto/vehicles.json" download class="text-[#2C4FA3] underline">here (JSON)</a>.
       </p>
     </div>
 
