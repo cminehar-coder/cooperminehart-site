@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#1E2A33">
+  <meta name="description" content="Every production battery-electric car and truck on sale across nine markets, plotted by usable kWh or range against retail MSRP with the Pareto frontier.">
+  <title>What a dollar buys in an EV right now -- Cooper Minehart</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%231E2A33'/%3E%3Cpath d='M7 31 L13 22 L20 18 L27 11 L34 9' fill='none' stroke='%23D6363F' stroke-width='3'/%3E%3Ccircle cx='13' cy='22' r='2.8' fill='%23FFFFFF'/%3E%3Ccircle cx='27' cy='11' r='2.8' fill='%23FFFFFF'/%3E%3C/svg%3E">
+  <script>
+    if (new URLSearchParams(location.search).get('embed') === '1') {
+      document.documentElement.classList.add('is-embed');
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="model.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand-wrap">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <span class="brand-title">EV Pareto Explorer</span>
+          <span class="brand-sub">Usable kWh and range vs. retail MSRP · Nov 2026</span>
+        </div>
+      </div>
+      <nav class="masthead-links" aria-label="Page sections">
+        <span id="scope-pill" class="scope-pill">Loading...</span>
+        <a href="#table-section">All the numbers</a>
+        <a href="#method">How it works</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <h1>What a dollar buys in an electric car right now</h1>
+        <p class="lede">171 battery-electric passenger configurations currently offered for sale across nine markets, plotted with usable pack capacity (kWh) or driving range on the vertical axis and retail MSRP on the horizontal axis. Toggle countries, regions, and cell chemistries to watch the Pareto frontier move.</p>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside class="controls panel" aria-label="Chart filters and display controls">
+        <div class="section-top">
+          <h2>Controls</h2>
+          <button type="button" class="text-button" id="reset-all">Reset all</button>
+        </div>
+
+        <div class="control-block">
+          <span class="field-label">Vertical axis (Y)</span>
+          <div class="segmented" role="group" aria-label="Vertical axis metric">
+            <button type="button" data-yaxis="kwh" class="seg-btn active">Usable kWh</button>
+            <button type="button" data-yaxis="range-mi" class="seg-btn">Range (mi)</button>
+            <button type="button" data-yaxis="range-km" class="seg-btn">Range (km)</button>
+          </div>
+          <div id="range-options" class="sub-options" hidden>
+            <label class="check">
+              <input type="checkbox" id="harmonize-range" checked>
+              <span>Harmonize WLTP / CLTC to EPA-eq.<small>Uses official EPA rating where tested; approximates WLTP (×0.855) and CLTC (×0.70) elsewhere. Hollow center = converted.</small></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="control-block">
+          <div class="block-head">
+            <span class="field-label">Offered for sale in</span>
+            <span id="market-summary" class="mini-count">9 / 9</span>
+          </div>
+          <div class="preset-chips" id="region-presets" role="group" aria-label="Region quick presets">
+            <button type="button" class="chip" data-region-preset="all">Global (All 9)</button>
+            <button type="button" class="chip" data-region-preset="US">US only</button>
+            <button type="button" class="chip" data-region-preset="na">North America</button>
+            <button type="button" class="chip" data-region-preset="eu">Europe</button>
+            <button type="button" class="chip" data-region-preset="asia">East Asia</button>
+            <button type="button" class="chip" data-region-preset="CN">China only</button>
+            <button type="button" class="chip" data-region-preset="AU">Australia</button>
+            <button type="button" class="chip" data-region-preset="ex-cn">Ex-China</button>
+          </div>
+          <div id="market-groups" class="market-groups"></div>
+          <p id="price-rule-note" class="control-note"></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="control-block">
+          <div class="block-head">
+            <span class="field-label">Cell chemistry</span>
+            <span id="chem-summary" class="mini-count">5 / 5</span>
+          </div>
+          <div class="preset-chips" id="chem-presets" role="group" aria-label="Chemistry quick presets">
+            <button type="button" class="chip" data-chem-preset="all">All (5)</button>
+            <button type="button" class="chip" data-chem-preset="mainstream">High-Ni + LFP</button>
+            <button type="button" class="chip" data-chem-preset="high-nickel">High-Ni only</button>
+            <button type="button" class="chip" data-chem-preset="lfp">LFP only</button>
+            <button type="button" class="chip" data-chem-preset="weird">Weird / post-LFP (3)</button>
+          </div>
+          <div id="chemistry-list" class="chem-list"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="control-block">
+          <span class="field-label">Scale and filters</span>
+
+          <label class="sub-label" for="x-scale">Horizontal MSRP scale</label>
+          <select id="x-scale">
+            <option value="150000">Linear · up to $150k (98% of market)</option>
+            <option value="80000">Linear · up to $80k (mainstream)</option>
+            <option value="all">Linear · all MSRPs (up to $420k)</option>
+            <option value="log">Logarithmic · $5k to $420k</option>
+          </select>
+
+          <label class="sub-label" for="granularity">Trim granularity</label>
+          <select id="granularity">
+            <option value="all">All distinct battery packs</option>
+            <option value="base">One per model · lowest MSRP</option>
+            <option value="max">One per model · largest pack / range</option>
+          </select>
+
+          <label class="sub-label" for="body-filter">Body style</label>
+          <select id="body-filter">
+            <option value="all">All body styles</option>
+            <option value="Hatchback">Hatchbacks and city cars</option>
+            <option value="Sedan">Sedans and liftbacks</option>
+            <option value="SUV">Crossovers and SUVs</option>
+            <option value="Pickup">Pickup trucks</option>
+            <option value="Van">MPVs and vans</option>
+            <option value="Coupe">Coupes and grand tourers</option>
+          </select>
+
+          <label class="sub-label" for="search-input">Search make, model, or cell</label>
+          <div class="search-wrap">
+            <input id="search-input" type="search" placeholder="e.g. Rivian, Blade, Naxtra, 800V..." autocomplete="off">
+            <button type="button" id="clear-search" class="clear-btn" aria-label="Clear search" hidden>×</button>
+          </div>
+
+          <label class="check">
+            <input type="checkbox" id="pretax">
+            <span>Strip embedded VAT / GST outside US and CA<small>Converts EU (19%), UK (20%), CN (13%), JP/KR/AU (10%), and NO (&gt;500k kr) stickers to pre-tax USD to match US/CA pre-tax MSRPs.</small></span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="show-rays" checked>
+            <span id="rays-label">Show $/kWh reference rays<small>Diagonal lines through $0 at constant MSRP per usable kWh (or per mile).</small></span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="show-step" checked>
+            <span>Show Pareto step boundary<small>Dashed staircase marking the dominated zone below and right of each frontier vehicle.</small></span>
+          </label>
+        </div>
+      </aside>
+
+      <section class="results" aria-label="Scatter plot, Pareto frontier, and selected vehicle details">
+        <div class="chart-panel panel">
+          <div class="chart-header">
+            <div>
+              <h2 id="chart-title">Usable Battery Capacity (kWh) vs. Retail MSRP</h2>
+              <p id="chart-subtitle" class="chart-subtitle"></p>
+            </div>
+            <div class="chart-header-right">
+              <div class="segmented compact-seg" role="group" aria-label="Quick Y-axis switch">
+                <button type="button" data-yaxis="kwh" class="seg-btn active">kWh</button>
+                <button type="button" data-yaxis="range-mi" class="seg-btn">Range (mi)</button>
+                <button type="button" data-yaxis="range-km" class="seg-btn">Range (km)</button>
+              </div>
+              <span id="frontier-pill" class="pill">-- on Pareto frontier</span>
+            </div>
+          </div>
+
+          <div id="legend" class="legend" aria-label="Chart legend"></div>
+
+          <div id="overflow-banner" class="overflow-banner" aria-live="polite" hidden></div>
+
+          <div id="chart-wrap">
+            <svg id="chart" role="img" aria-label="Interactive scatter plot of EV battery capacity or driving range versus MSRP with Pareto frontier"></svg>
+            <div id="tooltip" role="tooltip" hidden></div>
+            <div id="chart-empty" class="chart-empty" hidden></div>
+          </div>
+
+          <div class="chart-footer">
+            <span id="chart-status" role="status" aria-live="polite"></span>
+            <span>Hover or Tab to inspect · Click any mark or ladder card to pin</span>
+          </div>
+          <p id="frontier-explanation" class="frontier-explanation">
+            <strong>Reading the red line:</strong> Up and left is better (more battery or range for less money). Nothing in the active filter beats a frontier vehicle on both axes at once.
+          </p>
+
+          <div class="ladder-wrap">
+            <div class="ladder-head">
+              <h3>Pareto frontier steps</h3>
+              <span id="ladder-meta" class="mini-count"></span>
+            </div>
+            <div id="frontier-ladder" class="frontier-ladder" role="list"></div>
+          </div>
+        </div>
+
+        <article id="vehicle-detail" class="detail-panel panel" aria-label="Selected vehicle inspector"></article>
+      </section>
+    </div>
+
+    <details id="table-section" class="table-panel panel" open>
+      <summary class="table-summary">
+        <div>
+          <h2>All the numbers</h2>
+          <p id="table-subtitle" class="control-note"></p>
+        </div>
+        <span class="summary-toggle-label">show / hide</span>
+      </summary>
+
+      <div class="table-body">
+        <div class="table-tools">
+          <label class="check inline-check">
+            <input type="checkbox" id="frontier-only">
+            <span>Pareto frontier vehicles only</span>
+          </label>
+          <div class="table-tools-right">
+            <label class="sort-label" for="sort-select">
+              Sort by
+              <select id="sort-select">
+                <option value="msrp-asc">Lowest MSRP</option>
+                <option value="kwh-desc">Highest usable kWh</option>
+                <option value="range-desc">Longest range</option>
+                <option value="val-kwh">Lowest MSRP / kWh</option>
+                <option value="val-range">Lowest MSRP / range unit</option>
+                <option value="eff-desc">Highest efficiency (mi/kWh)</option>
+                <option value="name">Vehicle name (A-Z)</option>
+              </select>
+            </label>
+            <div class="table-actions">
+              <button type="button" class="secondary" id="share-btn">Copy link</button>
+              <button type="button" class="secondary" id="export-btn">Download CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Vehicle and pack</th>
+                <th>Chemistry</th>
+                <th id="th-msrp">MSRP (USD)</th>
+                <th>Usable kWh</th>
+                <th id="th-range">Range (mi)</th>
+                <th>$/kWh</th>
+                <th id="th-val-range">$/mi</th>
+                <th>Markets</th>
+                <th>Frontier</th>
+              </tr>
+            </thead>
+            <tbody id="vehicle-table"></tbody>
+          </table>
+        </div>
+        <p id="table-note" class="table-note"></p>
+      </div>
+    </details>
+
+    <section id="method" class="method-section">
+      <h2>How it works</h2>
+      <div class="method-grid">
+        <div class="panel method-card">
+          <h3>1. Usable vs. gross kWh</h3>
+          <p><strong>Net usable energy on Y:</strong> The vertical kWh axis plots net usable battery capacity rather than nominal gross pack size so conservative top/bottom buffers (for example, Porsche Taycan at 97 kWh usable vs. 105 kWh gross) do not inflate a car's vertical position. Gross capacity and buffer percentage are shown alongside usable kWh in the inspector card and CSV export.</p>
+          <p><strong>Where net kWh is estimated:</strong> When an automaker only publishes nominal pack kWh (common in China MIIT filings), usable capacity is estimated from teardown or <a href="https://ev-database.org/" target="_blank" rel="noopener">EV Database</a> discharge data.</p>
+          <p><strong> EPA verification:</strong> All 100 light-duty US configurations match the DOE/EPA <a href="https://www.fueleconomy.gov/feg/download.shtml" target="_blank" rel="noopener">FuelEconomy.gov</a> <code>vehicles.csv</code> release; Class 2b pickups above 8,500 lb GVWR (Hummer EV, Escalade IQ) use OEM ratings run on the EPA test procedure.</p>
+        </div>
+
+        <div class="panel method-card">
+          <h3>2. Regional MSRPs, FX, and VAT</h3>
+          <p><strong>Local window stickers:</strong> Every row stores local-currency base retail MSRPs for each country where that pack is currently offered for sale, excluding destination charges and purchase subsidies/tax credits. Selecting one country plots its exact local sticker; selecting multiple markets plots the lowest purchasable MSRP in the active set. Note that GM's Silverado EV Work Truck (WT) entries are commercial fleet trims occasionally sold off dealer lots; retail Custom and LT trims start higher.</p>
+          <p><strong>Consumption tax normalization:</strong> US and Canadian MSRPs are quoted pre-tax, whereas European (19-20% VAT), Chinese (13% VAT), and Japanese/Korean/Australian (10% GST/VAT) stickers include tax (Norway exempts BEVs up to 500,000 NOK). Check <strong>Strip embedded VAT / GST</strong> for pre-tax comparisons.</p>
+          <p><strong>Spot FX (Nov 2026 approx.):</strong> 1 USD = 1.39 CAD · 0.925 EUR · 0.785 GBP · 10.95 NOK · 7.24 CNY · 1,390 KRW · 152 JPY · 1.52 AUD.</p>
+        </div>
+
+        <div class="panel method-card">
+          <h3>3. Cell chemistries and exclusions</h3>
+          <p>Alongside <strong>High-Nickel</strong> (NMC, NCA, NCMA) and <strong>LFP</strong> (Blade 1.0/2.0, Shenxing, Golden Brick), three post-LFP chemistries are in retail showrooms as of late 2026:</p>
+          <ul class="compact-list">
+            <li><strong>LMFP / M3P:</strong> Manganese-doped phosphate (~4.1 V plateau) in Luxeed S7/R7 and Exeed Sterra ES/ET.</li>
+            <li><strong>Sodium-Ion:</strong> Zero-lithium packs in Changan Nevo A06 (<a href="https://www.catl.com/en/news/" target="_blank" rel="noopener">CATL Naxtra</a> 175 Wh/kg), JAC Yiwei 3, and JMEV EV3.</li>
+            <li><strong>Semi-Solid State:</strong> QingTao oxide-polymer hybrid electrolytes in MG4 Anxin Semi-Solid (53.95 kWh) and IM L6 Max Lightyear (123.7 kWh net / 133 kWh gross). NIO's 150 kWh WeLion pack is excluded because it is rental-only via BaaS Power Swap.</li>
+          </ul>
+          <details class="audit-details">
+            <summary>Discontinued, withdrawn, or rental-only packs excluded (11)</summary>
+            <ul id="discontinued-list" class="compact-list"></ul>
+          </details>
+        </div>
+      </div>
+
+      <div class="panel cycle-panel">
+        <div class="cycle-intro">
+          <h3>4. Test-cycle range equivalency (EPA vs. WLTP, CLTC, Japan WLTC, and Korea MOTIE)</h3>
+          <p>The exact same EV battery pack receives very different official range numbers across regions because laboratory chassis-dynamometer cycles run at different speeds and apply different post-test derating rules. Aerodynamic drag power scales with the cube of speed (<strong>P<sub>drag</sub> &propto; v<sup>3</sup></strong>), so low-speed urban cycles with frequent regenerative braking and long idle pauses produce much higher range figures than high-speed motorway cycles or sub-freezing cabin-heat tests.</p>
+          <p>Whenever a vehicle has an official US EPA rating, the chart plots that exact EPA number with a solid marker. Only when a configuration is not sold in North America does the default <strong>Harmonize WLTP / CLTC to EPA-eq.</strong> toggle convert its local homologation figure into approximate EPA-equivalent miles (marked with a <strong>hollow white center dot</strong> on the chart):</p>
+        </div>
+
+        <div class="table-scroll cycle-table-wrap">
+          <table class="cycle-table">
+            <thead>
+              <tr>
+                <th>Test cycle and standard</th>
+                <th>Speed profile and lab protocol</th>
+                <th>EPA-eq. multiplier</th>
+                <th>Dual-homologated empirical check</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>US EPA</strong><br><small><a href="https://www.ecfr.gov/current/title-40/chapter-I/subchapter-Q/part-600/subpart-C/section-600.210-12" target="_blank" rel="noopener">40 CFR § 600.210-12</a> · <a href="https://www.sae.org/standards/content/j1634_202107/" target="_blank" rel="noopener">SAE J1634</a></small></td>
+                <td>55% city (UDDS, 31.5 km/h mean) + 45% highway (HFEDS, 77.7 km/h mean), followed by either a <strong>0.70× statutory derate (-30%)</strong> or full 5-cycle testing adding 80 mph US06, 95°F A/C (SC03), and 20°F (-7°C) cold FTP.</td>
+                <td><strong>1.000 × EPA mi</strong><br><small>Reference baseline (exact)</small></td>
+                <td>Exact window-sticker baseline across all 102 US configurations.</td>
+              </tr>
+              <tr>
+                <td><strong>Europe WLTP (4-phase)</strong><br><small><a href="https://unece.org/transport/standards/transport/vehicle-regulations-wp29/global-technical-regulations-gtrs" target="_blank" rel="noopener">UNECE GTR No. 15</a> Annex 8</small></td>
+                <td>Low, Medium, High, and Extra-High phases (30 min, 46.5 km/h mean, <strong>131.3 km/h peak</strong>) run at 23°C with cabin HVAC off and no 0.70× label derate.</td>
+                <td><strong>0.855 × WLTP mi</strong><br><small>0.531 mi per WLTP km</small></td>
+                <td>Kia EV3 LR: 321 mi EPA / 376 mi (605 km) WLTP = 0.854× · Model 3 LR RWD: 363 mi EPA / 436 mi (702 km) WLTP = 0.832× · Audi Q6 e-tron: 325 mi EPA / 388 mi (625 km) WLTP = 0.837×.</td>
+              </tr>
+              <tr>
+                <td><strong>China CLTC-P</strong><br><small>GB/T 38146.1-2019 · <a href="https://dieselnet.com/standards/cycles/cltc.php" target="_blank" rel="noopener">DieselNet cycle spec</a></small></td>
+                <td>30 min urban-weighted cycle: <strong>28.96 km/h mean speed</strong>, <strong>22.1% idle time</strong>, 114 km/h cap, HVAC off, and no 131 km/h motorway phase or 0.70× derate.</td>
+                <td><strong>0.700 × CLTC mi</strong><br><small>0.435 mi per CLTC km</small></td>
+                <td>Model 3 RWD (Shanghai LFP): 634 km CLTC vs. 513 km WLTP (0.809× WLTP/CLTC; ×0.855 = 0.69× EPA-eq.) · Model Y LR AWD: 327 mi EPA / 428 mi (688 km) CLTC = 0.764×.</td>
+              </tr>
+              <tr>
+                <td><strong>Japan WLTC (3-phase)</strong><br><small><a href="https://unece.org/transport/standards/transport/vehicle-regulations-wp29/global-technical-regulations-gtrs" target="_blank" rel="noopener">GTR No. 15</a> JP option (MLIT)</small></td>
+                <td>Uses WLTC Low, Medium, and High phases (peak 97.4 km/h) and <strong>omits the 131.3 km/h Extra-High phase</strong> to reflect Japanese expressway speeds (~4% looser than 4-phase EU WLTP).</td>
+                <td><strong>0.820 × JP WLTC mi</strong><br><small>0.510 mi per WLTC km</small></td>
+                <td>BYD Dolphin 60.5 kWh: 476 km JP WLTC vs. 427 km EU WLTP (0.897× EU/JP; ×0.855 = 0.77-0.82× EPA-eq.).</td>
+              </tr>
+              <tr>
+                <td><strong>South Korea MOTIE / MOE</strong><br><small><a href="https://www.kea.kr/" target="_blank" rel="noopener">Korea Energy Agency</a> 5-cycle</small></td>
+                <td>5-cycle protocol derived from US EPA (city, highway, high-speed, A/C, and -7°C cold cabin-heat test), weighted slightly stricter than US EPA in winter conditions.</td>
+                <td><strong>1.020 × KR mi</strong><br><small>0.634 mi per KR km</small></td>
+                <td>Ioniq 5 LR RWD (84 kWh): 318 mi EPA / 301 mi (485 km) KR = 1.056× · Kia EV3 LR: 321 mi EPA / 311 mi (501 km) KR = 1.032×.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="cycle-caveat">
+          <strong>Approximation caveat and primary sources:</strong> No single scalar converts cleanly across every body style because drag area (C<sub>d</sub>A), heat-pump COP, and two-speed gearing shift high-speed and cold-cycle losses differently (for example, the two-speed 0.21-C<sub>d</sub> Mercedes CLA 250+ rates at 792 km WLTP vs. 374 mi EPA, a 0.76× ratio). Uncheck <strong>Harmonize WLTP / CLTC</strong> in the sidebar at any time to plot raw official homologation numbers. Primary regulatory and empirical sources: US EPA <a href="https://www.ecfr.gov/current/title-40/chapter-I/subchapter-Q/part-600" target="_blank" rel="noopener">40 CFR Part 600</a>; <a href="https://www.sae.org/standards/content/j1634_202107/" target="_blank" rel="noopener">SAE J1634</a>; <a href="https://unece.org/transport/standards/transport/vehicle-regulations-wp29/global-technical-regulations-gtrs" target="_blank" rel="noopener">UNECE GTR No. 15</a>; China CATARC GB/T 38146.1-2019 and GB/T 18386.1-2021 (<a href="https://dieselnet.com/standards/cycles/cltc.php" target="_blank" rel="noopener">DieselNet technical summary</a>); <a href="https://www.kea.kr/" target="_blank" rel="noopener">Korea Energy Agency (KEA)</a>; and cross-cycle discrepancy studies from the <a href="https://theicct.org/" target="_blank" rel="noopener">International Council on Clean Transportation (ICCT)</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Specs checked Nov 15, 2026 · Sources: <a href="https://www.fueleconomy.gov/feg/download.shtml" target="_blank" rel="noopener">US EPA FuelEconomy.gov</a>, <a href="https://ev-database.org/" target="_blank" rel="noopener">EV Database</a>, <a href="https://cnevpost.com/" target="_blank" rel="noopener">China MIIT / CnEVPost</a>, OEM configurators · <a href="vehicles.json" download>Download JSON</a></span>
+    <span>Pareto dominance: MSRP<sub>A</sub> ≤ MSRP<sub>B</sub> and Output<sub>A</sub> ≥ Output<sub>B</sub></span>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>This interactive chart requires JavaScript. <a href="vehicles.json">Download the EV dataset (JSON).</a></noscript>
+</body>
+</html>

@@ -12,6 +12,14 @@ export interface Post {
 
 const allPosts: Post[] = [
   {
+    slug: 'ev-pareto',
+    title: 'What a dollar buys in an EV right now',
+    date: '2026-11',
+    photo: '/photos/ev-pareto.png',
+    alt: 'Usable battery kWh versus retail MSRP scatter plot with red Pareto frontier',
+    caption: '171 EV configurations across nine markets and five battery chemistries plotted by usable kWh and range against MSRP.',
+  },
+  {
     slug: 'invisible-infrastructure',
     title: 'Invisible infrastructure in plain sight',
     date: '2026-05',

@@ -1,0 +1,332 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DarkHeader from '../../components/DarkHeader.astro';
+---
+
+<Layout
+  title="What a dollar buys in an EV right now | Cooper Minehart"
+  description="171 electric vehicle configurations across nine markets plotted by usable kWh and driving range against retail MSRP, with toggles for region and cell chemistry."
+>
+  <DarkHeader>
+    <div class="max-w-[864px] mx-auto px-6 pt-12 pb-10">
+      <a href="/blog" class="text-sm text-forest-400 hover:text-forest-300 mb-6 inline-block">← Blog</a>
+      <h1 class="font-serif text-4xl font-bold text-white mb-3">What a dollar buys in an EV right now</h1>
+      <p class="text-stone-300 max-w-2xl leading-relaxed">
+        Usable battery kWh and range plotted against retail MSRP across nine markets and five cell chemistries.
+      </p>
+    </div>
+  </DarkHeader>
+
+  <article class="max-w-[864px] mx-auto px-6 pt-10 pb-24 text-[#1E2A33]">
+    <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
+      <p>
+        Last month I gave in to car-brain and plotted <a href="/blog/trail-range" class="text-[#2C4FA3] underline">off-road geometry against MPG</a> across forty trucks and crossovers. Back at my day job we spend all week arguing about $5 or $10 per kWh in battery pack cost models, and then you go look at actual EV window stickers and the relationship between pack size and MSRP is all over the place. So I built the sibling chart: usable battery capacity on the vertical axis, retail MSRP on the horizontal axis, and a red Pareto line connecting the cars that nothing else on the lot beats on both price and battery size.
+      </p>
+      <p>
+        Starting in the US market (excluding destination fees, since automakers pad delivery charges anywhere from $1,395 to $2,295), 102 distinct battery-and-drivetrain configurations span from the returning 2027 Chevy Bolt LT at the floor ($27,600 for 65 kWh usable LFP) up to the 24-module GMC Hummer EV 3X at the ceiling ($114,800 for 212 kWh usable NCMA). Only one LFP pack makes the US frontier right now (that base Bolt), and high-nickel cells carry every step above $30,000.
+      </p>
+    </div>
+
+    <figure class="evp-fig" data-evp-fig="us-kwh">
+      <div class="evp-chips"></div>
+      <div class="evp-wrap">
+        <svg role="img" aria-label="Usable battery kWh versus retail MSRP for US market electric vehicles"></svg>
+        <div class="evp-tip" hidden></div>
+      </div>
+      <div class="evp-live" aria-live="polite"></div>
+    </figure>
+
+    <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
+      <p>
+        A couple of weird neighbors jump out right away. Kia's new EV3 Long Range gives you 78 kWh usable NMC for $34,990, and five dollars further right the Chevy Equinox EV LT gives you 85 kWh usable on a 10-module Ultium NCMA pack for $34,995. Above $50,000, GM's Silverado EV Work Truck trims take three frontier steps in a row (119, 170, and 205 kWh usable), before the Hummer EV 3X charges an extra $40,600 for the last 7 kWh. Those Work Truck pickups are GM Envolve commercial fleet trims that occasionally show up on retail dealer lots; if you click "Drop fleet WT pickups" above, the VinFast VF 9 (123 kWh at $69,800) and Rivian R1T Dual Max (141.5 kWh at $83,900) step onto the line instead.
+      </p>
+
+      <h2 class="font-serif text-2xl font-semibold text-[#1E2A33] pt-4">
+        Open the border and post-LFP chemistries eat the left half
+      </h2>
+      <p>
+        Tariffs keep almost all Chinese packs out of US showrooms, so the US plot looks like an NMC story with a couple of domestic LFP exceptions. When you turn on all nine markets (US, Canada, Germany/EU, UK, Norway, China, South Korea, Japan, and Australia), China takes every single Pareto step below $50,000 -- 18 steps in a row -- before handing the frontier straight back to North American full-size pickups above 125 kWh because nobody else bolts a 200 kWh pack into a passenger vehicle.
+      </p>
+    </div>
+
+    <figure class="evp-fig" data-evp-fig="global-chem">
+      <div class="evp-chips"></div>
+      <div class="evp-wrap">
+        <svg role="img" aria-label="Global usable battery kWh versus retail MSRP across regions and emerging battery chemistries"></svg>
+        <div class="evp-tip" hidden></div>
+      </div>
+      <div class="evp-live" aria-live="polite"></div>
+    </figure>
+
+    <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
+      <p>
+        That sub-$50k Chinese staircase is also where the post-LFP chemistries show up in retail showrooms rather than conference slides. Three sodium-ion cars are on sale with zero lithium, cobalt, or nickel, led by JAC's Yiwei 3 ($8,122 for 21.4 kWh) and Changan's Nevo A06 running CATL's 175 Wh/kg Naxtra pack ($15,180 for 45 kWh, rated down to -40°C). Four Chery and Huawei-Chery models run manganese-doped phosphate (LMFP and CATL M3P, pushing the discharge plateau toward ~4.1 V), and two SAIC cars ship with QingTao oxide-polymer semi-solid cells: the MG4 Anxin Semi-Solid at $14,199 (53.95 kWh) and the IM L6 Max Lightyear at $47,776 (123.7 kWh usable, 133 kWh gross). I left NIO's 150 kWh WeLion semi-solid pack out of the scatter because NIO only rents it through BaaS swap stations rather than selling the pack outright.
+      </p>
+
+      <h2 class="font-serif text-2xl font-semibold text-[#1E2A33] pt-4">
+        Switch from kWh to miles and drag punishes the bricks
+      </h2>
+      <p>
+        Kilowatt-hours measure how much electrochemical hardware you bought; range measures what survives aerodynamic drag, tire rolling resistance, and curb weight. Flipping the US vertical axis from usable kWh to official EPA combined miles knocks the Equinox EV, Mustang Mach-E, standard-pack Silverado, and 9,000-pound Hummer off the curve. Slippery sedans and 800V drivetrains take their spots: the Model 3 Long Range RWD ($42,490, 363 miles), the two-speed 800V Mercedes CLA 250+ ($47,950, 374 miles from 85 kWh), BMW's Neue Klasse iX3 ($61,500, 399 miles), and at the top the Lucid Air Grand Touring ($114,900, 512 miles from 112 kWh, beating the 212 kWh Hummer by 145 miles on roughly half the battery).
+      </p>
+    </div>
+
+    <figure class="evp-fig" data-evp-fig="us-range">
+      <div class="evp-chips"></div>
+      <div class="evp-wrap">
+        <svg role="img" aria-label="Driving range in miles versus retail MSRP across EPA and global test cycles"></svg>
+        <div class="evp-tip" hidden></div>
+      </div>
+      <div class="evp-live" aria-live="polite"></div>
+    </figure>
+
+    <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
+      <p>
+        Comparing range across borders gets messy fast because aerodynamic drag power scales with the cube of speed. China's CLTC-P lab cycle averages just 28.96 km/h with 22.1% idle time and cabin HVAC turned off, Europe's 4-phase WLTP peaks at 131.3 km/h without applying a label derate, and the US EPA applies a statutory 0.70x multiplier (or a 5-cycle test with 80 mph highway, A/C, and 20°F cold runs). Click between "Global (harmonized EPA-eq.)" and "Global (raw WLTP / CLTC)" above to watch what that cycle gap does to the curve; I put the exact multipliers, dual-homologated benchmark cars, and regulatory citations in Section 4 of <strong>How it works</strong> at the bottom of the tool.
+      </p>
+
+      <h2 class="font-serif text-2xl font-semibold text-[#1E2A33] pt-4">
+        Filter the full dataset
+      </h2>
+      <p>
+        Below is the full explorer with country checkboxes, chemistry toggles, pre-tax VAT/GST stripping (since European, Chinese, and Asia-Pacific stickers include consumption tax while US and Canadian MSRPs do not), $/kWh reference rays, and CSV export. Click any mark or frontier step card to inspect its cell supplier, gross-to-usable buffer, and local stickers, or scroll to the bottom of the tool for the full methods and test-cycle equivalency table.
+      </p>
+    </div>
+
+    <figure class="mt-6 mb-8 evp-bleed">
+      <div class="border-2 border-[#1E2A33] bg-white">
+        <iframe
+          src="/maps/ev-pareto/index.html?embed=1"
+          title="EV battery kWh and range versus MSRP interactive explorer"
+          class="w-full block"
+          style="height: 1120px; border: 0;"
+          id="evp-tool"
+        />
+      </div>
+    </figure>
+
+    <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
+      <p>
+        A few caveats on the numbers. MSRPs exclude destination fees, dealer markups, and purchase incentives, and non-USD prices convert at fixed November 2026 spot FX rates. Where an automaker only publishes gross pack kWh, usable capacity is estimated from teardown or EV Database discharge data. Finally, 171 configurations across 139 nameplates covers the distinct battery packs on sale across these nine markets, not every wheel size or trim package. You can grab the raw audited dataset <a href="/maps/ev-pareto/vehicles.json" download class="text-[#2C4FA3] underline">here (JSON)</a>.
+      </p>
+    </div>
+
+    <div class="mt-16 pt-8 border-t border-[#E3E8EA] text-sm text-[#56636D] leading-relaxed">
+      <p>Coop</p>
+    </div>
+  </article>
+
+  <script is:inline src="/maps/ev-pareto/model.js"></script>
+  <script is:inline src="/maps/ev-pareto/data.js"></script>
+  <script is:inline src="/maps/ev-pareto/post-charts.js"></script>
+  <script is:inline>
+    window.addEventListener('message', function (ev) {
+      if (ev.data && ev.data.type === 'ev-pareto-height' && typeof ev.data.height === 'number') {
+        var frame = document.getElementById('evp-tool');
+        if (frame) frame.style.height = Math.max(820, ev.data.height + 8) + 'px';
+      }
+    });
+  </script>
+</Layout>
+
+<style is:global>
+  @font-face {
+    font-family: 'Archivo';
+    src: url('/fonts/Archivo-400.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Archivo';
+    src: url('/fonts/Archivo-600.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Archivo';
+    src: url('/fonts/Archivo-800.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  .evp-fig {
+    margin: 24px 0 32px;
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .evp-bleed {
+    width: min(1360px, calc(100vw - 32px));
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .evp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .evp-chip {
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border: 1px solid #1E2A33;
+    border-radius: 0;
+    background: #FFFFFF;
+    color: #1E2A33;
+    cursor: pointer;
+  }
+  .evp-chip:hover,
+  .evp-chip[aria-pressed="true"] {
+    background: #1E2A33;
+    color: #FFFFFF;
+  }
+  .evp-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    padding: 6px 10px;
+    border: 1px solid #E3E8EA;
+    border-bottom: 0;
+    background: #FFFFFF;
+    font-size: 11.5px;
+    line-height: 16px;
+    color: #1E2A33;
+  }
+  .evp-leg-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .evp-leg-line {
+    width: 16px;
+    height: 2.5px;
+    background: #D6363F;
+    display: inline-block;
+  }
+  .evp-wrap {
+    position: relative;
+    border: 1px solid #E3E8EA;
+    border-top: 2px solid #1E2A33;
+    border-radius: 0;
+    background: #FFFFFF;
+    padding: 8px 4px 4px;
+  }
+  .evp-wrap svg {
+    display: block;
+    width: 100%;
+  }
+  .evp-ax {
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    fill: #56636D;
+  }
+  .evp-axt {
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    fill: #1E2A33;
+  }
+  .evp-lab {
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    fill: #56636D;
+    paint-order: stroke;
+    stroke: #FFFFFF;
+    stroke-width: 3.5px;
+    stroke-linejoin: round;
+    pointer-events: none;
+  }
+  .evp-on {
+    fill: #1E2A33;
+    font-weight: 600;
+  }
+  .evp-pt {
+    cursor: pointer;
+  }
+  .evp-pt:focus-visible {
+    outline: none;
+  }
+  .evp-focus-ring {
+    fill: none;
+    stroke: transparent;
+  }
+  .evp-pt:focus-visible .evp-focus-ring {
+    stroke: #2C4FA3;
+    stroke-width: 2px;
+  }
+  .evp-tip {
+    position: absolute;
+    pointer-events: none;
+    background: #1E2A33;
+    color: #FFFFFF;
+    border: 2px solid #1E2A33;
+    border-radius: 0;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 8px 10px;
+    max-width: 256px;
+    z-index: 5;
+  }
+  .evp-tip-f {
+    display: inline-block;
+    background: #D6363F;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 5px;
+    margin-top: 4px;
+  }
+  .evp-tip-hint {
+    display: block;
+    color: #C7D0D6;
+    font-size: 10.5px;
+    margin-top: 4px;
+  }
+  .evp-live {
+    font-size: 12px;
+    line-height: 18px;
+    color: #56636D;
+    margin-top: 8px;
+  }
+  .evp-pin-box {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+    border: 1px solid #1E2A33;
+    border-left: 4px solid #1E2A33;
+    background: #FFFFFF;
+    color: #1E2A33;
+  }
+  .evp-pin-box.is-frontier {
+    border-left-color: #D6363F;
+  }
+  .evp-pin-main strong {
+    font-weight: 600;
+    color: #1E2A33;
+  }
+  .evp-pin-clear {
+    flex-shrink: 0;
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    font-size: 11.5px;
+    line-height: 16px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border: 1px solid #1E2A33;
+    border-radius: 0;
+    background: #FFFFFF;
+    color: #1E2A33;
+    cursor: pointer;
+  }
+  .evp-pin-clear:hover {
+    background: #1E2A33;
+    color: #FFFFFF;
+  }
+</style>
