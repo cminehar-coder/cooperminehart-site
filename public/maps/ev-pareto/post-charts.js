@@ -192,55 +192,49 @@
   function renderLiveBar(live, rows, frontier, pinned, isKwh, onClear) {
     if (!live) return;
     live.replaceChildren();
-    if (pinned) {
-      const chem = DATA.chemistries[pinned.chemistry];
-      const dom = pinned.onFrontier
-        ? null
-        : frontier.find((f) => f.id !== pinned.id && M.dominates(f, pinned));
-      const box = document.createElement('div');
-      box.className = 'evp-pin-box' + (pinned.onFrontier ? ' is-frontier' : '');
-
-      const specText = document.createElement('div');
-      specText.className = 'evp-pin-main';
-      const title = document.createElement('strong');
-      title.textContent = `${pinned.year} ${pinned.make} ${pinned.model} (${pinned.trim})`;
-      specText.appendChild(title);
-
-      const meta = document.createElement('span');
-      const rangeNote = `${pinned.rangeDisplay} mi (${pinned.rangeCycleLabel})`;
-      const statusText = pinned.onFrontier
-        ? ' ★ On the Pareto frontier.'
-        : dom
-        ? ` Dominated on this view by ${dom.make} ${dom.model} (${fmtUsd(dom.msrpUsd)}, ${
-            isKwh ? dom.kwhUsable + ' kWh' : dom.rangeDisplay + ' mi'
-          }).`
-        : '';
-      meta.textContent = ` · ${chem.short} (${pinned.cellDetail}) · ${fmtUsd(pinned.msrpUsd)} (${
-        pinned.priceMarket
-      }) · ${pinned.kwhUsable} kWh usable (${pinned.kwhGross} gross, $${Math.round(
-        pinned.dollarsPerKwh
-      )}/kWh) · ${rangeNote}.${statusText}`;
-      specText.appendChild(meta);
-
-      const clearBtn = document.createElement('button');
-      clearBtn.type = 'button';
-      clearBtn.className = 'evp-pin-clear';
-      clearBtn.textContent = 'Clear pin';
-      clearBtn.addEventListener('click', onClear);
-
-      box.appendChild(specText);
-      box.appendChild(clearBtn);
-      live.appendChild(box);
+    if (!pinned) {
+      live.hidden = true;
       return;
     }
+    live.hidden = false;
+    const chem = DATA.chemistries[pinned.chemistry];
+    const dom = pinned.onFrontier
+      ? null
+      : frontier.find((f) => f.id !== pinned.id && M.dominates(f, pinned));
+    const box = document.createElement('div');
+    box.className = 'evp-pin-box' + (pinned.onFrontier ? ' is-frontier' : '');
 
-    const steps = frontier
-      .map((f) => {
-        const val = isKwh ? `${f.kwhUsable} kWh` : `${f.rangeDisplay} mi`;
-        return `${f.short} (${fmtUsdK(f.msrpUsd)}, ${val})`;
-      })
-      .join(' → ');
-    live.textContent = `${rows.length} configurations, ${frontier.length} on the frontier: ${steps}. Click or press Enter on any point to pin its specs.`;
+    const specText = document.createElement('div');
+    specText.className = 'evp-pin-main';
+    const title = document.createElement('strong');
+    title.textContent = `${pinned.year} ${pinned.make} ${pinned.model} (${pinned.trim})`;
+    specText.appendChild(title);
+
+    const meta = document.createElement('span');
+    const rangeNote = `${pinned.rangeDisplay} mi (${pinned.rangeCycleLabel})`;
+    const statusText = pinned.onFrontier
+      ? ' ★ On the Pareto frontier.'
+      : dom
+      ? ` Dominated on this view by ${dom.make} ${dom.model} (${fmtUsd(dom.msrpUsd)}, ${
+          isKwh ? dom.kwhUsable + ' kWh' : dom.rangeDisplay + ' mi'
+        }).`
+      : '';
+    meta.textContent = ` · ${chem.short} (${pinned.cellDetail}) · ${fmtUsd(pinned.msrpUsd)} (${
+      pinned.priceMarket
+    }) · ${pinned.kwhUsable} kWh usable (${pinned.kwhGross} gross, $${Math.round(
+      pinned.dollarsPerKwh
+    )}/kWh) · ${rangeNote}.${statusText}`;
+    specText.appendChild(meta);
+
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'evp-pin-clear';
+    clearBtn.textContent = 'Clear pin';
+    clearBtn.addEventListener('click', onClear);
+
+    box.appendChild(specText);
+    box.appendChild(clearBtn);
+    live.appendChild(box);
   }
 
   function draw(root, cfg) {
