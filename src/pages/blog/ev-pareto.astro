@@ -30,7 +30,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
         <svg role="img" aria-label="Usable battery kWh versus retail MSRP for US market electric vehicles"></svg>
         <div class="evp-tip" hidden></div>
       </div>
-      <div class="evp-live" aria-live="polite"></div>
+      <div class="evp-live" aria-live="polite" hidden></div>
     </figure>
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
@@ -51,7 +51,7 @@ import DarkHeader from '../../components/DarkHeader.astro';
         <svg role="img" aria-label="Global usable battery kWh versus retail MSRP across regions and emerging battery chemistries"></svg>
         <div class="evp-tip" hidden></div>
       </div>
-      <div class="evp-live" aria-live="polite"></div>
+      <div class="evp-live" aria-live="polite" hidden></div>
     </figure>
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
@@ -69,49 +69,102 @@ import DarkHeader from '../../components/DarkHeader.astro';
         <svg role="img" aria-label="Driving range in miles versus retail MSRP across EPA and global test cycles"></svg>
         <div class="evp-tip" hidden></div>
       </div>
-      <div class="evp-live" aria-live="polite"></div>
+      <div class="evp-live" aria-live="polite" hidden></div>
     </figure>
 
     <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
       <p>
         What I really want to know (and conveniently, what I get paid to do) is how much each of these cost to build, how much each part costs to build, and how much/where incentives are applied to each. Unfortunately this alone doesn't tell us.
       </p>
-    </div>
-
-    <figure class="mt-6 mb-8 evp-bleed">
-      <div class="border-2 border-[#1E2A33] bg-white">
-        <iframe
-          src="/maps/ev-pareto/index.html?embed=1"
-          title="EV battery kWh and range versus MSRP interactive explorer"
-          class="w-full block"
-          style="height: 1120px; border: 0;"
-          id="evp-tool"
-        />
-      </div>
-    </figure>
-
-    <div class="space-y-5 text-[16px] leading-relaxed text-[#1E2A33]">
       <p>
         A few caveats on the numbers. I didn't want to dig too hard so MSRPs exclude destination fees, dealer markups, and purchase incentives, and non-USD prices convert at fixed November 2026 rates. Where an automaker only publishes gross pack kWh, usable capacity is estimated from teardown or EV Database discharge data. You can grab the raw audited dataset <a href="/maps/ev-pareto/vehicles.json" download class="text-[#2C4FA3] underline">here (JSON)</a>.
       </p>
     </div>
 
-    <div class="mt-16 pt-8 border-t border-[#E3E8EA] text-sm text-[#56636D] leading-relaxed">
+    <div class="mt-12 pt-8 border-t border-[#E3E8EA] text-sm text-[#56636D] leading-relaxed">
       <p>Coop</p>
     </div>
+
+    <section id="method" class="evp-method">
+      <h2>Methods and test-cycle equivalency</h2>
+
+      <div class="evp-method-grid">
+        <div class="evp-mcard">
+          <h3>1. Usable vs. gross kWh</h3>
+          <p>The vertical kWh axis plots net usable battery capacity rather than nominal gross pack size so conservative top and bottom buffers (for example, Porsche Taycan at 97 kWh usable vs. 105 kWh gross) do not inflate a car's vertical position. All 100 light-duty US configurations match the DOE/EPA <a href="https://www.fueleconomy.gov/feg/download.shtml" target="_blank" rel="noopener">FuelEconomy.gov</a> <code>vehicles.csv</code> release; Class 2b pickups above 8,500 lb GVWR (Hummer EV, Escalade IQ) use OEM ratings run on the EPA procedure.</p>
+        </div>
+
+        <div class="evp-mcard">
+          <h3>2. Regional MSRPs, FX, and VAT</h3>
+          <p>Each row stores local-currency base retail MSRPs excluding destination charges and purchase subsidies. US and Canadian MSRPs are quoted pre-tax, whereas European (19-20% VAT), Chinese (13% VAT), and Japanese, Korean, and Australian (10% GST/VAT) stickers include consumption tax (Norway exempts BEVs up to 500,000 NOK). Spot FX (Nov 2026 approx.): 1 USD = 1.39 CAD · 0.925 EUR · 0.785 GBP · 10.95 NOK · 7.24 CNY · 1,390 KRW · 152 JPY · 1.52 AUD.</p>
+        </div>
+
+        <div class="evp-mcard">
+          <h3>3. Cell chemistries and exclusions</h3>
+          <p>Alongside <strong>High-Nickel</strong> (NMC, NCA, NCMA) and <strong>LFP</strong> (Blade 1.0/2.0, Shenxing, Golden Brick), nine retail configurations run post-LFP cells: <strong>LMFP / M3P</strong> (~4.1 V plateau in Luxeed S7/R7 and Exeed Sterra ES/ET), <strong>Sodium-Ion</strong> (<a href="https://www.catl.com/en/news/" target="_blank" rel="noopener">CATL Naxtra</a> 175 Wh/kg in Changan Nevo A06, plus JAC Yiwei 3 and JMEV EV3), and <strong>Semi-Solid State</strong> (QingTao oxide-polymer hybrid electrolyte in MG4 Anxin 53.95 kWh and IM L6 Lightyear 123.7 kWh net). NIO's 150 kWh WeLion pack is excluded because it is rental-only via BaaS Power Swap.</p>
+        </div>
+      </div>
+
+      <div class="evp-mcard evp-cycle-card">
+        <h3>4. Test-cycle range equivalency (EPA vs. WLTP, CLTC, Japan WLTC, and Korea MOTIE)</h3>
+        <p>The same EV battery pack receives very different official range numbers across regions because laboratory chassis-dynamometer cycles run at different speeds and apply different post-test derating rules. Aerodynamic drag power scales with the cube of speed (<strong>P<sub>drag</sub> &propto; v<sup>3</sup></strong>), so low-speed urban cycles with frequent regenerative braking and long idle pauses produce much higher range figures than motorway cycles or sub-freezing cabin-heat tests.</p>
+        <p>Whenever a vehicle has an official US EPA rating, the range chart plots that exact EPA number with a solid marker. Only when a configuration is not sold in North America does the <strong>Global (harmonized EPA-eq.)</strong> view convert its local homologation figure into approximate EPA-equivalent miles (marked with a <strong>hollow white center dot</strong>):</p>
+
+        <div class="evp-table-wrap">
+          <table class="evp-cycle-table">
+            <thead>
+              <tr>
+                <th>Test cycle and standard</th>
+                <th>Speed profile and lab protocol</th>
+                <th>EPA-eq. multiplier</th>
+                <th>Dual-homologated empirical check</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>US EPA</strong><br><small><a href="https://www.ecfr.gov/current/title-40/chapter-I/subchapter-Q/part-600/subpart-C/section-600.210-12" target="_blank" rel="noopener">40 CFR § 600.210-12</a> · <a href="https://www.sae.org/standards/content/j1634_202107/" target="_blank" rel="noopener">SAE J1634</a></small></td>
+                <td>55% city (UDDS, 31.5 km/h mean) + 45% highway (HFEDS, 77.7 km/h mean), followed by either a <strong>0.70× statutory derate (-30%)</strong> or full 5-cycle testing adding 80 mph US06, 95°F A/C (SC03), and 20°F (-7°C) cold FTP.</td>
+                <td><strong>1.000 × EPA mi</strong><br><small>Reference baseline</small></td>
+                <td>Exact window-sticker baseline across all 102 US configurations.</td>
+              </tr>
+              <tr>
+                <td><strong>Europe WLTP (4-phase)</strong><br><small><a href="https://unece.org/transport/standards/transport/vehicle-regulations-wp29/global-technical-regulations-gtrs" target="_blank" rel="noopener">UNECE GTR No. 15</a> Annex 8</small></td>
+                <td>Low, Medium, High, and Extra-High phases (30 min, 46.5 km/h mean, <strong>131.3 km/h peak</strong>) run at 23°C with cabin HVAC off and no 0.70× label derate.</td>
+                <td><strong>0.855 × WLTP mi</strong><br><small>0.531 mi / WLTP km</small></td>
+                <td>Kia EV3 LR: 321 mi EPA / 376 mi (605 km) WLTP = 0.854× · Model 3 LR RWD: 363 mi EPA / 436 mi (702 km) WLTP = 0.832× · Audi Q6 e-tron: 325 mi EPA / 388 mi (625 km) WLTP = 0.837×.</td>
+              </tr>
+              <tr>
+                <td><strong>China CLTC-P</strong><br><small>GB/T 38146.1-2019 · <a href="https://dieselnet.com/standards/cycles/cltc.php" target="_blank" rel="noopener">DieselNet cycle spec</a></small></td>
+                <td>30 min urban-weighted cycle: <strong>28.96 km/h mean speed</strong>, <strong>22.1% idle time</strong>, 114 km/h cap, HVAC off, and no 131 km/h motorway phase or 0.70× derate.</td>
+                <td><strong>0.700 × CLTC mi</strong><br><small>0.435 mi / CLTC km</small></td>
+                <td>Model 3 RWD (Shanghai LFP): 634 km CLTC vs. 513 km WLTP (0.809× WLTP/CLTC; ×0.855 = 0.69× EPA-eq.) · Model Y LR AWD: 327 mi EPA / 428 mi (688 km) CLTC = 0.764×.</td>
+              </tr>
+              <tr>
+                <td><strong>Japan WLTC (3-phase)</strong><br><small><a href="https://unece.org/transport/standards/transport/vehicle-regulations-wp29/global-technical-regulations-gtrs" target="_blank" rel="noopener">GTR No. 15</a> JP option (MLIT)</small></td>
+                <td>Uses WLTC Low, Medium, and High phases (peak 97.4 km/h) and <strong>omits the 131.3 km/h Extra-High phase</strong> to reflect Japanese expressway speeds (~4% looser than 4-phase EU WLTP).</td>
+                <td><strong>0.820 × JP WLTC mi</strong><br><small>0.510 mi / WLTC km</small></td>
+                <td>BYD Dolphin 60.5 kWh: 476 km JP WLTC vs. 427 km EU WLTP (0.897× EU/JP; ×0.855 = 0.77-0.82× EPA-eq.).</td>
+              </tr>
+              <tr>
+                <td><strong>South Korea MOTIE / MOE</strong><br><small><a href="https://www.kea.kr/" target="_blank" rel="noopener">Korea Energy Agency</a> 5-cycle</small></td>
+                <td>5-cycle protocol derived from US EPA (city, highway, high-speed, A/C, and -7°C cold cabin-heat test), weighted slightly stricter than US EPA in winter conditions.</td>
+                <td><strong>1.020 × KR mi</strong><br><small>0.634 mi / KR km</small></td>
+                <td>Ioniq 5 LR RWD (84 kWh): 318 mi EPA / 301 mi (485 km) KR = 1.056× · Kia EV3 LR: 321 mi EPA / 311 mi (501 km) KR = 1.032×.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="evp-cycle-caveat">
+          <strong>Approximation caveat and primary sources:</strong> No single scalar converts cleanly across every body style because drag area (C<sub>d</sub>A), heat-pump COP, and two-speed gearing shift high-speed and cold-cycle losses differently (for example, the two-speed 0.21-C<sub>d</sub> Mercedes CLA 250+ rates at 792 km WLTP vs. 374 mi EPA, a 0.76× ratio). Toggle <strong>Global (raw WLTP / CLTC)</strong> on the range chart above to inspect unadjusted homologation numbers. Primary sources: US EPA <a href="https://www.ecfr.gov/current/title-40/chapter-I/subchapter-Q/part-600" target="_blank" rel="noopener">40 CFR Part 600</a>; <a href="https://www.sae.org/standards/content/j1634_202107/" target="_blank" rel="noopener">SAE J1634</a>; <a href="https://unece.org/transport/standards/transport/vehicle-regulations-wp29/global-technical-regulations-gtrs" target="_blank" rel="noopener">UNECE GTR No. 15</a>; China CATARC GB/T 38146.1-2019 and GB/T 18386.1-2021 (<a href="https://dieselnet.com/standards/cycles/cltc.php" target="_blank" rel="noopener">DieselNet summary</a>); <a href="https://www.kea.kr/" target="_blank" rel="noopener">Korea Energy Agency (KEA)</a>; and cross-cycle discrepancy studies from the <a href="https://theicct.org/" target="_blank" rel="noopener">International Council on Clean Transportation (ICCT)</a>.
+        </p>
+      </div>
+    </section>
   </article>
 
   <script is:inline src="/maps/ev-pareto/model.js"></script>
   <script is:inline src="/maps/ev-pareto/data.js"></script>
   <script is:inline src="/maps/ev-pareto/post-charts.js"></script>
-  <script is:inline>
-    window.addEventListener('message', function (ev) {
-      if (ev.data && ev.data.type === 'ev-pareto-height' && typeof ev.data.height === 'number') {
-        var frame = document.getElementById('evp-tool');
-        if (frame) frame.style.height = Math.max(820, ev.data.height + 8) + 'px';
-      }
-    });
-  </script>
 </Layout>
 
 <style is:global>
@@ -141,12 +194,6 @@ import DarkHeader from '../../components/DarkHeader.astro';
     margin: 24px 0 32px;
     font-family: 'Archivo', Helvetica, Arial, sans-serif;
     font-variant-numeric: tabular-nums;
-  }
-  .evp-bleed {
-    width: min(1360px, calc(100vw - 32px));
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
   }
   .evp-chips {
     display: flex;
@@ -313,5 +360,110 @@ import DarkHeader from '../../components/DarkHeader.astro';
   .evp-pin-clear:hover {
     background: #1E2A33;
     color: #FFFFFF;
+  }
+
+  /* Bottom Methods & Test-Cycle Equivalency Section (House Style B) */
+  .evp-method {
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 2px solid #1E2A33;
+    font-family: 'Archivo', Helvetica, Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+    color: #1E2A33;
+  }
+  .evp-method > h2 {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 800;
+    margin: 0 0 16px;
+    color: #1E2A33;
+  }
+  .evp-method a {
+    color: #2C4FA3;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .evp-method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 780px) {
+    .evp-method-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .evp-mcard {
+    border: 1px solid #E3E8EA;
+    border-top: 2px solid #1E2A33;
+    background: #FFFFFF;
+    padding: 16px;
+  }
+  .evp-mcard h3 {
+    font-size: 13.5px;
+    line-height: 18px;
+    font-weight: 600;
+    color: #1E2A33;
+    margin: 0 0 8px;
+  }
+  .evp-mcard p {
+    font-size: 12.5px;
+    line-height: 19px;
+    color: #56636D;
+    margin: 6px 0 0;
+  }
+  .evp-mcard strong {
+    color: #1E2A33;
+    font-weight: 600;
+  }
+  .evp-cycle-card {
+    margin-top: 16px;
+  }
+  .evp-table-wrap {
+    overflow-x: auto;
+    margin: 14px 0 12px;
+    border-top: 2px solid #1E2A33;
+    border-bottom: 1px solid #1E2A33;
+  }
+  .evp-cycle-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+  }
+  .evp-cycle-table th,
+  .evp-cycle-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 10px;
+    white-space: normal;
+  }
+  .evp-cycle-table th {
+    font-size: 11.5px;
+    line-height: 16px;
+    font-weight: 600;
+    color: #1E2A33;
+    border-bottom: 1px solid #1E2A33;
+  }
+  .evp-cycle-table td {
+    font-size: 12px;
+    line-height: 17px;
+    color: #56636D;
+    border-bottom: 1px solid #E3E8EA;
+  }
+  .evp-cycle-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .evp-cycle-table th:first-child,
+  .evp-cycle-table td:first-child {
+    width: 22%;
+    min-width: 148px;
+  }
+  .evp-cycle-table th:nth-child(3),
+  .evp-cycle-table td:nth-child(3) {
+    white-space: nowrap;
+  }
+  .evp-cycle-caveat {
+    font-size: 12px !important;
+    line-height: 18px !important;
   }
 </style>
